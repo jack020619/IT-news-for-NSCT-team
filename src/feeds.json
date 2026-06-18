@@ -1,0 +1,48 @@
+{
+  "categories": [
+    {
+      "id": "ai",
+      "title": "AI & Machine Learning",
+      "emoji": "🤖",
+      "blurb": "Latest in artificial intelligence, LLMs and ML tooling.",
+      "feeds": [
+        { "name": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed/" },
+        { "name": "Google AI Blog", "url": "https://blog.google/technology/ai/rss/" },
+        { "name": "Ars Technica · AI", "url": "https://arstechnica.com/ai/feed/" },
+        { "name": "The Verge · AI", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml" }
+      ]
+    },
+    {
+      "id": "web",
+      "title": "Web & General Tech",
+      "emoji": "🌐",
+      "blurb": "Web development, front-end and the wider tech industry.",
+      "feeds": [
+        { "name": "Smashing Magazine", "url": "https://www.smashingmagazine.com/feed/" },
+        { "name": "Frontend Focus", "url": "https://frontendfoc.us/rss" },
+        { "name": "TechCrunch", "url": "https://techcrunch.com/feed/" },
+        { "name": "The Verge", "url": "https://www.theverge.com/rss/index.xml" }
+      ]
+    },
+    {
+      "id": "dev",
+      "title": "Developer Community",
+      "emoji": "💻",
+      "blurb": "Trending from Hacker News and the dev.to community.",
+      "feeds": [
+        { "name": "Hacker News (front page)", "url": "https://hnrss.org/frontpage" },
+        { "name": "DEV Community", "url": "https://dev.to/feed" }
+      ]
+    },
+    {
+      "id": "jobs",
+      "title": "Jobs & Freelance",
+      "emoji": "💼",
+      "blurb": "Remote and freelance IT opportunities for the team.",
+      "feeds": [
+        { "name": "We Work Remotely · Programming", "url": "https://weworkremotely.com/categories/remote-programming-jobs.rss" },
+        { "name": "Remote OK · Dev", "url": "https://remoteok.com/remote-dev-jobs.rss" }
+      ]
+    }
+  ]
+}

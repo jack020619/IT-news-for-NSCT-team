@@ -1,0 +1,10 @@
+node_modules/
+npm-debug.log*
+.DS_Store
+Thumbs.db
+*.log
+
+# Local-only housekeeping notes (kept out of the public repo)
+requirement.txt
+chat_record.txt
+PROGRESS.md

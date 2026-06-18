@@ -1,0 +1,53 @@
+name: Daily IT News Build & Deploy
+
+on:
+  # Run every day at 06:00 UTC. Adjust the cron if you want another time.
+  schedule:
+    - cron: "0 6 * * *"
+  # Allow manual runs from the Actions tab.
+  workflow_dispatch:
+  # Rebuild on every push to main (e.g. when feeds.json or the template changes).
+  push:
+    branches: [main]
+
+# Required for GitHub Pages deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time; don't cancel an in-progress run.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build site (fetch feeds → index.html)
+        run: node scripts/build.mjs
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the repository root (index.html lives here).
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

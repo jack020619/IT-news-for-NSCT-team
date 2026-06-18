@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IT News for NSCT Team · Web &amp; AI Daily</title>
+  <meta name="description" content="Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Auto-updated every day." />
+  <style>
+    :root {
+      --bg: #0d1117; --panel: #161b22; --panel-2: #1c2230;
+      --border: #2a313c; --text: #e6edf3; --muted: #8b949e;
+      --accent: #58a6ff; --accent-2: #7ee787; --shadow: rgba(0,0,0,.4);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f8fa; --panel: #ffffff; --panel-2: #f0f3f6;
+        --border: #d0d7de; --text: #1f2328; --muted: #57606a;
+        --accent: #0969da; --accent-2: #1a7f37; --shadow: rgba(140,149,159,.2);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5; -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 64px; }
+    header.site {
+      background: linear-gradient(135deg, var(--panel) 0%, var(--panel-2) 100%);
+      border-bottom: 1px solid var(--border); padding: 36px 0 28px; margin-bottom: 28px;
+    }
+    .site-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .brand h1 { font-size: 1.6rem; margin: 0; letter-spacing: -.02em; }
+    .brand .tag {
+      font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--accent-2); border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 999px; background: var(--panel);
+    }
+    .sub { color: var(--muted); margin: 10px 0 0; font-size: .95rem; }
+    .meta-bar {
+      display: flex; flex-wrap: wrap; gap: 16px; margin-top: 16px;
+      font-size: .82rem; color: var(--muted);
+    }
+    .meta-bar b { color: var(--text); }
+    nav.cats {
+      display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 6px;
+    }
+    nav.cats a {
+      font-size: .85rem; padding: 6px 12px; border: 1px solid var(--border);
+      border-radius: 999px; background: var(--panel); color: var(--text);
+    }
+    nav.cats a:hover { border-color: var(--accent); color: var(--accent); }
+    .category { margin-top: 40px; scroll-margin-top: 20px; }
+    .category-head h2 { font-size: 1.25rem; margin: 0; }
+    .category-head .blurb { color: var(--muted); margin: 4px 0 0; font-size: .9rem; }
+    ul.cards {
+      list-style: none; padding: 0; margin: 18px 0 0;
+      display: grid; gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+    }
+    .card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 6px 20px var(--shadow); }
+    .card-link { display: block; padding: 16px 18px; height: 100%; }
+    .card-title { font-size: 1rem; margin: 0 0 8px; color: var(--text); line-height: 1.35; }
+    .card:hover .card-title { color: var(--accent); }
+    .summary { color: var(--muted); font-size: .86rem; margin: 0 0 10px; }
+    .card-meta { color: var(--muted); font-size: .76rem; }
+    footer.site {
+      margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border);
+      color: var(--muted); font-size: .82rem; text-align: center;
+    }
+    footer.site a { color: var(--accent); }
+    .empty { color: var(--muted); padding: 40px 0; text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="site-inner">
+      <div class="brand">
+        <h1>📡 IT News for NSCT Team</h1>
+        <span class="tag">Web &amp; AI · Daily</span>
+      </div>
+      <p class="sub">A daily digest for the NSCT team — web development, AI, developer trends and remote/freelance opportunities. For the freelancers and the job-seekers among us.</p>
+      <div class="meta-bar">
+        <span>🕒 Updated: <b>Thu, 18 Jun 2026 04:07:17 UTC</b></span>
+        <span>📰 <b>72</b> stories</span>
+        <span>🔗 <b>8</b> sources</span>
+      </div>
+      <nav class="cats">
+        <a href="#cat-ai">🤖 AI &amp; Machine Learning</a>
+        <a href="#cat-web">🌐 Web &amp; General Tech</a>
+        <a href="#cat-dev">💻 Developer Community</a>
+        <a href="#cat-jobs">💼 Jobs &amp; Freelance</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+
+      <section class="category" id="cat-ai">
+        <div class="category-head">
+          <h2>🤖 AI &amp; Machine Learning</h2>
+          <p class="blurb">Latest in artificial intelligence, LLMs and ML tooling.</p>
+        </div>
+        <ul class="cards">
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Midjourney Medical goes from generating ‘cat images’ to full-body ultrasound scans</h3>
+            <p class="summary">Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubb…</p>
+            <span class="card-meta">The Verge · AI · 54m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/ai/2026/06/ai-coding-agents-can-autonomously-direct-robot-training/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">AI coding agents taught robots how to install GPUs and cut zip ties</h3>
+            <p class="summary">Nvidia&#39;s self-improvement program for robots enlists teams of AI coding agents.</p>
+            <span class="card-meta">Ars Technica · AI · 8h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Anthropic got hit by export rules nobody understands</h3>
+            <p class="summary">Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US an…</p>
+            <span class="card-meta">The Verge · AI · 9h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/ai/2026/06/dangerous-ai-models-are-coming-no-matter-what/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">&quot;Dangerous&quot; AI models are coming no matter what</h3>
+            <p class="summary">AI models with advanced hacking capabilities will soon be the norm.</p>
+            <span class="card-meta">Ars Technica · AI · 10h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Two-thirds of Americans think AI is advancing too quickly</h3>
+            <p class="summary">According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatical…</p>
+            <span class="card-meta">The Verge · AI · 10h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/report/951481/snap-specs-wearables-smart-glasses-fashion" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Can anyone look cool wearing Snap’s $2,000 glasses?</h3>
+            <p class="summary">Yesterday, Snap debuted its new $2,195 Specs glasses. In an interview with CNBC, Snap CEO Evan Spiegel described the Specs as something the company had been working on for more than 12 years, an attempt to &quot;bring computi…</p>
+            <span class="card-meta">The Verge · AI · 11h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/google/2026/06/the-gemini-powered-google-home-speaker-arrives-on-june-25-for-100/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Ten months later, the $100 Google Home Speaker is finally available for preorder</h3>
+            <p class="summary">Google&#39;s new smart speaker is more about Gemini than audio quality.</p>
+            <span class="card-meta">Ars Technica · AI · 12h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">New research shows how AMIE, our medical AI, could help manage health conditions.</h3>
+            <p class="summary">Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.</p>
+            <span class="card-meta">Google AI Blog · 13h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/951099/meta-ai-mode-search-hands-on" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">AI search grounded in Facebook posts? What could go wrong?</h3>
+            <p class="summary">AI is pretty reliable at putting things on your calendar these days, but it hasn&#39;t quite cracked answering the related and all-important question of &quot;What should I do this weekend?&quot; Meta&#39;s new AI Mode in search could be …</p>
+            <span class="card-meta">The Verge · AI · 14h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/tech/951147/google-home-speaker-gemini-launch-date-price-specs-features" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Google’s first smart speaker in six years arrives next week</h3>
+            <p class="summary">Google&#39;s first new smart speaker in six years starts shipping on June 25th, narrowly missing its promised spring launch window. Preorders for the Google Home Speaker open today, June 17th. Nothing has changed hardware-wi…</p>
+            <span class="card-meta">The Verge · AI · 15h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">The next humanoid robot might not look human at all</h3>
+            <p class="summary">The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, &quot;humanoid robots don&#39;t need to look human.&quot; That exp…</p>
+            <span class="card-meta">The Verge · AI · 18h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/ai/2026/06/anthropic-pauses-token-based-billing-for-its-claude-agent-sdk/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Anthropic &quot;pauses&quot; token-based billing for its Claude Agent SDK</h3>
+            <p class="summary">Move originally planned for Monday would have heavily increased power users&#39; costs.</p>
+            <span class="card-meta">Ars Technica · AI · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/tech/950826/apple-airpod-camera-ai-foldable-iphone-rumor" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Apple 2027 rumors: AirPods with cameras for AI and the second folding iPhone</h3>
+            <p class="summary">Now that we&#39;re clear of WWDC and all of the new AI-powered features coming to Apple&#39;s platforms, Bloomberg reporter Mark Gurman has more details about rumored new hardware, like the camera-equipped AirPods he&#39;d previousl…</p>
+            <span class="card-meta">The Verge · AI · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/gadgets/950229/qualcomm-snapdragon-reality-elite-xr-smart-glasses-wearables" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Qualcomm’s latest chip hints that more powerful smart glasses could be on the way</h3>
+            <p class="summary">Smart glasses are still a nascent category, but chipmaker Qualcomm is hard at work upgrading the silicon to power the next wave of XR devices: the Snapdragon Reality Elite. Although Qualcomm is announcing the chip today …</p>
+            <span class="card-meta">The Verge · AI · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/ai/2026/06/spacex-will-acquire-coding-tool-cursor-to-compete-with-anthropic-openai/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">SpaceX to acquire AI coding platform Cursor for $60 billion</h3>
+            <p class="summary">Separately, neither could compete. Now they hope they can.</p>
+            <span class="card-meta">Ars Technica · AI · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/ai/2026/06/leaked-financial-docs-show-openai-is-losing-billions-of-dollars-a-year/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Leaked financial docs show OpenAI is losing billions of dollars a year</h3>
+            <p class="summary">Audited accounting shows growing revenues being dwarfed by R&amp;#038;D, other expenses.</p>
+            <span class="card-meta">Ars Technica · AI · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/security/2026/06/critical-copilot-vulnerability-allowed-hackers-to-seal-2fa-code-from-users/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Critical Copilot vulnerability allowed hackers to steal 2FA code from users</h3>
+            <p class="summary">SearchLeak exploit shows why the industry&#39;s approach to LLM security fails over and over.</p>
+            <span class="card-meta">Ars Technica · AI · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/ai/2026/06/chipmaker-nvidia-seeks-to-raise-over-25b-in-first-bond-deal-since-2021/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Chipmaker Nvidia seeks to raise over $25B in first bond deal since 2021</h3>
+            <p class="summary">Debt sale set to test investor appetite for further exposure to AI sector amid a deluge of borrowing.</p>
+            <span class="card-meta">Ars Technica · AI · 2d ago</span>
+          </a>
+        </li>
+        </ul>
+      </section>
+
+      <section class="category" id="cat-web">
+        <div class="category-head">
+          <h2>🌐 Web &amp; General Tech</h2>
+          <p class="blurb">Web development, front-end and the wider tech industry.</p>
+        </div>
+        <ul class="cards">
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Midjourney Medical goes from generating ‘cat images’ to full-body ultrasound scans</h3>
+            <p class="summary">Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubb…</p>
+            <span class="card-meta">The Verge · 54m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/how-to-turn-off-ai-in-your-google-docs/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">How to turn off AI in your Google Docs</h3>
+            <p class="summary">Here&#39;s what you need to do to get those pesky &quot;write with Gemini&quot; pop-ups to go away.</p>
+            <span class="card-meta">TechCrunch · 2h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/ai-is-hurting-apple-in-more-ways-than-one-it-may-force-iphone-price-increases/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">AI is hurting Apple in more ways than one: it may force iPhone price increases</h3>
+            <p class="summary">CEO Tim Cook said in a recent interview that the situation is &quot;unsustainable.&quot;</p>
+            <span class="card-meta">TechCrunch · 4h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/tech/951948/apple-tim-cook-price-increases-ram" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Tim Cook says RAM expenses are &amp;#8216;unsustainable&amp;#8217; and Apple is going to raise prices</h3>
+            <p class="summary">Apple is planning to raise prices in response to the ongoing memory shortage. In an interview with The Wall Street Journal, Apple CEO Tim Cook says &quot;price increases are unavoidable:&quot; We&#39;re doing our best to mitigate the …</p>
+            <span class="card-meta">The Verge · 6h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/chi-hua-chien-saw-facebook-coming-now-he-says-the-real-ai-winners-wont-be-selling-ai/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Chi-Hua Chien saw Facebook coming — now he says the real AI winners won&amp;#8217;t be selling AI</h3>
+            <p class="summary">Chi-Hua Chien has spent more than two decades as a venture capitalist, but he thinks like a cultural anthropologist.</p>
+            <span class="card-meta">TechCrunch · 6h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/tech/951863/vsco-studio-pro-vsco-one-subscription" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">VSCO launches Studio Pro mobile photo editing app and plans $500 per year subscription</h3>
+            <p class="summary">VSCO is taking on Adobe with a new Studio Pro editing app rolling out today on iOS and coming to macOS later this year, as Bloomberg reports. At launch, the app offers tools for batch editing, style matching from a refer…</p>
+            <span class="card-meta">The Verge · 7h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/roelof-botha-joins-spacexs-board-of-directors/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Roelof Botha joins SpaceX&amp;#8217;s board of directors</h3>
+            <p class="summary">The former Sequoia Capital leader is filling an &quot;existing vacancy&quot; on SpaceX&#39;s board, days after the company went public in the largest IPO ever.</p>
+            <span class="card-meta">TechCrunch · 7h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/after-unveiling-ridiculously-expensive-ar-glasses-snaps-stock-takes-a-dive/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">After unveiling ridiculously expensive AR glasses, Snap&amp;#8217;s stock takes a dive</h3>
+            <p class="summary">Snap&#39;s long-awaited smart glasses debut hasn&#39;t exactly done wonders for the company&#39;s stock.</p>
+            <span class="card-meta">TechCrunch · 7h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/video/neas-tiffany-luck-says-enterprises-are-still-figuring-out-their-ai-roi/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">NEA’s Tiffany Luck says enterprises are still figuring out their AI ROI</h3>
+            <p class="summary">Tokenmaxxing&amp;#160;was&amp;#160;the hottest trend in Silicon Valley earlier this year, with CEOs encouraging employees to push AI usage as far&amp;#160;as it would go.&amp;#160;Then the bill came due. Uber&amp;#160;reportedly blew&amp;#160;t…</p>
+            <span class="card-meta">TechCrunch · 7h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/games/951785/epic-games-fortnite-unreal-fest-2026-unreal-engine-6-ai-metaverse" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Epic wants to let you bring your Fortnite skins to other games</h3>
+            <p class="summary">Epic Games has been touting the potential of an interoperable metaverse for years, though that vision hasn&#39;t yet become a reality. But with Unreal Engine 6, the next major version of its game development engine, Epic pla…</p>
+            <span class="card-meta">The Verge · 8h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/world-leaders-want-american-ai-they-just-dont-want-america-to-be-able-to-turn-it-off/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">World leaders want American AI. They just don&amp;#8217;t want America to be able to turn it off.</h3>
+            <p class="summary">French President Macron and Indian PM Modi raised alarms at the G7 summit that the U.S. could cut off access to American AI overnight — a fear the Anthropic blackout just made real.</p>
+            <span class="card-meta">TechCrunch · 9h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/anthropic-becomes-first-ai-startup-to-join-the-frontier-carbon-removal-coalition/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Anthropic becomes first AI startup to join the Frontier carbon removal coalition</h3>
+            <p class="summary">Anthropic has joined the Frontier coalition, which received another $915M in pledges to fund carbon removal projects.</p>
+            <span class="card-meta">TechCrunch · 9h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Anthropic got hit by export rules nobody understands</h3>
+            <p class="summary">Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US an…</p>
+            <span class="card-meta">The Verge · 9h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/cybercriminals-allegedly-hacked-tens-of-thousands-of-fortinet-firewalls-used-by-major-companies-all-over-the-world/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Cybercriminals allegedly hacked tens of thousands of Fortinet firewalls used by major companies all over the world</h3>
+            <p class="summary">An alleged Russian-speaking group of cybercriminals is reportedly compromising and targeting several major companies that use Fortinet Firewalls and VPNs through previously known passwords.</p>
+            <span class="card-meta">TechCrunch · 9h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/social-medias-next-evolution-user-controlled-algorithms/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Social media’s next evolution: user-controlled algorithms</h3>
+            <p class="summary">Social media feeds are becoming more customizable as platforms like Threads, Instagram, and TikTok introduce tools that let users directly influence the algorithms powering their recommendations.</p>
+            <span class="card-meta">TechCrunch · 9h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/world-model-maker-odyssey-nabs-1-45b-valuation-backed-by-amazon-and-other-big-names/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">World model maker Odyssey nabs $1.45B valuation backed by Amazon and other big names</h3>
+            <p class="summary">World models are the next big thing in AI beyond LLMs and, with this round, Odyssey has cemented itself as one of the startups to watch.</p>
+            <span class="card-meta">TechCrunch · 10h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://techcrunch.com/2026/06/17/mastodon-looks-to-newsletters-to-help-revive-the-open-social-web/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Mastodon looks to newsletters to help revive the open social web</h3>
+            <p class="summary">Mastodon’s newly launched newsletter feature lets anyone subscribe to creators by email, even without a Mastodon account.</p>
+            <span class="card-meta">TechCrunch · 10h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Two-thirds of Americans think AI is advancing too quickly</h3>
+            <p class="summary">According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatical…</p>
+            <span class="card-meta">The Verge · 10h ago</span>
+          </a>
+        </li>
+        </ul>
+      </section>
+
+      <section class="category" id="cat-dev">
+        <div class="category-head">
+          <h2>💻 Developer Community</h2>
+          <p class="blurb">Trending from Hacker News and the dev.to community.</p>
+        </div>
+        <ul class="cards">
+        <li class="card">
+          <a class="card-link" href="https://dev.to/tejas_shinkar/python-strings-indexing-slicing-and-essential-string-methods-3la0" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Python Strings: Indexing, Slicing, and Essential String Methods</h3>
+            <p class="summary">As I continue learning Python for Cloud, DevOps, and Automation, I spent some time understanding strings in detail. Strings look simple initially, but Python provides a lot of powerful operations that become useful when …</p>
+            <span class="card-meta">DEV Community · 14m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/mrwick/i-reverse-engineered-my-motorcycles-bluetooth-protocol-to-put-google-maps-on-the-dashboard-256j" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">I reverse-engineered my motorcycle&#39;s Bluetooth protocol to put Google Maps on the dashboard</h3>
+            <p class="summary">My motorcycle has a Bluetooth instrument cluster. It pairs with the manufacturer&#39;s phone app and shows turn-by-turn navigation right on the dash, which sounds great until you actually use it. The nav is routed through a …</p>
+            <span class="card-meta">DEV Community · 26m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/geekaara/llm-prompt-injection-guardrail-security-glm" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">LLM Prompt Injection &amp; Guardrail Security</h3>
+            <p class="summary">A recall reference built from working through a 7-layer prompt-injection challenge. Focus: how each defense layer works, where it breaks, and most importantly how to defend. The one idea underneath everything LLMs have n…</p>
+            <span class="card-meta">DEV Community · 29m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/quantamind/the-quantization-audit-why-leaderboard-scores-lie-about-local-agent-capabilities-1jk3" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">The Quantization Audit: Why Leaderboard Scores Lie About Local Agent Capabilities</h3>
+            <p class="summary">There is a dangerous trap in the local AI world: picking the smallest quantization that fits into your VRAM just because it &quot;runs.&quot; We see developers doing this all the time, completely unaware that they’ve crippled thei…</p>
+            <span class="card-meta">DEV Community · 37m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/prashant_patil_49/building-github-inspired-version-control-and-forking-without-duplicating-project-files-5aap" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Building GitHub-Inspired Version Control and Forking Without Duplicating Project Files</h3>
+            <p class="summary">One of the challenges I faced while building my LaTeX Writer project was implementing version control and project forking in a storage-efficient way. A typical LaTeX project contains multiple files. Even a simple project…</p>
+            <span class="card-meta">DEV Community · 45m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/jamilxt/epic-games-open-sourced-lore-a-version-control-system-built-for-massive-game-assets-5hdn" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Epic Games Open-Sourced Lore — A Version Control System Built for Massive Game Assets</h3>
+            <p class="summary">Epic Games just dropped something that could reshape how game studios handle code and assets. They&#39;ve open-sourced Lore — a centralized version control system built from the ground up to solve one painful problem: managi…</p>
+            <span class="card-meta">DEV Community · 46m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/hung_phatlaptop_a651fc86/setup-dev-environment-cho-laptop-workstation-kien-truc-o4m" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Setup Dev Environment cho Laptop Workstation Kiến Trúc</h3>
+            <p class="summary">Nếu bạn vừa nhận một chiếc laptop từ danh sách ReviewLaptop để vừa học kiến trúc vừa làm dev, việc tối ưu hóa máy là cực kỳ quan trọng. Các phần mềm như Revit hay AutoCAD vốn đã ngốn tài nguyên rất lớn, vì vậy bạn cần mộ…</p>
+            <span class="card-meta">DEV Community · 47m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/alejandro_lago_b80def5e96/la-verdadera-ia-cce" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">La Verdadera IA</h3>
+            <p class="summary">SISTEMA INTELIGENCIA DIGITAL HUMANA (IDH) ARQUITECTURA DE CONSTRUCCIÓN GLOBAL Y ESPECIFICACIÓN TÉCNICA FINAL VERSIÓN 2.0 EJECUCIÓN REAL EN HARDWARE BARE-METAL DESCENTRALIZADO CAPA 1: SUBSISTEMA DE INGESTA MULTIMODAL, PER…</p>
+            <span class="card-meta">DEV Community · 53m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/ahura_mazda/stop-fighting-python-for-webhooks-why-nodejs-is-optimal-for-cloud-function-signatures-4pi7" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Stop Fighting Python for Webhooks: Why Node.js is Optimal for Cloud Function Signatures</h3>
+            <p class="summary">The Cryptographic Trust Problem (Why Webhooks Are Unforgiving) Webhooks are the nervous system of modern production apps. Whether you are processing a payment on Stripe, tracking a subscription on Lemon Squeezy, or fulfi…</p>
+            <span class="card-meta">DEV Community · 55m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/_cbd692d476c5faf3b61bcf/cognee-ai-ji-yi-ping-tai-de-5-ge-yin-cang-yong-fa-rang-agent-yong-you-kua-hui-hua-de-chi-jiu-ji-yi-243b" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Cognee AI 记忆平台的 5 个隐藏用法：让 Agent 拥有跨会话的持久记忆</h3>
+            <p class="summary">你知道吗？GitHub 上有一个 17,889 Stars 的开源项目，能让你的 AI Agent 拥有跨会话的持久记忆——不是简单的向量检索，而是一个会自动进化的知识图谱。但大多数开发者只用它来做基础的文档搜索，完全忽略了它真正的能力。 Cognee 是一个开源 AI 记忆平台，它把知识图谱、向量搜索和认知本体论生成统一到一个记忆层中。在 2026 年，AI Agent 正从单轮对话机器人向长时间运行的自主系统演进，而瓶颈不再是模型能…</p>
+            <span class="card-meta">DEV Community · 57m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/jfgg/como-hacer-una-buena-revision-de-codigo-5db8" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Cómo hacer una buena revisión de código</h3>
+            <p class="summary">Revisar código es una de las actividades más subestimadas del desarrollo de software. La mayoría de los equipos la tratan como un trámite, algo que hay que aprobar antes de mergear. El resultado es que los PRs se aprueba…</p>
+            <span class="card-meta">DEV Community · 59m ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://dev.to/sqlfirst_dev/production-crud-in-java-without-the-framework-tax-2n82" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Production CRUD in Java Without the Framework Tax</h3>
+            <p class="summary">A practical walkthrough of SQL-First persistence: no XML, no Mapper interfaces, no generated queries. I maintain a Java backend that handles ~1M requests/day. For persistence, we used to run MyBatis. The XML was manageab…</p>
+            <span class="card-meta">DEV Community · 1h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">[x86] AI Compute Extensions (ACE) Specification</h3>
+            <p class="summary">Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 14 # Comments: 5</p>
+            <span class="card-meta">Hacker News (front page) · 1h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.midjourney.com/medical/blogpost" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Midjourney Medical</h3>
+            <p class="summary">https://www.midjourney.com/medical Video: https://x.com/midjourney/status/2067422898407837797 Comments URL: https://news.ycombinator.com/item?id=48579650 Points: 254 # Comments: 216</p>
+            <span class="card-meta">Hacker News (front page) · 2h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://www.horg.com/horg/?page_id=921" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Taxonomy of the Occlupanida (parasitoids on bread bag tags)</h3>
+            <p class="summary">Article URL: https://www.horg.com/horg/?page_id=921 Comments URL: https://news.ycombinator.com/item?id=48578388 Points: 96 # Comments: 17</p>
+            <span class="card-meta">Hacker News (front page) · 4h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://github.com/glojurelang/glojure" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Clojure Hosted on Go</h3>
+            <p class="summary">Article URL: https://github.com/glojurelang/glojure Comments URL: https://news.ycombinator.com/item?id=48578326 Points: 56 # Comments: 9</p>
+            <span class="card-meta">Hacker News (front page) · 4h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://storiedcolors.com/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Storied Colors – a catalogue of named colors</h3>
+            <p class="summary">Article URL: https://storiedcolors.com/ Comments URL: https://news.ycombinator.com/item?id=48577374 Points: 116 # Comments: 27</p>
+            <span class="card-meta">Hacker News (front page) · 6h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://arstechnica.com/information-technology/2026/06/tesco-moving-40000-server-workloads-off-vmware-amid-broadcoms-abusive-conduct/" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Tesco moving 40k server workloads off VMware amid Broadcom&#39;s abusive conduct</h3>
+            <p class="summary">Article URL: https://arstechnica.com/information-technology/2026/06/tesco-moving-40000-server-workloads-off-vmware-amid-broadcoms-abusive-conduct/ Comments URL: https://news.ycombinator.com/item?id=48576838 Points: 209 #…</p>
+            <span class="card-meta">Hacker News (front page) · 7h ago</span>
+          </a>
+        </li>
+        </ul>
+      </section>
+
+      <section class="category" id="cat-jobs">
+        <div class="category-head">
+          <h2>💼 Jobs &amp; Freelance</h2>
+          <p class="blurb">Remote and freelance IT opportunities for the team.</p>
+        </div>
+        <ul class="cards">
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-pharmacovigilance-associate-position-puma-biotechnology-inc-1133533" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Pharmacovigilance Associate Position</h3>
+            <p class="summary">Puma Biotechnology Inc. does not accept unsolicited resumes or candidates from outside staffing agencies or recruiters. We are seeking a Pharmacovigilance Associate with 1â2 years of pharmacovigilance experience and ex…</p>
+            <span class="card-meta">Remote OK · Dev · 19h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-lead-software-engineer-ads-jane-technologies-1133519" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Lead Software Engineer Ads</h3>
+            <p class="summary">Company Overview: Jane Technologies is an MIT-founded eCommerce company in the cannabis industry experiencing rapid growth. We believe in cannabis&#39;s ability to bring well-being, health, and love to the world, and our mis…</p>
+            <span class="card-meta">Remote OK · Dev · 22h ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-capital-planning-analyst-pbg-1133580" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Capital Planning Analyst</h3>
+            <p class="summary">PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or …</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-program-manager-pbg-1133517" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Program Manager</h3>
+            <p class="summary">PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or …</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-customer-support-agent-c-teleport-1133593" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Customer Support Agent</h3>
+            <p class="summary">Are you looking for a new challenge in a dynamic, fast-growing environment? Do you want to contribute to a company with the ambitious goal of enabling 1 billion business travellers to plan and re-plan their trips by auto…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-director-of-commercial-operations-curaleaf-international-1133527" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Director of Commercial Operations</h3>
+            <p class="summary">Location: UK, Spain or Portugal Role: Director of Commercial Operations Reporting to: CEO, Curaleaf International Employment Type: Full Time POSITION SUMMARY: Curaleaf International is one of Europe&#39;s largest vertically …</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-medical-writer-lumanity-1133526" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Medical Writer</h3>
+            <p class="summary">Overview / About Us Lumanity is dedicated to improving health outcomes by accelerating and optimizing access to life-changing medicines. As a global strategic partner that brings together strategy, evidence, engagement, …</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-front-end-developer-fresher-zyphra-tech-1133568" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Front End Developer Fresher</h3>
+            <p class="summary">Frontend Developer About the Role We are looking for a creative and detail-oriented Frontend Developer to join our team. The ideal candidate will be responsible for building responsive, visually appealing, and user-frien…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-customer-support-representative-dario-1133522" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Customer Support Representative</h3>
+            <p class="summary">At Dario, Every Day is a New Opportunity to Make a Difference. We are on a mission to make better health easy. Every day our employees contribute to this mission and help hundreds of thousands of people around the globe …</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-24-hr-review-va-virtual-receptionist-onlinejobs-ph-1133516" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">24 HR Review VA Virtual Receptionist</h3>
+            <p class="summary">Important: Selected applicants will receive a response within 24 hours. Due to the volume of applications, we may move forward with other candidates if we do not receive a timely response. We are currently hiring for a l…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-product-designer-design-systems-penn-interactive-1133499" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Product Designer Design Systems</h3>
+            <p class="summary">PENN Entertainment, Inc. is North Americaâs leading provider of integrated entertainment, sports content, and casino gaming experiences. From casinos and racetracks to online gaming, sports betting and entertainment co…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-analyst-customer-success-measurement-us-cint-1133576" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Analyst Customer Success Measurement US</h3>
+            <p class="summary">Who We Are Cint is a pioneer in research technology (ResTech). Our customers use the Cint platform to post questions and get answers from real people to build business strategies, confidently publish research, accurately…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-back-end-developer-wisk-ai-inventory-management-for-hotels-restaurants-amp-bars-1133587" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Back End Developer</h3>
+            <p class="summary">Location: Remote (Must work during Eastern timezone business hours) About Wisk.ai Wisk.ai is an industry-leading platform that helps hospitality businesses streamline their beverage and food operations through intelligen…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-technical-support-specialist-innergy-1133586" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Technical Support Specialist</h3>
+            <p class="summary">INNERGY is transforming the woodworking industry with purpose built, cloud based ERP software designed exclusively for custom manufacturers. Our platform helps businesses operate smarter, faster, and more efficiently whi…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-python-developer-kindgeek-1133592" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Python Developer</h3>
+            <p class="summary">We&#39;re looking for a Python Developer to join a high-impact team building core infrastructure for one of our company&#39;s most critical initiatives. You&#39;ll architect the connectivity layer between internal systems and the ex…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-administrator-19966-somewhere-1133492" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Administrator 19966</h3>
+            <p class="summary">Job Title: HR AdministratorLocation: Fully RemoteSchedule: Full-Time (40 hours/week, aligned withâ¦</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-customer-support-specialist-tier-1-yembo-1133491" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Customer Support Specialist Tier 1</h3>
+            <p class="summary">About YemboWe are a remote company on a mission to bring trust and transparency to home servicesâ¦See this and similar jobs on LinkedIn.</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="https://remoteOK.com/remote-jobs/remote-sales-development-representative-flagler-health-1133578" target="_blank" rel="noopener noreferrer">
+            <h3 class="card-title">Sales Development Representative</h3>
+            <p class="summary">Flagler Health is building the clinical operating system for modern musculoskeletal care. We partner with MSK provider groups and specialty clinics to help them grow, operate more efficiently, and deliver better longitud…</p>
+            <span class="card-meta">Remote OK · Dev · 1d ago</span>
+          </a>
+        </li>
+        </ul>
+      </section>
+    <footer class="site">
+      <p>Built automatically for the <b>NSCT team</b> · Updated daily via GitHub Actions.<br>
+      Maintained by <a href="https://github.com/jack020619">jack020619</a> ·
+      <a href="https://github.com/jack020619/IT-news-for-NSCT-team">Source on GitHub</a></p>
+      <p>Headlines link to their original publishers. All rights belong to the respective sources.</p>
+    </footer>
+  </main>
+</body>
+</html>
