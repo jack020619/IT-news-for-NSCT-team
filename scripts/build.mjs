@@ -16,6 +16,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 
 const MAX_ITEMS_PER_CATEGORY = 18;
+// How much of each story's key point we keep. Collapsed view clamps it to a
+// couple of lines; the "More" button reveals the rest, so keep this generous.
+const SUMMARY_MAX = 700;
 const FETCH_TIMEOUT_MS = 15000;
 const TRANSLATE_TIMEOUT_MS = 10000;
 const USER_AGENT =
@@ -204,7 +207,7 @@ function parseFeed(xml, sourceName) {
       link: link.trim(),
       source: sourceName,
       date: date && !isNaN(date) ? date : null,
-      summary: stripTags(descRaw).slice(0, 240),
+      summary: stripTags(descRaw).slice(0, SUMMARY_MAX),
     });
   }
   return items;
@@ -268,7 +271,7 @@ async function fetchFreelancer() {
           source: "Freelancer.com",
           budget,
           date: ts ? new Date(ts * 1000) : null,
-          summary: stripTags(p.preview_description || p.description || "").slice(0, 240),
+          summary: stripTags(p.preview_description || p.description || "").slice(0, SUMMARY_MAX),
         };
       });
     console.log(`  ✓ Freelancer.com projects: ${items.length} items`);
@@ -310,12 +313,18 @@ function renderItem(item, now, i) {
   const budgetChip = item.budget ? `<span class="budget">${esc(item.budget)}</span>` : "";
   const meta = [esc(item.source), ago].filter(Boolean).join(" · ");
   const point = item.summary
-    ? esc(item.summary) + (item.summary.length >= 240 ? "…" : "")
+    ? esc(item.summary) + (item.summary.length >= SUMMARY_MAX ? "…" : "")
     : "No summary available for this story.";
   const icon = favicon
     ? `<img src="${favicon}" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')">`
     : "";
   const ts = item.date ? item.date.getTime() : 0;
+  // Only show the More/Less toggle when the key point is long enough to be
+  // clamped (short summaries already fit in the collapsed 2-line view).
+  const expandBtn =
+    item.summary && item.summary.length > 130
+      ? `<button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button>`
+      : "";
   const pinned = item.pinned ? " pinned" : "";
   const pinBadge = item.pinned ? `<span class="point-label" style="color:#ffd27d;border-color:rgba(255,210,125,.4);background:rgba(255,210,125,.1)">📌 Pinned</span>` : "";
   return `
@@ -324,7 +333,7 @@ function renderItem(item, now, i) {
               <span class="item-icon">${icon}</span>
               <span class="item-body">
                 <span class="item-title">${esc(item.title)}</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>${pinBadge}${point}</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>${pinBadge}${point}</span>${expandBtn}</span>
                 <span class="item-meta">${budgetChip}${meta}</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
