@@ -43,6 +43,14 @@
         { "name": "We Work Remotely · Programming", "url": "https://weworkremotely.com/categories/remote-programming-jobs.rss" },
         { "name": "Remote OK · Dev", "url": "https://remoteok.com/remote-dev-jobs.rss" }
       ]
+    },
+    {
+      "id": "freelancer",
+      "title": "Freelancer.com",
+      "emoji": "🧑‍💻",
+      "blurb": "Live active projects from Freelancer.com, plus the site's Terms & Conditions — for the freelancers on the team.",
+      "type": "freelancer",
+      "feeds": []
     }
   ]
 }

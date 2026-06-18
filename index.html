@@ -88,10 +88,16 @@
       position: sticky; top: 0; z-index: 30; margin-top: 26px;
       background: rgba(8,10,16,.62); backdrop-filter: blur(16px) saturate(1.2);
       border: 1px solid var(--border); border-radius: 16px;
-      padding: 12px; display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      padding: 12px; display: flex; flex-direction: column; gap: 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
+    .toolbar-row { display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
     .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ranges { display: flex; gap: 4px; background: var(--glass-2); border: 1px solid var(--border); border-radius: 12px; padding: 4px; flex-wrap: wrap; }
+    .rlabel { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; align-self: center; padding: 0 6px 0 4px; }
+    .rbtn { font: inherit; cursor: pointer; color: var(--muted); background: transparent; border: 0; padding: 7px 12px; border-radius: 9px; font-size: .82rem; transition: all .15s ease; }
+    .rbtn:hover { color: var(--text); background: rgba(255,255,255,.06); }
+    .rbtn.active { color: #fff; background: rgba(56,224,200,.22); box-shadow: inset 0 0 0 1px rgba(56,224,200,.5); }
     .chip {
       font: inherit; cursor: pointer; color: var(--text);
       background: var(--glass-2); border: 1px solid var(--border);
@@ -142,6 +148,9 @@
       padding: 1px 7px; border-radius: 999px; margin-right: 8px; vertical-align: 1px;
     }
     .item-meta { color: #8b93a7; font-size: .76rem; letter-spacing: .01em; }
+    .budget { display: inline-block; color: #7ee0b8; background: rgba(126,224,184,.10); border: 1px solid rgba(126,224,184,.3); padding: 1px 8px; border-radius: 999px; margin-right: 8px; font-weight: 600; }
+    .item.pinned .item-link { border-color: rgba(255,210,125,.4); background: rgba(255,210,125,.06); }
+    .range-empty { color: var(--muted); font-size: .9rem; padding: 18px 2px; }
     .item-arrow { flex: 0 0 auto; color: var(--muted); font-size: 1rem; opacity: 0; transform: translate(-4px,2px); transition: all .18s ease; }
     .item-link:hover .item-arrow { opacity: 1; transform: none; color: var(--accent-2); }
 
@@ -197,30 +206,41 @@
     <h1>IT News for NSCT Team</h1>
     <p class="sub">A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Headlines from around the world, translated to English. Built for the freelancers and the job-seekers among us.</p>
     <div class="stats">
-      <div class="stat"><b>72</b><span>Stories</span></div>
-      <div class="stat"><b>8</b><span>Sources</span></div>
-      <div class="stat"><b>4</b><span>Topics</span></div>
+      <div class="stat"><b>91</b><span>Stories</span></div>
+      <div class="stat"><b>9</b><span>Sources</span></div>
+      <div class="stat"><b>5</b><span>Topics</span></div>
     </div>
   </header>
 
   <div class="wrap">
     <div class="toolbar">
       <div class="filters">
-        <button class="chip active" data-cat="all" type="button">📚 All <em>72</em></button>
+        <button class="chip active" data-cat="all" type="button">📚 All <em>91</em></button>
         <button class="chip" data-cat="ai" type="button">🤖 AI &amp; Machine Learning <em>18</em></button>
         <button class="chip" data-cat="web" type="button">🌐 Web &amp; General Tech <em>18</em></button>
         <button class="chip" data-cat="dev" type="button">💻 Developer Community <em>18</em></button>
         <button class="chip" data-cat="jobs" type="button">💼 Jobs &amp; Freelance <em>18</em></button>
+        <button class="chip" data-cat="freelancer" type="button">🧑‍💻 Freelancer.com <em>19</em></button>
       </div>
-      <div class="views" role="group" aria-label="View mode">
-        <button class="vbtn" data-view="title" type="button" title="Title view"><span class="vico">≣</span><span class="vlabel">Title</span></button>
+      <div class="toolbar-row">
+        <div class="ranges" role="group" aria-label="Time range">
+          <span class="rlabel">When</span>
+          <button class="rbtn" data-range="today" type="button">Today</button>
+          <button class="rbtn" data-range="week" type="button">This Week</button>
+          <button class="rbtn" data-range="month" type="button">This Month</button>
+          <button class="rbtn" data-range="year" type="button">This Year</button>
+          <button class="rbtn active" data-range="all" type="button">All</button>
+        </div>
+        <div class="views" role="group" aria-label="View mode">
+          <button class="vbtn" data-view="title" type="button" title="Title view"><span class="vico">≣</span><span class="vlabel">Title</span></button>
         <button class="vbtn active" data-view="list" type="button" title="List view"><span class="vico">☰</span><span class="vlabel">List</span></button>
         <button class="vbtn" data-view="details" type="button" title="Details view"><span class="vico">▤</span><span class="vlabel">Details</span></button>
         <button class="vbtn" data-view="cards" type="button" title="Cards view"><span class="vico">▦</span><span class="vlabel">Cards</span></button>
+        </div>
       </div>
     </div>
 
-    <main id="content" data-view="list" data-cat="all">
+    <main id="content" data-view="list" data-cat="all" data-range="all">
 
       <section class="category" data-cat="ai" id="cat-ai">
         <div class="category-head">
@@ -228,7 +248,7 @@
           <p class="blurb">Latest in artificial intelligence, LLMs and ML tooling.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0">
+          <li class="item" style="--i:0" data-ts="1781752351000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -239,7 +259,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1">
+          <li class="item" style="--i:1" data-ts="1781724319000">
             <a class="item-link" href="https://arstechnica.com/ai/2026/06/ai-coding-agents-can-autonomously-direct-robot-training/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -250,7 +270,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2">
+          <li class="item" style="--i:2" data-ts="1781720930000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -261,18 +281,18 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3">
+          <li class="item" style="--i:3" data-ts="1781718646000">
             <a class="item-link" href="https://arstechnica.com/ai/2026/06/dangerous-ai-models-are-coming-no-matter-what/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">&quot;Dangerous&quot; AI models are coming no matter what</span>
                 <span class="item-point"><span class="point-label">Key point</span>AI models with advanced hacking capabilities will soon be the norm.</span>
-                <span class="item-meta">Ars Technica · AI · 11h ago</span>
+                <span class="item-meta">Ars Technica · AI · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4">
+          <li class="item" style="--i:4" data-ts="1781716824000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -283,7 +303,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:5">
+          <li class="item" style="--i:5" data-ts="1781712814000">
             <a class="item-link" href="https://www.theverge.com/report/951481/snap-specs-wearables-smart-glasses-fashion" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -294,7 +314,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6">
+          <li class="item" style="--i:6" data-ts="1781711834000">
             <a class="item-link" href="https://arstechnica.com/google/2026/06/the-gemini-powered-google-home-speaker-arrives-on-june-25-for-100/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -305,7 +325,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7">
+          <li class="item" style="--i:7" data-ts="1781708400000">
             <a class="item-link" href="https://blog.google/innovation-and-ai/models-and-research/google-research/amie-for-disease-management-in-nature/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.google&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -316,7 +336,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8">
+          <li class="item" style="--i:8" data-ts="1781703000000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951099/meta-ai-mode-search-hands-on" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -327,7 +347,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:9">
+          <li class="item" style="--i:9" data-ts="1781701200000">
             <a class="item-link" href="https://www.theverge.com/tech/951147/google-home-speaker-gemini-launch-date-price-specs-features" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -338,18 +358,18 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:10">
+          <li class="item" style="--i:10" data-ts="1781689616000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951283/genesis-ai-humanoid-robot-eno" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">The next humanoid robot might not look human at all</span>
                 <span class="item-point"><span class="point-label">Key point</span>The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, &quot;humanoid robots don&#39;t need to look human.&quot; That explains the look of En…</span>
-                <span class="item-meta">The Verge · AI · 19h ago</span>
+                <span class="item-meta">The Verge · AI · 20h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:11">
+          <li class="item" style="--i:11" data-ts="1781643635000">
             <a class="item-link" href="https://arstechnica.com/ai/2026/06/anthropic-pauses-token-based-billing-for-its-claude-agent-sdk/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -360,7 +380,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12">
+          <li class="item" style="--i:12" data-ts="1781629445000">
             <a class="item-link" href="https://www.theverge.com/tech/950826/apple-airpod-camera-ai-foldable-iphone-rumor" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -371,7 +391,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13">
+          <li class="item" style="--i:13" data-ts="1781629200000">
             <a class="item-link" href="https://www.theverge.com/gadgets/950229/qualcomm-snapdragon-reality-elite-xr-smart-glasses-wearables" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -382,7 +402,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14">
+          <li class="item" style="--i:14" data-ts="1781627865000">
             <a class="item-link" href="https://arstechnica.com/ai/2026/06/spacex-will-acquire-coding-tool-cursor-to-compete-with-anthropic-openai/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -393,7 +413,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:15">
+          <li class="item" style="--i:15" data-ts="1781626687000">
             <a class="item-link" href="https://arstechnica.com/ai/2026/06/leaked-financial-docs-show-openai-is-losing-billions-of-dollars-a-year/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -404,7 +424,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16">
+          <li class="item" style="--i:16" data-ts="1781608546000">
             <a class="item-link" href="https://arstechnica.com/security/2026/06/critical-copilot-vulnerability-allowed-hackers-to-seal-2fa-code-from-users/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -415,7 +435,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:17">
+          <li class="item" style="--i:17" data-ts="1781550422000">
             <a class="item-link" href="https://arstechnica.com/ai/2026/06/chipmaker-nvidia-seeks-to-raise-over-25b-in-first-bond-deal-since-2021/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -427,6 +447,7 @@
             </a>
           </li>
         </ul>
+        <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
       </section>
 
       <section class="category" data-cat="web" id="cat-web">
@@ -435,7 +456,7 @@
           <p class="blurb">Web development, front-end and the wider tech industry.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0">
+          <li class="item" style="--i:0" data-ts="1781752351000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -446,7 +467,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1">
+          <li class="item" style="--i:1" data-ts="1781745831000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/how-to-turn-off-ai-in-your-google-docs/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -457,7 +478,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2">
+          <li class="item" style="--i:2" data-ts="1781738901000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/ai-is-hurting-apple-in-more-ways-than-one-it-may-force-iphone-price-increases/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -468,18 +489,18 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3">
+          <li class="item" style="--i:3" data-ts="1781732541000">
             <a class="item-link" href="https://www.theverge.com/tech/951948/apple-tim-cook-price-increases-ram" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Tim Cook says RAM expenses are &amp;#8216;unsustainable&amp;#8217; and Apple is going to raise prices</span>
                 <span class="item-point"><span class="point-label">Key point</span>Apple is planning to raise prices in response to the ongoing memory shortage. In an interview with The Wall Street Journal, Apple CEO Tim Cook says &quot;price increases are unavoidable:&quot; We&#39;re doing our best to mitigate the huge increases that …</span>
-                <span class="item-meta">The Verge · 7h ago</span>
+                <span class="item-meta">The Verge · 8h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4">
+          <li class="item" style="--i:4" data-ts="1781731850000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/chi-hua-chien-saw-facebook-coming-now-he-says-the-real-ai-winners-wont-be-selling-ai/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -490,18 +511,18 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:5">
+          <li class="item" style="--i:5" data-ts="1781729008000">
             <a class="item-link" href="https://www.theverge.com/tech/951863/vsco-studio-pro-vsco-one-subscription" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">VSCO launches Studio Pro mobile photo editing app and plans $500 per year subscription</span>
                 <span class="item-point"><span class="point-label">Key point</span>VSCO is taking on Adobe with a new Studio Pro editing app rolling out today on iOS and coming to macOS later this year, as Bloomberg reports. At launch, the app offers tools for batch editing, style matching from a reference image, and shar…</span>
-                <span class="item-meta">The Verge · 8h ago</span>
+                <span class="item-meta">The Verge · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6">
+          <li class="item" style="--i:6" data-ts="1781728372000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/roelof-botha-joins-spacexs-board-of-directors/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -512,7 +533,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7">
+          <li class="item" style="--i:7" data-ts="1781727868000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/after-unveiling-ridiculously-expensive-ar-glasses-snaps-stock-takes-a-dive/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -523,7 +544,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8">
+          <li class="item" style="--i:8" data-ts="1781727458000">
             <a class="item-link" href="https://techcrunch.com/video/neas-tiffany-luck-says-enterprises-are-still-figuring-out-their-ai-roi/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -534,7 +555,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:9">
+          <li class="item" style="--i:9" data-ts="1781723340000">
             <a class="item-link" href="https://www.theverge.com/games/951785/epic-games-fortnite-unreal-fest-2026-unreal-engine-6-ai-metaverse" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -545,7 +566,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:10">
+          <li class="item" style="--i:10" data-ts="1781722879000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/world-leaders-want-american-ai-they-just-dont-want-america-to-be-able-to-turn-it-off/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -556,7 +577,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:11">
+          <li class="item" style="--i:11" data-ts="1781721056000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/anthropic-becomes-first-ai-startup-to-join-the-frontier-carbon-removal-coalition/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -567,7 +588,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12">
+          <li class="item" style="--i:12" data-ts="1781720930000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -578,7 +599,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13">
+          <li class="item" style="--i:13" data-ts="1781720406000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/cybercriminals-allegedly-hacked-tens-of-thousands-of-fortinet-firewalls-used-by-major-companies-all-over-the-world/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -589,7 +610,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14">
+          <li class="item" style="--i:14" data-ts="1781720388000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/social-medias-next-evolution-user-controlled-algorithms/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -600,29 +621,29 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:15">
+          <li class="item" style="--i:15" data-ts="1781718187000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/world-model-maker-odyssey-nabs-1-45b-valuation-backed-by-amazon-and-other-big-names/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">World model maker Odyssey nabs $1.45B valuation backed by Amazon and other big names</span>
                 <span class="item-point"><span class="point-label">Key point</span>World models are the next big thing in AI beyond LLMs and, with this round, Odyssey has cemented itself as one of the startups to watch.</span>
-                <span class="item-meta">TechCrunch · 11h ago</span>
+                <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16">
+          <li class="item" style="--i:16" data-ts="1781717881000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/mastodon-looks-to-newsletters-to-help-revive-the-open-social-web/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Mastodon looks to newsletters to help revive the open social web</span>
                 <span class="item-point"><span class="point-label">Key point</span>Mastodon’s newly launched newsletter feature lets anyone subscribe to creators by email, even without a Mastodon account.</span>
-                <span class="item-meta">TechCrunch · 11h ago</span>
+                <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:17">
+          <li class="item" style="--i:17" data-ts="1781716824000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -634,6 +655,7 @@
             </a>
           </li>
         </ul>
+        <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
       </section>
 
       <section class="category" data-cat="dev" id="cat-dev">
@@ -642,205 +664,206 @@
           <p class="blurb">Trending from Hacker News and the dev.to community.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0">
-            <a class="item-link" href="https://dev.to/devshefali/24-modern-css-tricks-every-frontend-developer-should-know-10l8" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:0" data-ts="1781761848000">
+            <a class="item-link" href="https://dev.to/james_oconnor_dev/i-put-6-llm-guardrail-tools-inline-and-measured-what-they-cost-me-here-is-the-latency-vs-recall-433g" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">24 Modern CSS Tricks Every Frontend Developer Should Know</span>
-                <span class="item-point"><span class="point-label">Key point</span>CSS has evolved a lot in the last few years. Many things that once needed JavaScript, extra libraries, or messy hacks can now be done with just a few lines of CSS. In this post, I&#39;ll share 24 modern CSS tricks that can help you build cleane…</span>
+                <span class="item-title">I put 6 LLM guardrail tools inline and measured what they cost me. Here is the latency-vs-recall tradeoff.</span>
+                <span class="item-point"><span class="point-label">Key point</span>An input guardrail runs on every request. Too slow and you rip it out; fast but blind and you get owned. That tradeoff, not the feature list, is the whole decision. TL;DR: I ran six guardrail and prompt-injection tools inline on a productio…</span>
+                <span class="item-meta">DEV Community · 3m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:1" data-ts="1781761641000">
+            <a class="item-link" href="https://dev.to/hendrixxcnc/push-vs-pull-memory-a-better-way-to-think-about-ai-agent-memory-3lnp" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Push vs Pull Memory: A Better Way to Think About AI Agent Memory</span>
+                <span class="item-point"><span class="point-label">Key point</span>Push vs Pull Memory: A Better Way to Think About AI Agent Memory Pull memory is a store you query. Push memory is a loop your agent runs: it reads what it knows before acting, does the work, and writes back what changed, and the substrate r…</span>
+                <span class="item-meta">DEV Community · 7m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:2" data-ts="1781761638000">
+            <a class="item-link" href="https://dev.to/dalirnet/no-name-no-bio-no-rest-meet-githubs-busiest-account-45g8" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">No Name, No Bio, No Face: Meet GitHub&#39;s Busiest Account</span>
+                <span class="item-point"><span class="point-label">Key point</span>You&#39;ve seen this account. You just never looked at it. Open any repo — yours, a library you depend on, some project you starred two years ago. Scroll the commits, or the closed pull requests, and there it is again. The same little black-and…</span>
+                <span class="item-meta">DEV Community · 7m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:3" data-ts="1781761475000">
+            <a class="item-link" href="https://dev.to/disann/vibe-coding-101-catatan-seorang-developer-yang-capek-nulis-kode-manual-1e4l" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Vibe Coding 101: Notes from a Developer Who Got Tired of Writing Code by Hand</span>
+                <span class="item-point"><span class="point-label">Key point</span>Vibe Coding 101: A Practical Developer&#39;s Guide (2026) My personal notes and a guide for anyone who wants to start vibe coding properly — not just typing prompts and hoping the AI figures it out. Table of Contents What is Vibe Coding? 1. Cho…</span>
+                <span class="item-meta">DEV Community · 9m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:4" data-ts="1781761242000">
+            <a class="item-link" href="https://dev.to/sahiravoice/whats-your-free-pick-today-11f7" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">What&#39;s Your Free Pick Today?</span>
+                <span class="item-point"><span class="point-label">Key point</span>Food poll 🍽️ If you could get 1 free plate today, what would you pick? A) Biryani B) Burger + Fries C) chines D) Pizza Drop your choice below 👇</span>
                 <span class="item-meta">DEV Community · 13m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1">
-            <a class="item-link" href="https://dev.to/zep1997/it-was-never-about-ai-it-has-always-been-about-narrative-control-hj2" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:5" data-ts="1781761061000">
+            <a class="item-link" href="https://dev.to/tauseedzaman/10-things-i-wish-i-knew-before-building-a-social-network-4cii" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">It was never about AI. It has always been about narrative control.</span>
-                <span class="item-point"><span class="point-label">Key point</span>Hello. My name is Keniel, and I want to start with how I got here, because it explains everything that comes after it. A few years ago I started learning about AI. Not in a classroom, just on my own, the way most people first touch it. I op…</span>
+                <span class="item-title">10 Things I Wish I Knew Before Building a Social Network</span>
+                <span class="item-point"><span class="point-label">Key point</span>Building a social network sounded simple when it was just an idea. Create user profiles. Build a feed. Add communities. Launch. How hard could it be? As it turns out, very hard—but not for the reasons I expected. Like many developers, I ass…</span>
+                <span class="item-meta">DEV Community · 16m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:6" data-ts="1781760985000">
+            <a class="item-link" href="https://dev.to/shashank_ms_6a35baa4be138/integrating-llm-with-other-machine-learning-models-c0o" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Integrating LLM with Other Machine Learning Models</span>
+                <span class="item-point"><span class="point-label">Key point</span>We are building a support ticket intelligence pipeline that classifies incoming requests and drafts contextual replies by combining Oxlo.ai embeddings, a local random forest classifier, and an LLM. It helps support teams cut response time b…</span>
                 <span class="item-meta">DEV Community · 18m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2">
-            <a class="item-link" href="https://dev.to/rockybalboan19/show-hn-gneiss-gnn-powered-cli-that-detects-architectural-decay-in-java-repos-117g" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:7" data-ts="1781760895000">
+            <a class="item-link" href="https://dev.to/moksh/nodejs-vs-bun-vs-deno-2-in-2026-which-javascript-runtime-should-you-actually-use-260e" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">GNEISS – GNN-powered CLI that detects architectural decay in Java repos</span>
-                <span class="item-point"><span class="point-label">Key point</span>Curious if others are dealing with this: as more AI-generated code gets merged, the high-level structure of codebases seems to be quietly getting worse. Not syntax stuff, linters catch that fine. More like modules slowly getting tangled wit…</span>
-                <span class="item-meta">DEV Community · 24m ago</span>
+                <span class="item-title">Node.js vs Bun vs Deno 2 in 2026: Which JavaScript Runtime Should You Actually Use?</span>
+                <span class="item-point"><span class="point-label">Key point</span>In 2026, the JavaScript runtime landscape looks very different from just two years ago. Trigger.dev switched to Bun and reported a 5x throughput improvement on identical hardware. Anthropic acquired Bun and uses it in Claude Code&#39;s CLI. Den…</span>
+                <span class="item-meta">DEV Community · 19m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3">
-            <a class="item-link" href="https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=xeiaso.net&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+          <li class="item" style="--i:8" data-ts="1781760893000">
+            <a class="item-link" href="https://dev.to/pponali/i-built-a-claude-code-skill-that-discovers-which-automations-to-build-by-mining-my-own-work-8lp" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">I Hate Compilers</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 5 # Comments: 0</span>
-                <span class="item-meta">Hacker News (front page) · 27m ago</span>
+                <span class="item-title">I built a Claude Code skill that discovers which automations to build — by mining my own work</span>
+                <span class="item-point"><span class="point-label">Key point</span>Most automation projects build an automation. This one builds a system that discovers which automations to build — by mining your own recent work — and then packages the high-confidence ones into reusable tools. It&#39;s a self-improving skill …</span>
+                <span class="item-meta">DEV Community · 19m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4">
-            <a class="item-link" href="https://dev.to/aaronphilip2003/the-free-cron-scheduler-hiding-in-every-github-repo-you-own-2h0c" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:9" data-ts="1781760254000">
+            <a class="item-link" href="https://dev.to/devshefali/24-modern-css-tricks-every-frontend-developer-should-know-10l8" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">The Free Cron Scheduler Hiding in Every GitHub Repo You Own</span>
-                <span class="item-point"><span class="point-label">Key point</span>I used it to build a zero-cost &quot;dead man&#39;s switch&quot; that catches silent failures before I do. Quick context before anything else: I packaged this exact recipe, plus six more like it, into a small cookbook — The GitHub Actions Cookbook ($10, …</span>
-                <span class="item-meta">DEV Community · 29m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:5">
-            <a class="item-link" href="https://dev.to/devaonbreaches/stealer-logs-in-xposedornot-4an3" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Stealer logs in XposedOrNot</span>
-                <span class="item-point"><span class="point-label">Key point</span>I&#39;ve been running XposedOrNot for years now. The pitch has always been simple: type in an email, find out if it&#39;s turned up in a data breach. Free, no signup, open source. Millions of lookups later, it still does exactly that. But I&#39;ve had …</span>
+                <span class="item-title">24 Modern CSS Tricks Every Frontend Developer Should Know</span>
+                <span class="item-point"><span class="point-label">Key point</span>CSS has evolved a lot in the last few years. Many things that once needed JavaScript, extra libraries, or messy hacks can now be done with just a few lines of CSS. In this post, I&#39;ll share 24 modern CSS tricks that can help you build cleane…</span>
                 <span class="item-meta">DEV Community · 30m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6">
-            <a class="item-link" href="https://dev.to/codexlancers/flutter-file-uploads-made-easy-working-with-multipart-apis-3pgi" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:10" data-ts="1781759959000">
+            <a class="item-link" href="https://dev.to/zep1997/it-was-never-about-ai-it-has-always-been-about-narrative-control-hj2" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Flutter File Uploads Made Easy: Working with Multipart APIs</span>
-                <span class="item-point"><span class="point-label">Key point</span>File uploads are one of the most common requirements in real-world Flutter applications-whether it&#39;s uploading profile images, documents, or media files. At our company , we&#39;ve implemented file upload systems across multiple production apps…</span>
-                <span class="item-meta">DEV Community · 37m ago</span>
+                <span class="item-title">It was never about AI. It has always been about narrative control.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Hello. My name is Keniel, and I want to start with how I got here, because it explains everything that comes after it. A few years ago I started learning about AI. Not in a classroom, just on my own, the way most people first touch it. I op…</span>
+                <span class="item-meta">DEV Community · 35m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7">
-            <a class="item-link" href="https://dev.to/anika_jha_33ae1d9afc69178/long-day-tiny-vampire-4je6" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+          <li class="item" style="--i:11" data-ts="1781759428000">
+            <a class="item-link" href="https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=xeiaso.net&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Long Day, Tiny Vampire</span>
-                <span class="item-point"><span class="point-label">Key point</span>This is a submission for the June Solstice Game Jam One day. One coffin. One very tired vampire. Link for gameplay ( long-day-tiny-vampire ) What I Built The longest day of the year. The worst day to be a vampire. 🦇☀️⚰️ Long Day, Tiny Vamp…</span>
-                <span class="item-meta">DEV Community · 38m ago</span>
+                <span class="item-title">I Hate Compilers</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 21 # Comments: 6</span>
+                <span class="item-meta">Hacker News (front page) · 44m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8">
-            <a class="item-link" href="https://dev.to/refernext/api-testing-in-the-ai-era-a-practical-workflow-that-actually-holds-up-5970" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">API Testing in the AI Era: A Practical Workflow That Actually Holds Up</span>
-                <span class="item-point"><span class="point-label">Key point</span>API Testing in the AI Era: A Practical Workflow That Actually Holds Up API testing hasn&#39;t fundamentally changed in the last few years. What has changed is how much of the grunt work can be handed off — and how much new grunt work AI-generat…</span>
-                <span class="item-meta">DEV Community · 43m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:9">
-            <a class="item-link" href="https://dev.to/michaelangello/solstice-the-sun-remembers-an-open-world-puzzle-journey-through-junes-celebrations-20jd" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">☀️ SOLSTICE: The Sun Remembers — An Open-World Puzzle Journey Through June&#39;s Celebrations</span>
-                <span class="item-point"><span class="point-label">Key point</span>This is a submission for the June Solstice Game Jam What I Built ☀️ I built SOLSTICE: The Sun Remembers — a 3D open-world exploration game wrapped around a series of puzzles, built with Three.js. You don&#39;t play as a human. You play as Sol ,…</span>
-                <span class="item-meta">DEV Community · 43m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:10">
-            <a class="item-link" href="https://dev.to/piyaklabs/routing-around-google-maps-in-korea-naver-kakao-deep-links-weird-coordinates-and-ios-clipboard-25mf" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Routing around Google Maps in Korea: Naver &amp; Kakao deep links, weird coordinates, and iOS clipboard</span>
-                <span class="item-point"><span class="point-label">Key point</span>If you&#39;ve traveled to Korea, you&#39;ve hit this wall: Google Maps can&#39;t give you walking or transit directions here. Map-data export is restricted, so locals use Naver Map or KakaoMap instead. The usual workaround for visitors is painful — cop…</span>
-                <span class="item-meta">DEV Community · 47m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:11">
-            <a class="item-link" href="https://dev.to/ankit_meena_57c07342b6bc5/pychase-ast-powered-duplicate-code-detection-for-python-3408" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">PyChase: AST-Powered Duplicate Code Detection for Python</span>
-                <span class="item-point"><span class="point-label">Key point</span>The Problem: Hidden Code Duplication Every codebase accumulates copy-paste clones. They start innocently — &quot;I&#39;ll just duplicate this function and tweak it&quot; — but over months they compound into a maintenance tax. When a bug is fixed in one c…</span>
-                <span class="item-meta">DEV Community · 48m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:12">
-            <a class="item-link" href="https://dev.to/prabashanadev/is-your-scalable-backend-a-ticking-time-bomb-6o7" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Is Your &#39;Scalable&#39; Backend a Ticking Time Bomb?</span>
-                <span class="item-point"><span class="point-label">Key point</span>Is Your &#39;Scalable&#39; Backend a Ticking Time Bomb? Architecting for True Resilience Introduction In the quest for modern applications, the siren call of cloud-native scale, serverless functions, and globally distributed databases is incredibly…</span>
-                <span class="item-meta">DEV Community · 53m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:13">
+          <li class="item" style="--i:12" data-ts="1781755506000">
             <a class="item-link" href="https://store.steampowered.com/news/app/1675200/view/697641379212298072" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">SteamOS Linux 3.8 released as stable</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 22 # Comments: 1</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 43 # Comments: 1</span>
                 <span class="item-meta">Hacker News (front page) · 1h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14">
+          <li class="item" style="--i:13" data-ts="1781753911000">
             <a class="item-link" href="https://conf.nim-lang.org/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=conf.nim-lang.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Nim Conf 2026 (Online, Sat June 20)</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 8 # Comments: 1</span>
-                <span class="item-meta">Hacker News (front page) · 1h ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:15">
-            <a class="item-link" href="https://blog.alexellis.io/local-ai-is-not-opus/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.alexellis.io&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Local Qwen isn&#39;t a worse Opus, it&#39;s a different tool</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 53 # Comments: 16</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 16 # Comments: 2</span>
                 <span class="item-meta">Hacker News (front page) · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16">
-            <a class="item-link" href="https://opencomputer.dev/blog/scaling-one-vm-to-million-sandboxes/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=opencomputer.dev&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+          <li class="item" style="--i:14" data-ts="1781751860000">
+            <a class="item-link" href="https://blog.alexellis.io/local-ai-is-not-opus/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.alexellis.io&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Scaling opencomputer from 1 VM to 1 million sandboxes</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://opencomputer.dev/blog/scaling-one-vm-to-million-sandboxes/ Comments URL: https://news.ycombinator.com/item?id=48579915 Points: 10 # Comments: 0</span>
+                <span class="item-title">Local Qwen isn&#39;t a worse Opus, it&#39;s a different tool</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 76 # Comments: 28</span>
+                <span class="item-meta">Hacker News (front page) · 2h ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:15" data-ts="1781749921000">
+            <a class="item-link" href="https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=x86ecosystem.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">[x86] AI Compute Extensions (ACE) Specification</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 26 # Comments: 12</span>
                 <span class="item-meta">Hacker News (front page) · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:17">
-            <a class="item-link" href="https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=x86ecosystem.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+          <li class="item" style="--i:16" data-ts="1781747991000">
+            <a class="item-link" href="https://www.midjourney.com/medical/blogpost" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">[x86] AI Compute Extensions (ACE) Specification</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 22 # Comments: 11</span>
+                <span class="item-title">Midjourney Medical</span>
+                <span class="item-point"><span class="point-label">Key point</span>https://www.midjourney.com/medical Video: https://x.com/midjourney/status/2067422898407837797 Comments URL: https://news.ycombinator.com/item?id=48579650 Points: 420 # Comments: 325</span>
                 <span class="item-meta">Hacker News (front page) · 3h ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:17" data-ts="1781738438000">
+            <a class="item-link" href="https://www.horg.com/horg/?page_id=921" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=horg.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Taxonomy of the Occlupanida (parasitoids on bread bag tags)</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://www.horg.com/horg/?page_id=921 Comments URL: https://news.ycombinator.com/item?id=48578388 Points: 116 # Comments: 23</span>
+                <span class="item-meta">Hacker News (front page) · 6h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
         </ul>
+        <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
       </section>
 
       <section class="category" data-cat="jobs" id="cat-jobs">
@@ -849,7 +872,7 @@
           <p class="blurb">Remote and freelance IT opportunities for the team.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0">
+          <li class="item" style="--i:0" data-ts="1781694926000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-junior-customer-success-representative-mission-inbox-1133540" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -860,7 +883,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1">
+          <li class="item" style="--i:1" data-ts="1781692518000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-business-development-representative-bucket-listers-1133532" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -871,7 +894,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2">
+          <li class="item" style="--i:2" data-ts="1781690904000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-content-social-media-executive-work-force-nexus-1133530" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -882,7 +905,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3">
+          <li class="item" style="--i:3" data-ts="1781690890000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-creative-copywriter-deadpan-1133529" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -893,7 +916,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4">
+          <li class="item" style="--i:4" data-ts="1781684060000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-pharmacovigilance-associate-position-puma-biotechnology-inc-1133533" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -904,7 +927,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:5">
+          <li class="item" style="--i:5" data-ts="1781676004000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-lead-software-engineer-ads-jane-technologies-1133519" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -915,7 +938,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6">
+          <li class="item" style="--i:6" data-ts="1781662837000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-capital-planning-analyst-pbg-1133580" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -926,7 +949,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7">
+          <li class="item" style="--i:7" data-ts="1781660117000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-program-manager-pbg-1133517" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -937,7 +960,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8">
+          <li class="item" style="--i:8" data-ts="1781659503000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-customer-support-agent-c-teleport-1133593" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -948,7 +971,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:9">
+          <li class="item" style="--i:9" data-ts="1781659397000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-director-of-commercial-operations-curaleaf-international-1133527" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -959,7 +982,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:10">
+          <li class="item" style="--i:10" data-ts="1781657691000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-medical-writer-lumanity-1133526" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -970,7 +993,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:11">
+          <li class="item" style="--i:11" data-ts="1781656200000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-front-end-developer-fresher-zyphra-tech-1133568" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -981,7 +1004,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12">
+          <li class="item" style="--i:12" data-ts="1781653656000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-customer-support-representative-dario-1133522" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -992,7 +1015,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13">
+          <li class="item" style="--i:13" data-ts="1781650505000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-24-hr-review-va-virtual-receptionist-onlinejobs-ph-1133516" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -1003,7 +1026,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14">
+          <li class="item" style="--i:14" data-ts="1781647221000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-product-designer-design-systems-penn-interactive-1133499" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -1014,7 +1037,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:15">
+          <li class="item" style="--i:15" data-ts="1781646044000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-analyst-customer-success-measurement-us-cint-1133576" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -1025,7 +1048,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16">
+          <li class="item" style="--i:16" data-ts="1781645181000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-back-end-developer-wisk-ai-inventory-management-for-hotels-restaurants-amp-bars-1133587" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -1036,7 +1059,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:17">
+          <li class="item" style="--i:17" data-ts="1781643960000">
             <a class="item-link" href="https://remoteOK.com/remote-jobs/remote-technical-support-specialist-innergy-1133586" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -1048,11 +1071,231 @@
             </a>
           </li>
         </ul>
+        <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
+      </section>
+
+      <section class="category" data-cat="freelancer" id="cat-freelancer">
+        <div class="category-head">
+          <h2><span class="cat-emoji">🧑‍💻</span> Freelancer.com</h2>
+          <p class="blurb">Live active projects from Freelancer.com, plus the site&#39;s Terms &amp; Conditions — for the freelancers on the team.</p>
+        </div>
+        <ul class="items">
+          <li class="item pinned" style="--i:0" data-ts="0">
+            <a class="item-link" href="https://www.freelancer.com/about/terms" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Freelancer.com — Terms &amp; Conditions (User Agreement)</span>
+                <span class="item-point"><span class="point-label">Key point</span><span class="point-label" style="color:#ffd27d;border-color:rgba(255,210,125,.4);background:rgba(255,210,125,.1)">📌 Pinned</span>Read the official Freelancer.com User Agreement — fees, payments, milestones, disputes and account policies — before bidding on or posting any project.</span>
+                <span class="item-meta">Freelancer.com</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:1" data-ts="1781762007000">
+            <a class="item-link" href="https://www.freelancer.com/projects/video-editing/Fun-Sock-Creation" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Fun Sock Ad Creation</span>
+                <span class="item-point"><span class="point-label">Key point</span>I&#39;m looking for a creative video ad for a unique pair of socks designed to be worn with thongs. The</span>
+                <span class="item-meta"><span class="budget">💰 $250–$750 AUD</span>Freelancer.com · 1m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:2" data-ts="1781761959000">
+            <a class="item-link" href="https://www.freelancer.com/projects/adobe-illustrator/Event-Visual-Designer-for-MICE" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Event Visual Designer for MICE Management Company</span>
+                <span class="item-point"><span class="point-label">Key point</span>We are a MICE and corporate event management company looking for a reliable and creative event visua</span>
+                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 1m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:3" data-ts="1781761952000">
+            <a class="item-link" href="https://www.freelancer.com/projects/content-creation/Konten-Facebook-Menarik-Harian-40522116" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Konten Facebook Menarik Harian</span>
+                <span class="item-point"><span class="point-label">Key point</span>Saya ingin feed Facebook saya hidup, konsisten, dan relevan dengan audiens. Fokus utamanya adalah pe</span>
+                <span class="item-meta"><span class="budget">💰 $250–$750 USD</span>Freelancer.com · 1m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:4" data-ts="1781761814000">
+            <a class="item-link" href="https://www.freelancer.com/projects/social-media-marketing/Impulsar-Ventas-Afiliadas-Meta" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Impulsar Ventas Afiliadas en Meta</span>
+                <span class="item-point"><span class="point-label">Key point</span>Creo videos y tutoriales para Instagram y Facebook con el fin de promocionar mis productos de market</span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 4m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:5" data-ts="1781761740000">
+            <a class="item-link" href="https://www.freelancer.com/projects/unity/Historical-First-Person-Adventure-Design" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Historical First-Person Adventure Design</span>
+                <span class="item-point"><span class="point-label">Key point</span>I want to build an expansive open-world adventure set in a carefully researched historical era. The</span>
+                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 5m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:6" data-ts="1781761704000">
+            <a class="item-link" href="https://www.freelancer.com/projects/data-analysis/CMS-Prescription-Drug-Data-Report-40522104" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">CMS Prescription Drug Data Report</span>
+                <span class="item-point"><span class="point-label">Key point</span>I need a comprehensive report on prescription drug data for healthcare providers. The report should</span>
+                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 6m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:7" data-ts="1781761692000">
+            <a class="item-link" href="https://www.freelancer.com/projects/postgresql/Experienced-Full-Stack-Developer-Needed-40522133" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Experienced Full-Stack Developer Needed</span>
+                <span class="item-point"><span class="point-label">Key point</span>Looking for a full-stack developer. Must be strong with: React Node.js / Express PostgreSQL Webflo</span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 6m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:8" data-ts="1781761682000">
+            <a class="item-link" href="https://www.freelancer.com/projects/seo-writing/Meesho-JioMart-Product-Reviews" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Meesho &amp; JioMart Product Reviews</span>
+                <span class="item-point"><span class="point-label">Key point</span>I need a series of product-review articles that spotlight both Meesho and Jio Mart items. In total,</span>
+                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 6m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:9" data-ts="1781761470000">
+            <a class="item-link" href="https://www.freelancer.com/projects/proofreading/Rewrite-Republish-Three-Non-Fiction" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Rewrite &amp; Republish Three Non-Fiction Books</span>
+                <span class="item-point"><span class="point-label">Key point</span>I have three non-fiction titles that are already in print but in serious need of a fresh, engaging r</span>
+                <span class="item-meta"><span class="budget">💰 $250–$750 USD</span>Freelancer.com · 10m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:10" data-ts="1781761403000">
+            <a class="item-link" href="https://www.freelancer.com/projects/print-design/Print-Ready-Sticker-Design-Production" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Print-Ready Sticker Design &amp; Production</span>
+                <span class="item-point"><span class="point-label">Key point</span>ticker Design &amp; Production Requirements We are looking for a freelancer to create print-ready stick</span>
+                <span class="item-meta"><span class="budget">💰 $10–$30 USD</span>Freelancer.com · 11m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:11" data-ts="1781761307000">
+            <a class="item-link" href="https://www.freelancer.com/projects/web-design/Sleek-Business-Portfolio-Website" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Sleek Business Portfolio Website</span>
+                <span class="item-point"><span class="point-label">Key point</span>I’m ready to launch a modern, responsive website that presents my company’s work as an eye-catching</span>
+                <span class="item-meta"><span class="budget">💰 $750–$1500 USD</span>Freelancer.com · 12m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:12" data-ts="1781761291000">
+            <a class="item-link" href="https://www.freelancer.com/projects/branding/Multilingual-Brand-Logo-Design" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Multilingual Brand Logo Design -- 2</span>
+                <span class="item-point"><span class="point-label">Key point</span>I’m laying the visual foundation for a new brand and need a standout logo that works seamlessly in E</span>
+                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 12m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:13" data-ts="1781761278000">
+            <a class="item-link" href="https://www.freelancer.com/projects/advertising/Penjualan" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Penjualan</span>
+                <span class="item-point"><span class="point-label">Key point</span>Selengkapnya: Apa jenis layanan yang Anda butuhkan? Jasa pemasaran Apa tujuan utama Anda menggunaka</span>
+                <span class="item-meta"><span class="budget">💰 $2–$8 USD</span>Freelancer.com · 13m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:14" data-ts="1781761264000">
+            <a class="item-link" href="https://www.freelancer.com/projects/research/editing-video" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">editing video</span>
+                <span class="item-point"><span class="point-label">Key point</span>Saya membutuhkan seorang penulis konten berbahasa Indonesia yang dapat menyiapkan panduan perjalanan</span>
+                <span class="item-meta"><span class="budget">💰 $750–$1500 USD</span>Freelancer.com · 13m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:15" data-ts="1781761170000">
+            <a class="item-link" href="https://www.freelancer.com/projects/report-writing/Employment-History-Background-40522117" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Employment History Background Verification</span>
+                <span class="item-point"><span class="point-label">Key point</span>I need a reliable partner to run employment-history background checks on a candidate who is about to</span>
+                <span class="item-meta"><span class="budget">💰 $10–$60 USD</span>Freelancer.com · 15m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:16" data-ts="1781761091000">
+            <a class="item-link" href="https://www.freelancer.com/projects/web-development/Comprehensive-WordPress-Site-Corrections" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Comprehensive WordPress Site Corrections</span>
+                <span class="item-point"><span class="point-label">Key point</span>My WordPress site works, but it doesn’t yet look, read, or behave the way I need it to. I’m after a</span>
+                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 16m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:17" data-ts="1781761043000">
+            <a class="item-link" href="https://www.freelancer.com/projects/bitrix/Bitrix-Module-Integration-Fix" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Bitrix Module Integration Fix</span>
+                <span class="item-point"><span class="point-label">Key point</span>I have a custom-built module running inside Bitrix that should talk seamlessly to the CRM, yet the c</span>
+                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 17m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:18" data-ts="1781761032000">
+            <a class="item-link" href="https://www.freelancer.com/projects/packaging-design/Elegant-Gourmet-Popcorn-Packaging-Design" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Maize &amp; Popcorn Packaging Design</span>
+                <span class="item-point"><span class="point-label">Key point</span>I am seeking a talented designer to create packaging for our brand , targeting high street markets a</span>
+                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 17m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+        <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
       </section>
     </main>
 
     <footer class="site">
-      <p>🕒 Updated: <b>Thu, 18 Jun 2026 05:37:49 UTC</b></p>
+      <p>🕒 Updated: <b>Thu, 18 Jun 2026 05:54:30 UTC</b></p>
       <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions · Non-English headlines auto-translated to English.<br>
       Maintained by <a href="https://github.com/jack020619">jack020619</a> ·
       <a href="https://github.com/jack020619/IT-news-for-NSCT-team">Source on GitHub</a></p>
@@ -1063,7 +1306,7 @@
   <button id="toTop" type="button" title="Back to top" aria-label="Back to top">↑</button>
 
   <script>
-    window.__BG__ = {"all":"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2070&q=80","ai":"https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=2070&q=80","web":"https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=2070&q=80","dev":"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2070&q=80","jobs":"https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=2070&q=80"};
+    window.__BG__ = {"all":"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2070&q=80","ai":"https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=2070&q=80","web":"https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=2070&q=80","dev":"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2070&q=80","jobs":"https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=2070&q=80","freelancer":"https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=2070&q=80"};
     (function () {
       var content = document.getElementById("content");
       var BG = window.__BG__ || {};
@@ -1090,7 +1333,9 @@
       try {
         var sv = localStorage.getItem("nsct-view");
         var sc = localStorage.getItem("nsct-cat");
+        var sr = localStorage.getItem("nsct-range");
         if (sv) setView(sv);
+        if (sr) setRange(sr);
         if (sc) setCat(sc);
       } catch (e) {}
 
@@ -1105,23 +1350,57 @@
       var vbtns = document.querySelectorAll(".vbtn");
       for (var i = 0; i < vbtns.length; i++) vbtns[i].addEventListener("click", function () { setView(this.getAttribute("data-view")); });
 
-      // ---- Category filter (no scrolling through everything) ----
+      // ---- Combined category + time-range filtering ----
+      function applyFilters() {
+        var cat = content.getAttribute("data-cat");
+        var range = content.getAttribute("data-range");
+        var now = Date.now();
+        var cut = 0;
+        if (range === "today") cut = now - 864e5;
+        else if (range === "week") cut = now - 7 * 864e5;
+        else if (range === "month") cut = now - 31 * 864e5;
+        else if (range === "year") cut = now - 366 * 864e5;
+        var sections = document.querySelectorAll(".category");
+        for (var s = 0; s < sections.length; s++) {
+          var sec = sections[s];
+          var catVisible = (cat === "all") || (sec.getAttribute("data-cat") === cat);
+          if (!catVisible) { sec.style.display = "none"; continue; }
+          sec.style.display = "";
+          var items = sec.querySelectorAll(".item");
+          var visible = 0;
+          for (var n = 0; n < items.length; n++) {
+            var it = items[n];
+            var ts = parseInt(it.getAttribute("data-ts"), 10) || 0;
+            var show = (range === "all") || ts === 0 || ts >= cut;
+            it.style.display = show ? "" : "none";
+            if (show) visible++;
+          }
+          var empty = sec.querySelector(".range-empty");
+          if (empty) empty.hidden = visible !== 0;
+        }
+        revealAll();
+      }
+
       function setCat(c) {
         content.setAttribute("data-cat", c);
-        var cats = document.querySelectorAll(".category");
-        for (var j = 0; j < cats.length; j++) {
-          var show = (c === "all") || (cats[j].getAttribute("data-cat") === c);
-          cats[j].style.display = show ? "" : "none";
-        }
         var chips = document.querySelectorAll(".chip");
         for (var k = 0; k < chips.length; k++) chips[k].classList.toggle("active", chips[k].getAttribute("data-cat") === c);
         try { localStorage.setItem("nsct-cat", c); } catch (e) {}
         setBackground(BG[c] || BG.all);
+        applyFilters();
         window.scrollTo({ top: 0, behavior: "smooth" });
-        revealAll();
+      }
+      function setRange(r) {
+        content.setAttribute("data-range", r);
+        var rb = document.querySelectorAll(".rbtn");
+        for (var k = 0; k < rb.length; k++) rb[k].classList.toggle("active", rb[k].getAttribute("data-range") === r);
+        try { localStorage.setItem("nsct-range", r); } catch (e) {}
+        applyFilters();
       }
       var chips = document.querySelectorAll(".chip");
       for (var k = 0; k < chips.length; k++) chips[k].addEventListener("click", function () { setCat(this.getAttribute("data-cat")); });
+      var rbtns = document.querySelectorAll(".rbtn");
+      for (var rk = 0; rk < rbtns.length; rk++) rbtns[rk].addEventListener("click", function () { setRange(this.getAttribute("data-range")); });
 
       // ---- Scroll-reveal animation ----
       var io = null;
@@ -1138,7 +1417,7 @@
           if (io) { it.classList.remove("in"); io.observe(it); } else { it.classList.add("in"); }
         }
       }
-      revealAll();
+      applyFilters();
 
       // ---- Background follows the category in view while scrolling ----
       var ratios = {};

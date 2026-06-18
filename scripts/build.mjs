@@ -34,6 +34,7 @@ const CATEGORY_BG = {
   web: ["1517694712202-14dd9538aa97", "1542831371-29b0f74f9713", "1518770660439-4636190af475", "1531297484001-80022131f5a1"],
   dev: ["1526374965328-7f61d4dc18c5", "1558494949-ef010cbdcc31", "1591405351990-4726e331f141", "1518770660439-4636190af475"],
   jobs:["1504384308090-c894fdcc538d", "1488590528505-98d2b5aba04b", "1591405351990-4726e331f141", "1517694712202-14dd9538aa97"],
+  freelancer: ["1488590528505-98d2b5aba04b", "1504384308090-c894fdcc538d", "1542831371-29b0f74f9713", "1591405351990-4726e331f141"],
 };
 function imgUrl(id) {
   return "https://images.unsplash.com/photo-" + id + BG_QUERY;
@@ -235,6 +236,52 @@ async function fetchFeed(feed) {
 }
 
 // ---------------------------------------------------------------------------
+// Freelancer.com — live active projects via the public API (no key needed).
+// ---------------------------------------------------------------------------
+async function fetchFreelancer() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const url =
+      "https://www.freelancer.com/api/projects/0.1/projects/active/?limit=24&full_description=true&job_details=true&sort_field=time_updated";
+    const res = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
+      signal: controller.signal,
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const projects = (data && data.result && data.result.projects) || [];
+    const items = projects
+      .filter((p) => !p.deleted && !p.nonpublic)
+      .map((p) => {
+        const cur = p.currency || {};
+        const sign = cur.sign || "$";
+        const code = cur.code || "";
+        const b = p.budget || {};
+        let budget = "";
+        if (b.minimum != null && b.maximum != null) budget = `💰 ${sign}${b.minimum}–${sign}${b.maximum} ${code}`.trim();
+        else if (b.minimum != null) budget = `💰 ${sign}${b.minimum}+ ${code}`.trim();
+        const ts = p.time_submitted || p.submitdate;
+        return {
+          title: stripTags(p.title || "Untitled project"),
+          link: p.seo_url ? `https://www.freelancer.com/projects/${p.seo_url}` : "https://www.freelancer.com/",
+          source: "Freelancer.com",
+          budget,
+          date: ts ? new Date(ts * 1000) : null,
+          summary: stripTags(p.preview_description || p.description || "").slice(0, 240),
+        };
+      });
+    console.log(`  ✓ Freelancer.com projects: ${items.length} items`);
+    return items;
+  } catch (err) {
+    console.warn(`  ✗ Freelancer.com: ${err.message}`);
+    return [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Rendering helpers
 // ---------------------------------------------------------------------------
 function timeAgo(date, now) {
@@ -260,6 +307,7 @@ function renderItem(item, now, i) {
   const ago = timeAgo(item.date, now);
   const host = hostOf(item.link);
   const favicon = host ? `https://www.google.com/s2/favicons?domain=${esc(host)}&sz=64` : "";
+  const budgetChip = item.budget ? `<span class="budget">${esc(item.budget)}</span>` : "";
   const meta = [esc(item.source), ago].filter(Boolean).join(" · ");
   const point = item.summary
     ? esc(item.summary) + (item.summary.length >= 240 ? "…" : "")
@@ -267,14 +315,17 @@ function renderItem(item, now, i) {
   const icon = favicon
     ? `<img src="${favicon}" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')">`
     : "";
+  const ts = item.date ? item.date.getTime() : 0;
+  const pinned = item.pinned ? " pinned" : "";
+  const pinBadge = item.pinned ? `<span class="point-label" style="color:#ffd27d;border-color:rgba(255,210,125,.4);background:rgba(255,210,125,.1)">📌 Pinned</span>` : "";
   return `
-          <li class="item" style="--i:${i}">
+          <li class="item${pinned}" style="--i:${i}" data-ts="${ts}">
             <a class="item-link" href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">
               <span class="item-icon">${icon}</span>
               <span class="item-body">
                 <span class="item-title">${esc(item.title)}</span>
-                <span class="item-point"><span class="point-label">Key point</span>${point}</span>
-                <span class="item-meta">${meta}</span>
+                <span class="item-point"><span class="point-label">Key point</span>${pinBadge}${point}</span>
+                <span class="item-meta">${budgetChip}${meta}</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -292,6 +343,7 @@ function renderCategory(cat, items, now) {
         </div>
         <ul class="items">${cards}
         </ul>
+        <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
       </section>`;
 }
 
@@ -306,6 +358,20 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
         `<button class="chip" data-cat="${esc(c.id)}" type="button">${c.emoji} ${esc(c.title)} <em>${c.count}</em></button>`
     ),
   ].join("\n        ");
+
+  const DEFAULT_RANGE = "all";
+  const rangeButtons = [
+    ["today", "Today"],
+    ["week", "This Week"],
+    ["month", "This Month"],
+    ["year", "This Year"],
+    ["all", "All"],
+  ]
+    .map(
+      ([r, label]) =>
+        `<button class="rbtn${r === DEFAULT_RANGE ? " active" : ""}" data-range="${r}" type="button">${label}</button>`
+    )
+    .join("\n          ");
 
   const viewButtons = [
     ["title", "≣", "Title"],
@@ -409,10 +475,16 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       position: sticky; top: 0; z-index: 30; margin-top: 26px;
       background: rgba(8,10,16,.62); backdrop-filter: blur(16px) saturate(1.2);
       border: 1px solid var(--border); border-radius: 16px;
-      padding: 12px; display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      padding: 12px; display: flex; flex-direction: column; gap: 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
+    .toolbar-row { display: flex; gap: 14px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
     .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ranges { display: flex; gap: 4px; background: var(--glass-2); border: 1px solid var(--border); border-radius: 12px; padding: 4px; flex-wrap: wrap; }
+    .rlabel { color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; align-self: center; padding: 0 6px 0 4px; }
+    .rbtn { font: inherit; cursor: pointer; color: var(--muted); background: transparent; border: 0; padding: 7px 12px; border-radius: 9px; font-size: .82rem; transition: all .15s ease; }
+    .rbtn:hover { color: var(--text); background: rgba(255,255,255,.06); }
+    .rbtn.active { color: #fff; background: rgba(56,224,200,.22); box-shadow: inset 0 0 0 1px rgba(56,224,200,.5); }
     .chip {
       font: inherit; cursor: pointer; color: var(--text);
       background: var(--glass-2); border: 1px solid var(--border);
@@ -463,6 +535,9 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       padding: 1px 7px; border-radius: 999px; margin-right: 8px; vertical-align: 1px;
     }
     .item-meta { color: #8b93a7; font-size: .76rem; letter-spacing: .01em; }
+    .budget { display: inline-block; color: #7ee0b8; background: rgba(126,224,184,.10); border: 1px solid rgba(126,224,184,.3); padding: 1px 8px; border-radius: 999px; margin-right: 8px; font-weight: 600; }
+    .item.pinned .item-link { border-color: rgba(255,210,125,.4); background: rgba(255,210,125,.06); }
+    .range-empty { color: var(--muted); font-size: .9rem; padding: 18px 2px; }
     .item-arrow { flex: 0 0 auto; color: var(--muted); font-size: 1rem; opacity: 0; transform: translate(-4px,2px); transition: all .18s ease; }
     .item-link:hover .item-arrow { opacity: 1; transform: none; color: var(--accent-2); }
 
@@ -529,12 +604,18 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       <div class="filters">
         ${filterButtons}
       </div>
-      <div class="views" role="group" aria-label="View mode">
-        ${viewButtons}
+      <div class="toolbar-row">
+        <div class="ranges" role="group" aria-label="Time range">
+          <span class="rlabel">When</span>
+          ${rangeButtons}
+        </div>
+        <div class="views" role="group" aria-label="View mode">
+          ${viewButtons}
+        </div>
       </div>
     </div>
 
-    <main id="content" data-view="${DEFAULT_VIEW}" data-cat="all">
+    <main id="content" data-view="${DEFAULT_VIEW}" data-cat="all" data-range="${DEFAULT_RANGE}">
 ${sections || '<p class="empty">No stories could be fetched this run. Please check back after the next daily update.</p>'}
     </main>
 
@@ -577,7 +658,9 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
       try {
         var sv = localStorage.getItem("nsct-view");
         var sc = localStorage.getItem("nsct-cat");
+        var sr = localStorage.getItem("nsct-range");
         if (sv) setView(sv);
+        if (sr) setRange(sr);
         if (sc) setCat(sc);
       } catch (e) {}
 
@@ -592,23 +675,57 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
       var vbtns = document.querySelectorAll(".vbtn");
       for (var i = 0; i < vbtns.length; i++) vbtns[i].addEventListener("click", function () { setView(this.getAttribute("data-view")); });
 
-      // ---- Category filter (no scrolling through everything) ----
+      // ---- Combined category + time-range filtering ----
+      function applyFilters() {
+        var cat = content.getAttribute("data-cat");
+        var range = content.getAttribute("data-range");
+        var now = Date.now();
+        var cut = 0;
+        if (range === "today") cut = now - 864e5;
+        else if (range === "week") cut = now - 7 * 864e5;
+        else if (range === "month") cut = now - 31 * 864e5;
+        else if (range === "year") cut = now - 366 * 864e5;
+        var sections = document.querySelectorAll(".category");
+        for (var s = 0; s < sections.length; s++) {
+          var sec = sections[s];
+          var catVisible = (cat === "all") || (sec.getAttribute("data-cat") === cat);
+          if (!catVisible) { sec.style.display = "none"; continue; }
+          sec.style.display = "";
+          var items = sec.querySelectorAll(".item");
+          var visible = 0;
+          for (var n = 0; n < items.length; n++) {
+            var it = items[n];
+            var ts = parseInt(it.getAttribute("data-ts"), 10) || 0;
+            var show = (range === "all") || ts === 0 || ts >= cut;
+            it.style.display = show ? "" : "none";
+            if (show) visible++;
+          }
+          var empty = sec.querySelector(".range-empty");
+          if (empty) empty.hidden = visible !== 0;
+        }
+        revealAll();
+      }
+
       function setCat(c) {
         content.setAttribute("data-cat", c);
-        var cats = document.querySelectorAll(".category");
-        for (var j = 0; j < cats.length; j++) {
-          var show = (c === "all") || (cats[j].getAttribute("data-cat") === c);
-          cats[j].style.display = show ? "" : "none";
-        }
         var chips = document.querySelectorAll(".chip");
         for (var k = 0; k < chips.length; k++) chips[k].classList.toggle("active", chips[k].getAttribute("data-cat") === c);
         try { localStorage.setItem("nsct-cat", c); } catch (e) {}
         setBackground(BG[c] || BG.all);
+        applyFilters();
         window.scrollTo({ top: 0, behavior: "smooth" });
-        revealAll();
+      }
+      function setRange(r) {
+        content.setAttribute("data-range", r);
+        var rb = document.querySelectorAll(".rbtn");
+        for (var k = 0; k < rb.length; k++) rb[k].classList.toggle("active", rb[k].getAttribute("data-range") === r);
+        try { localStorage.setItem("nsct-range", r); } catch (e) {}
+        applyFilters();
       }
       var chips = document.querySelectorAll(".chip");
       for (var k = 0; k < chips.length; k++) chips[k].addEventListener("click", function () { setCat(this.getAttribute("data-cat")); });
+      var rbtns = document.querySelectorAll(".rbtn");
+      for (var rk = 0; rk < rbtns.length; rk++) rbtns[rk].addEventListener("click", function () { setRange(this.getAttribute("data-range")); });
 
       // ---- Scroll-reveal animation ----
       var io = null;
@@ -625,7 +742,7 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
           if (io) { it.classList.remove("in"); io.observe(it); } else { it.classList.add("in"); }
         }
       }
-      revealAll();
+      applyFilters();
 
       // ---- Background follows the category in view while scrolling ----
       var ratios = {};
@@ -680,8 +797,13 @@ async function main() {
 
   for (const cat of config.categories) {
     console.log(`\n[${cat.title}]`);
-    const results = await Promise.all(cat.feeds.map(fetchFeed));
-    let items = results.flat();
+    let items;
+    if (cat.type === "freelancer") {
+      items = await fetchFreelancer();
+    } else {
+      const results = await Promise.all(cat.feeds.map(fetchFeed));
+      items = results.flat();
+    }
 
     // Drop any policy / politics / government stories.
     const before = items.length;
@@ -707,6 +829,19 @@ async function main() {
     });
 
     items = items.slice(0, MAX_ITEMS_PER_CATEGORY);
+
+    // Pin the Freelancer.com Terms & Conditions at the top of its section.
+    if (cat.type === "freelancer") {
+      items.unshift({
+        title: "Freelancer.com — Terms & Conditions (User Agreement)",
+        link: "https://www.freelancer.com/about/terms",
+        source: "Freelancer.com",
+        date: null,
+        pinned: true,
+        summary:
+          "Read the official Freelancer.com User Agreement — fees, payments, milestones, disputes and account policies — before bidding on or posting any project.",
+      });
+    }
 
     // Translate any non-English headlines/summaries to English.
     const translated = await translateItems(items);
