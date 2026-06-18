@@ -199,14 +199,72 @@
     #toTop.show { opacity: 1; transform: none; pointer-events: auto; }
     #toTop:hover { border-color: var(--accent); box-shadow: 0 8px 22px rgba(99,102,241,.5); }
 
+    /* ---- Top navigation (IT ⇄ Football) ---- */
+    .topnav { display: flex; gap: 8px; justify-content: center; padding: 22px 20px 0; }
+    .navlink {
+      display: inline-flex; align-items: center; gap: 8px; color: var(--muted);
+      background: var(--glass); border: 1px solid var(--border); border-radius: 999px;
+      padding: 9px 18px; font-size: .9rem; font-weight: 600; backdrop-filter: blur(10px);
+      transition: all .18s ease;
+    }
+    .navlink .nico { font-size: 1.05rem; }
+    .navlink:hover { color: var(--text); border-color: var(--border-strong); transform: translateY(-1px); }
+    .navlink.active { color: #fff; background: var(--grad); border-color: transparent; box-shadow: 0 6px 18px rgba(99,102,241,.4); }
+
+    /* ---- Live badge (Freelancer.com) ---- */
+    .live-badge { display: inline-flex; align-items: center; gap: 6px; font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #7ee0b8; background: rgba(126,224,184,.10); border: 1px solid rgba(126,224,184,.32); padding: 2px 10px; border-radius: 999px; vertical-align: 3px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #41e08a; box-shadow: 0 0 0 0 rgba(65,224,138,.7); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(65,224,138,.6);} 70% { box-shadow: 0 0 0 8px rgba(65,224,138,0);} 100% { box-shadow: 0 0 0 0 rgba(65,224,138,0);} }
+    .fl-flash { animation: flFlash 1s ease; }
+    @keyframes flFlash { 0% { background: rgba(126,224,184,.18); } 100% { background: var(--glass); } }
+
+    /* ---- Famous footballers card grid ---- */
+    .player-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin-top: 18px; }
+    .pcard {
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 7px;
+      background: var(--glass); border: 1px solid var(--border); border-radius: 16px;
+      padding: 20px 16px; backdrop-filter: blur(10px); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .pcard:hover { transform: translateY(-4px); border-color: var(--border-strong); box-shadow: 0 16px 36px rgba(0,0,0,.45); }
+    .pavatar {
+      position: relative; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      display: grid; place-items: center; font-size: 1.7rem; font-weight: 800; color: #fff;
+      background: linear-gradient(140deg, hsl(var(--h),70%,45%), hsl(calc(var(--h) + 40),65%,38%));
+      border: 2px solid rgba(255,255,255,.18); box-shadow: 0 8px 22px rgba(0,0,0,.4);
+    }
+    .pavatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pname { font-weight: 700; font-size: 1.02rem; color: var(--text); }
+    .pmeta { font-size: .78rem; color: var(--accent-2); }
+    .pbio { font-size: .8rem; color: var(--muted); line-height: 1.4; }
+    .plinks { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; justify-content: center; }
+    .plinks a { font-size: .78rem; color: var(--accent); border: 1px solid var(--border); border-radius: 999px; padding: 3px 11px; transition: all .15s ease; }
+    .plinks a:hover { border-color: var(--accent); background: rgba(124,147,255,.12); }
+
+    /* ---- Football theme: green pitch gradient ---- */
+    body.football {
+      --accent: #56e08a; --accent-2: #c9f562;
+      --grad: linear-gradient(120deg, #16a34a, #22c55e 45%, #84cc16 90%);
+    }
+    body.football .bg-gradient {
+      background:
+        radial-gradient(45% 45% at 18% 20%, rgba(34,197,94,.42), transparent 60%),
+        radial-gradient(40% 40% at 82% 18%, rgba(132,204,22,.30), transparent 60%),
+        radial-gradient(55% 55% at 50% 90%, rgba(16,185,129,.36), transparent 60%),
+        #04100a;
+    }
+    body.football .blob.b1 { background: #16a34a; }
+    body.football .blob.b2 { background: #84cc16; }
+
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: .01ms !important; } .item { opacity: 1; transform: none; } }
   </style>
 </head>
-<body>
+<body class="">
   <div id="progress"></div>
   <div class="bg-layer"><div class="bg-gradient"></div><div class="bgx" id="bgA"></div><div class="bgx" id="bgB"></div></div>
   <div class="bg-veil"></div>
   <span class="blob b1"></span><span class="blob b2"></span>
+
+  <nav class="topnav"><a class="navlink active" href="index.html"><span class="nico">💻</span> IT News</a><a class="navlink" href="football.html"><span class="nico">⚽</span> Football</a></nav>
 
   <header class="hero">
     <span class="kicker">Web &amp; AI · Translated · Updated Daily</span>
@@ -251,7 +309,7 @@
 
       <section class="category" data-cat="ai" id="cat-ai">
         <div class="category-head">
-          <h2><span class="cat-emoji">🤖</span> AI &amp; Machine Learning</h2>
+          <h2><span class="cat-emoji">🤖</span> AI &amp; Machine Learning </h2>
           <p class="blurb">Latest in artificial intelligence, LLMs and ML tooling.</p>
         </div>
         <ul class="items">
@@ -261,7 +319,7 @@
               <span class="item-body">
                 <span class="item-title">Midjourney goes from generating cat images to full-body ultrasound scans</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Scanner, it&#39;s an ultrasound-based full-body scanner that uses a ring of sensors to capture vertical [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · AI · 2h ago</span>
+                <span class="item-meta">The Verge · AI · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -272,7 +330,7 @@
               <span class="item-body">
                 <span class="item-title">AI coding agents taught robots how to install GPUs and cut zip ties</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Nvidia&#39;s self-improvement program for robots enlists teams of AI coding agents.</span></span>
-                <span class="item-meta">Ars Technica · AI · 10h ago</span>
+                <span class="item-meta">Ars Technica · AI · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -283,7 +341,7 @@
               <span class="item-body">
                 <span class="item-title">Anthropic got hit by export rules nobody understands</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees, forcing Anthropic to block access to Fable 5 and Mythos 5 for everyone. &quot;To my [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · AI · 11h ago</span>
+                <span class="item-meta">The Verge · AI · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -305,7 +363,7 @@
               <span class="item-body">
                 <span class="item-title">Two-thirds of Americans think AI is advancing too quickly</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when only 33 percent reported using them. Specifically, ChatGPT&#39;s usage has doubled since 2023, with 44 percent of [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · AI · 12h ago</span>
+                <span class="item-meta">The Verge · AI · 13h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -316,7 +374,7 @@
               <span class="item-body">
                 <span class="item-title">Can anyone look cool wearing Snap’s $2,000 glasses?</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Yesterday, Snap debuted its new $2,195 Specs glasses. In an interview with CNBC, Snap CEO Evan Spiegel described the Specs as something the company had been working on for more than 12 years, an attempt to &quot;bring computing into the world&quot; and &quot;make it more human.&quot; He positioned them as a device to help people [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · AI · 13h ago</span>
+                <span class="item-meta">The Verge · AI · 14h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -349,7 +407,7 @@
               <span class="item-body">
                 <span class="item-title">AI search grounded in Facebook posts? What could go wrong?</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>AI is pretty reliable at putting things on your calendar these days, but it hasn&#39;t quite cracked answering the related and all-important question of &quot;What should I do this weekend?&quot; Meta&#39;s new AI Mode in search could be a useful tool - if it ever learns to stop getting stuff wrong. AI Mode is a [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · AI · 16h ago</span>
+                <span class="item-meta">The Verge · AI · 17h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -459,44 +517,55 @@
 
       <section class="category" data-cat="web" id="cat-web">
         <div class="category-head">
-          <h2><span class="cat-emoji">🌐</span> Web &amp; General Tech</h2>
+          <h2><span class="cat-emoji">🌐</span> Web &amp; General Tech </h2>
           <p class="blurb">Web development, front-end and the wider tech industry.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0" data-ts="1781752351000">
+          <li class="item" style="--i:0" data-ts="1781763984000">
+            <a class="item-link" href="https://techcrunch.com/2026/06/17/nasa-picks-eric-schmidts-rocket-company-for-mars-mission-setting-up-a-race-with-spacex/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">NASA picks Eric Schmidt&amp;#8217;s rocket company for Mars mission, setting up a race with SpaceX</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Relativity Space—a rocket maker acquired by former Google executive chair Eric Schmidt last year after stumbling on the path to orbit—might just beat SpaceX to Mars.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">TechCrunch · 10m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:1" data-ts="1781752351000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Midjourney goes from generating cat images to full-body ultrasound scans</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Scanner, it&#39;s an ultrasound-based full-body scanner that uses a ring of sensors to capture vertical [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · 2h ago</span>
+                <span class="item-meta">The Verge · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1" data-ts="1781745831000">
+          <li class="item" style="--i:2" data-ts="1781745831000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/how-to-turn-off-ai-in-your-google-docs/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">How to turn off AI in your Google Docs</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Here&#39;s what you need to do to get those pesky &quot;write with Gemini&quot; pop-ups to go away.</span></span>
-                <span class="item-meta">TechCrunch · 4h ago</span>
+                <span class="item-meta">TechCrunch · 5h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2" data-ts="1781738901000">
+          <li class="item" style="--i:3" data-ts="1781738901000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/ai-is-hurting-apple-in-more-ways-than-one-it-may-force-iphone-price-increases/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI is hurting Apple in more ways than one: it may force iPhone price increases</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>CEO Tim Cook said in a recent interview that the situation is &quot;unsustainable.&quot;</span></span>
-                <span class="item-meta">TechCrunch · 6h ago</span>
+                <span class="item-meta">TechCrunch · 7h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3" data-ts="1781732541000">
+          <li class="item" style="--i:4" data-ts="1781732541000">
             <a class="item-link" href="https://www.theverge.com/tech/951948/apple-tim-cook-price-increases-ram" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -507,18 +576,18 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4" data-ts="1781731850000">
+          <li class="item" style="--i:5" data-ts="1781731850000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/chi-hua-chien-saw-facebook-coming-now-he-says-the-real-ai-winners-wont-be-selling-ai/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Chi-Hua Chien saw Facebook coming — now he says the real AI winners won&amp;#8217;t be selling AI</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Chi-Hua Chien has spent more than two decades as a venture capitalist, but he thinks like a cultural anthropologist.</span></span>
-                <span class="item-meta">TechCrunch · 8h ago</span>
+                <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:5" data-ts="1781729008000">
+          <li class="item" style="--i:6" data-ts="1781729008000">
             <a class="item-link" href="https://www.theverge.com/tech/951863/vsco-studio-pro-vsco-one-subscription" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -529,40 +598,40 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6" data-ts="1781728372000">
+          <li class="item" style="--i:7" data-ts="1781728372000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/roelof-botha-joins-spacexs-board-of-directors/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Roelof Botha joins SpaceX&amp;#8217;s board of directors</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>The former Sequoia Capital leader is filling an &quot;existing vacancy&quot; on SpaceX&#39;s board, days after the company went public in the largest IPO ever.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">TechCrunch · 9h ago</span>
+                <span class="item-meta">TechCrunch · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7" data-ts="1781727868000">
+          <li class="item" style="--i:8" data-ts="1781727868000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/after-unveiling-ridiculously-expensive-ar-glasses-snaps-stock-takes-a-dive/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">After unveiling ridiculously expensive AR glasses, Snap&amp;#8217;s stock takes a dive</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Snap&#39;s long-awaited smart glasses debut hasn&#39;t exactly done wonders for the company&#39;s stock.</span></span>
-                <span class="item-meta">TechCrunch · 9h ago</span>
+                <span class="item-meta">TechCrunch · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8" data-ts="1781727458000">
+          <li class="item" style="--i:9" data-ts="1781727458000">
             <a class="item-link" href="https://techcrunch.com/video/neas-tiffany-luck-says-enterprises-are-still-figuring-out-their-ai-roi/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">NEA’s Tiffany Luck says enterprises are still figuring out their AI ROI</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Tokenmaxxing&amp;#160;was&amp;#160;the hottest trend in Silicon Valley earlier this year, with CEOs encouraging employees to push AI usage as far&amp;#160;as it would go.&amp;#160;Then the bill came due. Uber&amp;#160;reportedly blew&amp;#160;through its annual AI budget in a few months, some companies cut Claude licenses for parts of their org, and Meta killed its internal leaderboard.&amp;#160; This tension between [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">TechCrunch · 9h ago</span>
+                <span class="item-meta">TechCrunch · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:9" data-ts="1781723340000">
+          <li class="item" style="--i:10" data-ts="1781723340000">
             <a class="item-link" href="https://www.theverge.com/games/951785/epic-games-fortnite-unreal-fest-2026-unreal-engine-6-ai-metaverse" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -573,7 +642,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:10" data-ts="1781722879000">
+          <li class="item" style="--i:11" data-ts="1781722879000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/world-leaders-want-american-ai-they-just-dont-want-america-to-be-able-to-turn-it-off/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -584,51 +653,51 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:11" data-ts="1781721056000">
+          <li class="item" style="--i:12" data-ts="1781721056000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/anthropic-becomes-first-ai-startup-to-join-the-frontier-carbon-removal-coalition/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic becomes first AI startup to join the Frontier carbon removal coalition</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Anthropic has joined the Frontier coalition, which received another $915M in pledges to fund carbon removal projects.</span></span>
-                <span class="item-meta">TechCrunch · 11h ago</span>
+                <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12" data-ts="1781720930000">
+          <li class="item" style="--i:13" data-ts="1781720930000">
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951703/anthropic-shutdown-export-controls" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic got hit by export rules nobody understands</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees, forcing Anthropic to block access to Fable 5 and Mythos 5 for everyone. &quot;To my [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · 11h ago</span>
+                <span class="item-meta">The Verge · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13" data-ts="1781720406000">
+          <li class="item" style="--i:14" data-ts="1781720406000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/cybercriminals-allegedly-hacked-tens-of-thousands-of-fortinet-firewalls-used-by-major-companies-all-over-the-world/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Cybercriminals allegedly hacked tens of thousands of Fortinet firewalls used by major companies all over the world</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>An alleged Russian-speaking group of cybercriminals is reportedly compromising and targeting several major companies that use Fortinet Firewalls and VPNs through previously known passwords.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">TechCrunch · 11h ago</span>
+                <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14" data-ts="1781720388000">
+          <li class="item" style="--i:15" data-ts="1781720388000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/social-medias-next-evolution-user-controlled-algorithms/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Social media’s next evolution: user-controlled algorithms</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Social media feeds are becoming more customizable as platforms like Threads, Instagram, and TikTok introduce tools that let users directly influence the algorithms powering their recommendations.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">TechCrunch · 11h ago</span>
+                <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:15" data-ts="1781718187000">
+          <li class="item" style="--i:16" data-ts="1781718187000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/world-model-maker-odyssey-nabs-1-45b-valuation-backed-by-amazon-and-other-big-names/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -639,7 +708,7 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16" data-ts="1781717881000">
+          <li class="item" style="--i:17" data-ts="1781717881000">
             <a class="item-link" href="https://techcrunch.com/2026/06/17/mastodon-looks-to-newsletters-to-help-revive-the-open-social-web/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
@@ -650,220 +719,209 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:17" data-ts="1781716824000">
-            <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/951653/pew-research-ai-chatbot-usage-advancing-too-quickly" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Two-thirds of Americans think AI is advancing too quickly</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when only 33 percent reported using them. Specifically, ChatGPT&#39;s usage has doubled since 2023, with 44 percent of [&amp;#8230;]</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">The Verge · 12h ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
         </ul>
         <p class="range-empty" hidden>No stories in this time range — try a wider range.</p>
       </section>
 
       <section class="category" data-cat="dev" id="cat-dev">
         <div class="category-head">
-          <h2><span class="cat-emoji">💻</span> Developer Community</h2>
+          <h2><span class="cat-emoji">💻</span> Developer Community </h2>
           <p class="blurb">Trending from Hacker News and the dev.to community.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0" data-ts="1781762486000">
-            <a class="item-link" href="https://dev.to/sachin_varghese_zele/aws-cp-clf-02-cheat-sheet-3ikh" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:0" data-ts="1781763703000">
+            <a class="item-link" href="https://dev.to/allomni_tools_45fb0a7e9ef/170-free-browser-based-developer-tools-no-login-no-upload-100-private-1adk" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">AWS CP CLF-02 Cheat Sheet</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>AWS Certified Cloud Practitioner (CLF-C02) 2026 Cheat Sheet An ultra-concise, tabular reference guide for the AWS Certified Cloud Practitioner exam (CLF-C02). 1. Exam Overview &amp; Domains Domain Weight Core Focus Domain 1: Cloud Concepts 24% Benefits of cloud, economics (CapEx/OpEx), architecture, and CAF. Domain 2: Security and Compliance 30% Shared Responsibility, IAM, infrastructure security, and compliance. Domain 3: Cloud Technology and Services 34% Core services (Compute, Storage, Database, Network, Developer, ML, Integration). Domain 4: Billing, Pricing, and Support 12% Pricing models, cost management tools, and Support Plans. Exam Details: 65 Questions | 90 Minutes | Passing Score: 700…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 10m ago</span>
+                <span class="item-title">170+ Free Browser-Based Developer Tools — No Login, No Upload, 100% Private</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Hey DEV community! 👋 We built AllOmnitools because we hated the friction of online tools: signing up, uploading files, dealing with ads, or worrying about privacy. So we created 170+ free online tools that run 100% in your browser — no login, no uploads, no tracking. What We Offer for Developers Code &amp; Text Tools Diff Checker — Side-by-side comparison highlighting additions, deletions, and line differences [源] JSON Formatter — Validate and pretty-print JSON Markdown Preview — Live Markdown renderer showing HTML output in real-time Regex Tester — Test regular expressions instantly Base64 Encoder/Decoder — Encode/decode text and files JWT Decoder — Decode JSON Web Tokens without a server Calc…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 15m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1" data-ts="1781762380000">
-            <a class="item-link" href="https://dev.to/sahil_khurana_486f374ecf2/aws-api-gateway-and-elastic-the-perfect-pair-for-seamless-api-management-ae" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:1" data-ts="1781763633000">
+            <a class="item-link" href="https://dev.to/tejas_shinkar/chmod-find-locate-grep-sed-1h9o" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">AWS API Gateway and Elastic: The Perfect Pair for Seamless API Management</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Key takeaways AWS API Gateway makes the API easier to manage through a single console that eases API organization and management, improves scalability as well as performance, and comes at a lower cost as well as being more secure. AWS API Gateway is supported by Elasticsearch to offer efficient search and analysis, which makes data indexing fast, real-time analysis possible, and data visualisation insightful, irrespective of the data type. AWS API Gateway also integrates well with Elastic Observability, thus allowing the easy tracking of API Key metrics/logs in real-time and enhancing the ability to pinpoint problems and also enhancing the drive towards increased API efficiency. What Is An A…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 12m ago</span>
+                <span class="item-title">chmod, find, locate, grep &amp; sed</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>📌 What&#39;s covered in this session chmod — symbolic and numeric permissions (full coverage) User management basics — /etc/passwd , creating users find — searching files by name, type, size, owner, and executing actions locate vs find — when to use which grep — searching inside files, pipes, counting, log analysis sed — find &amp; replace, delete lines, insert lines, in-place editing 01 — chmod (Deeper Coverage) We covered numeric permissions in Session 3. Session 4 adds symbolic permissions — a more readable way to set permissions without calculating numbers. Symbolic Permission Syntax chmod [ who ][ operator][permission] file Symbol Meaning u user (owner) g group o others a all (u + g + o) + add…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 16m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2" data-ts="1781762269000">
-            <a class="item-link" href="https://dev.to/pponali/scoring-ai-agents-deterministic-metrics-an-llm-judge-poj" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:2" data-ts="1781763623000">
+            <a class="item-link" href="https://dev.to/iamalimurtazaa/architecting-a-modern-music-streaming-platform-lessons-from-building-a-spotify-clone-5cgg" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Scoring AI Agents: Deterministic Metrics + an LLM Judge</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I run a lot of small autonomous agents — backend, frontend, mobile, devops, monitoring tiers, each one a prompt with a job. The moment you have more than a handful, a question gets uncomfortable: are they actually any good, and did my last prompt edit make them better or worse? &quot;It looked fine when I tried it&quot; doesn&#39;t scale. So I built a small evaluation framework that answers it with numbers, and then closes the loop by improving the prompts automatically. Here&#39;s how it&#39;s put together. Deterministic first, LLM second The core principle: measure what you can measure deterministically, and only reach for an LLM judge where you must. Deterministic metrics are free, instant, and reproducible. A…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 14m ago</span>
+                <span class="item-title">Architecting a Modern Music Streaming Platform: Lessons from Building a Spotify Clone</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’ve spent the last few weeks building a high-fidelity Spotify clone using the 2026 tech stack: Next.js 16, Prisma 7, and NextAuth v5. While most clones focus on the UI &quot;look and feel,&quot; my goal was different: I wanted to build a production-ready system that handles real-time music data from the Deezer API while maintaining a performant, type-safe architecture. The Architectural Challenge The biggest hurdle in building a media-heavy application isn&#39;t the sidebar or the navigation—it’s data normalization. How do you take massive amounts of dynamic API data (artists, albums, songs) and map them into a local relational database without creating a &quot;data bottleneck&quot;? Framework: Next.js 16 (App Rou…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 16m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3" data-ts="1781762067000">
-            <a class="item-link" href="https://dev.to/plasma_01/how-i-cut-my-ai-api-bill-by-40-without-changing-a-single-line-of-application-code-7dp" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:3" data-ts="1781763404000">
+            <a class="item-link" href="https://dev.to/pallavivemula/linux-networking-commands-every-engineer-should-learn-31jg" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">How I Cut My AI API Bill by 40% Without Changing a Single Line of Application Code</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Last month my AI API bill hit a number that made me close my laptop and go for a walk. I wasn&#39;t doing anything crazy — just running a mid-size AI SaaS product with a few thousand daily requests across GPT and Claude. But between the two providers, my monthly spend had crept up to around $800, and the billing dashboards from each provider told completely different stories. The thing is: I didn&#39;t need to rewrite my application. I didn&#39;t need to optimize prompts. I didn&#39;t need to switch models. All I did was change the base_url in my OpenAI client, and my bill dropped. Here&#39;s exactly what I did. The Problem: Two Providers, Two Bills, Zero Visibility My stack was pretty standard: GPT-5.5 for gen…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 17m ago</span>
+                <span class="item-title">Linux Networking Commands Every Engineer Should Learn</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>🌐 Linux Networking Commands Every Engineer Should Learn Modern software systems are no longer confined to a single machine. Applications run across servers, containers, cloud environments, Kubernetes clusters, edge devices, and distributed networks spread across multiple regions. In this interconnected world, networking issues can bring entire systems to a halt. 🚫 A web application may suddenly become unreachable. 🚫 A microservice may fail to communicate with another service. 🚫 A database connection may timeout. 🚫 A Kubernetes pod may become inaccessible. When such incidents occur, experienced engineers don&#39;t immediately blame the application code. Instead, they begin investigating the …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 20m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4" data-ts="1781762055000">
-            <a class="item-link" href="https://dev.to/aviasoletechnologies/ai-automation-gives-you-different-answers-than-your-old-software-heres-why-that-matters-2i4o" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:4" data-ts="1781763141000">
+            <a class="item-link" href="https://dev.to/tokenmixai/i-let-12-ai-models-predict-the-world-cup-the-first-169-picks-already-show-a-pattern-c9p" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">AI Automation Gives You Different Answers Than Your Old Software - Here&#39;s Why That Matters</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>A logistics manager at a mid-size distributor spent three weeks trying to understand why their accounts payable process had become inconsistent. Their ERP - in place for eight years - approved a vendor invoice in under two seconds. Their new AI-powered automation platform flagged the same invoice as a potential duplicate. Both systems had access to the same data. Both vendors claimed high accuracy. The manager couldn&#39;t reconcile the two verdicts, so she escalated to her CFO, who spent half a day investigating an invoice that should have taken two seconds. The systems weren&#39;t malfunctioning. They were working exactly as designed. The problem was that nobody had explained to the manager - or h…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 17m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:5" data-ts="1781762003000">
-            <a class="item-link" href="https://dev.to/md_mahfuzarrahmanmunna/from-html-to-leading-nextjs-projects-my-web-development-journey-4pjb" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">From HTML to Leading Next.js Projects: My Web Development Journey</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>How I went from writing my first HTML tags to leading modern web projects with TypeScript and Next.js. As a developer, I&#39;ve learned that growth doesn&#39;t happen overnight. It&#39;s the result of consistent learning, building projects, making mistakes, and never giving up. Where It All Started My journey began with the basics of web development: HTML CSS Tailwind CSS JavaScript Like many beginners, I started by creating simple static web pages. At that time, seeing a webpage appear in the browser felt like magic. Every small project taught me something new about structure, design, and problem-solving. Moving Beyond Static Websites After becoming comfortable with frontend fundamentals, I started lea…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 18m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:6" data-ts="1781761985000">
-            <a class="item-link" href="https://dev.to/abda_net/new-dba-founder-joining-e0" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">New DBA &amp; Founder joining</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>19 Years as a DBA → Building a Product. Hello, DEV Community! I spent nearly two decades managing databases before deciding to build the tool I always wished existed. Here&#39;s my story and what I&#39;ll be writing about. Hey DEV Community 👋 My name is Abd, and I&#39;m genuinely glad to finally be here. A bit about me I&#39;ve spent 19 years working as a Database Administrator — starting at a time when &quot;the cloud&quot; wasn&#39;t yet a thing and databases lived in physical racks you could walk up and touch. Over those years I&#39;ve worked with pretty much every database engine that matters: MySQL, PostgreSQL, Oracle, SQL Server, MongoDB, Redshift, BigQuery, Spanner — and watched the industry shift from on-prem to hyb…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 18m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:7" data-ts="1781761943000">
-            <a class="item-link" href="https://dev.to/calvin_369/how-mechanic-became-my-go-to-shopify-automation-tool-385f" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">How Mechanic Became My Go-To Shopify Automation Tool</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>As someone who works with Shopify stores, I&#39;m always looking for ways to reduce repetitive work and automate processes that would otherwise require manual effort or custom app development. Over the years, I&#39;ve tried different automation tools, but one that has consistently stood out is Mechanic. What is Mechanic? Mechanic is an automation and development platform built specifically for Shopify . Think of it as a toolbox that lets you automate tasks, connect with external services, and build custom workflows without creating a full Shopify app. Whether you need to tag customers automatically, monitor inventory, generate reports, update products, or connect Shopify with external APIs, Mechanic…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 19m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:8" data-ts="1781761848000">
-            <a class="item-link" href="https://dev.to/james_oconnor_dev/i-put-6-llm-guardrail-tools-inline-and-measured-what-they-cost-me-here-is-the-latency-vs-recall-433g" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">I put 6 LLM guardrail tools inline and measured what they cost me. Here is the latency-vs-recall tradeoff.</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>An input guardrail runs on every request. Too slow and you rip it out; fast but blind and you get owned. That tradeoff, not the feature list, is the whole decision. TL;DR: I ran six guardrail and prompt-injection tools inline on a production agent for a few weeks (Lakera Guard, Llama Guard, NeMo Guardrails, Guardrails AI, Future AGI&#39;s fi.evals scanners, and ProtectAI&#39;s LLM Guard). The deciding axis was not which one detects the most attack types, it was which one was fast enough to run on every request without anyone noticing, while still catching the injections that mattered. Here is the rundown as of June 2026. An input guardrail sits on the hot path, so latency is the spec A guardrail tha…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 21m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:9" data-ts="1781761693000">
-            <a class="item-link" href="https://dev.to/jenueldev/developer-jobs-are-not-dead-but-the-salary-ladder-is-changing-2hbf" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Developer jobs are not dead, but the salary ladder is changing</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Every few months the internet rediscovers the same argument: developers are either doomed, overpaid, or about to be replaced by AI. I do not buy the simple version of that story. The developer job market is not dead. It is getting pickier. The old bargain was easier to explain. Learn a popular stack, build a few projects, pass interviews, and you could usually find a place somewhere in the market. That still happens, but the middle is more crowded now. Companies want fewer people who can ship more, and they are paying more carefully for the parts of software work that are harder to automate. That is the salary story too. Pay is no longer just about whether you know JavaScript, Python, Java, …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">DEV Community · 23m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:10" data-ts="1781761641000">
-            <a class="item-link" href="https://dev.to/hendrixxcnc/push-vs-pull-memory-a-better-way-to-think-about-ai-agent-memory-3lnp" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Push vs Pull Memory: A Better Way to Think About AI Agent Memory</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Push vs Pull Memory: A Better Way to Think About AI Agent Memory Pull memory is a store you query. Push memory is a loop your agent runs: it reads what it knows before acting, does the work, and writes back what changed, and the substrate reconciles that write so a stale fact gets superseded instead of lingering. Most agent memory today is pull. This post is about the other half of the design space, and when it is the one you actually want. How agents remember today Almost everything sold as &quot;agent memory&quot; right now is pull. You write facts into a store: a vector database, a document store, or a managed memory service. Later, at read time, the agent sends a query and gets back the closest ma…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-title">I Let 12 AI Models Predict the World Cup. The First 169 Picks Already Show a Pattern.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I put 12 AI models into a public World Cup prediction arena. Not because I think anyone should use LLMs for betting. They should not. The page says entertainment only for a reason. I did it because sports prediction is a surprisingly clean stress test for models: structured facts stale priors uncertainty calibration price-performance and the most painful thing for LLMs: admitting a favorite might draw After 169 predictions and 21 settled scoring entries, the leaderboard is technically tied. But the misses are already more useful than the winners. TL;DR No, there is no &quot;best World Cup AI model&quot; yet. The sample is too small. 12 models are currently tied on 3 points. Qwen3.5 Flash, Claude Opus …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">DEV Community · 24m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:11" data-ts="1781759428000">
+          <li class="item" style="--i:5" data-ts="1781763107000">
+            <a class="item-link" href="https://dev.to/shalinivemuri/python-lambda-functions-explained-3gkf" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Python Lambda Functions Explained</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>🐍 Python Lambda Functions Explained: A Complete Guide for Developers Python is known for its clean syntax, developer-friendly features, and ability to express complex ideas with minimal code. Among its many powerful features, Lambda Functions often spark curiosity among beginners and experienced developers alike. At first glance, lambda functions may seem like a shortcut for writing small functions. However, in professional software development, they play a much bigger role. From data processing pipelines and sorting algorithms to machine learning workflows and modern AI applications, lambda functions help developers write concise, readable, and efficient code. In this comprehensive guide, …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 25m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:6" data-ts="1781763095000">
+            <a class="item-link" href="https://dev.to/subraatakumar/develop-your-first-ai-agent-with-microsoft-foundry-2ben" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Develop Your First AI Agent with Microsoft Foundry</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Develop Your First AI Agent with Microsoft Foundry – Course Launch AI Agents are quickly moving from experimental technology to real-world software engineering solutions. As developers, we are entering a phase where applications can not only respond to user input but also reason, use tools, search for information, and perform tasks on behalf of users. To help software engineers get started with this technology, I&#39;ve launched a new hands-on course: Develop Your First AI Agent with Microsoft Foundry This course focuses on practical implementation rather than AI theory. Throughout the series, we&#39;ll build a complete application called Subra AI Dietician , an intelligent AI Agent powered by Micro…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 25m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:7" data-ts="1781762891000">
+            <a class="item-link" href="https://dev.to/myfear/ai-coding-governance-for-real-software-teams-17bn" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">AI Coding Governance for Real Software Teams</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>The slide I care about most from my recent JCon keynote only had six words on it: code is cheap, software isn’t. If you want the full talk, the recording is here and you can find the slides here . This article is the shorter version I would hand to a team before they let an agent loose in a real repository. The exciting part of AI coding is obvious. You ask for a REST endpoint, a refactor, a migration sketch, or a first-pass UI, and the blank page disappears. That part is real. I use these tools too. They save time, remove some boring work, and make it easier to try things quickly. The problem starts when people confuse easier code generation with easier software engineering. Real systems ar…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 28m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:8" data-ts="1781762486000">
+            <a class="item-link" href="https://dev.to/sachin_varghese_zele/aws-cp-clf-02-cheat-sheet-3ikh" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">AWS CP CLF-02 Cheat Sheet</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>AWS Certified Cloud Practitioner (CLF-C02) 2026 Cheat Sheet An ultra-concise, tabular reference guide for the AWS Certified Cloud Practitioner exam (CLF-C02). 1. Exam Overview &amp; Domains Domain Weight Core Focus Domain 1: Cloud Concepts 24% Benefits of cloud, economics (CapEx/OpEx), architecture, and CAF. Domain 2: Security and Compliance 30% Shared Responsibility, IAM, infrastructure security, and compliance. Domain 3: Cloud Technology and Services 34% Core services (Compute, Storage, Database, Network, Developer, ML, Integration). Domain 4: Billing, Pricing, and Support 12% Pricing models, cost management tools, and Support Plans. Exam Details: 65 Questions | 90 Minutes | Passing Score: 700…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 35m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:9" data-ts="1781762380000">
+            <a class="item-link" href="https://dev.to/sahil_khurana_486f374ecf2/aws-api-gateway-and-elastic-the-perfect-pair-for-seamless-api-management-ae" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">AWS API Gateway and Elastic: The Perfect Pair for Seamless API Management</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Key takeaways AWS API Gateway makes the API easier to manage through a single console that eases API organization and management, improves scalability as well as performance, and comes at a lower cost as well as being more secure. AWS API Gateway is supported by Elasticsearch to offer efficient search and analysis, which makes data indexing fast, real-time analysis possible, and data visualisation insightful, irrespective of the data type. AWS API Gateway also integrates well with Elastic Observability, thus allowing the easy tracking of API Key metrics/logs in real-time and enhancing the ability to pinpoint problems and also enhancing the drive towards increased API efficiency. What Is An A…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 37m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:10" data-ts="1781762269000">
+            <a class="item-link" href="https://dev.to/pponali/scoring-ai-agents-deterministic-metrics-an-llm-judge-poj" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Scoring AI Agents: Deterministic Metrics + an LLM Judge</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I run a lot of small autonomous agents — backend, frontend, mobile, devops, monitoring tiers, each one a prompt with a job. The moment you have more than a handful, a question gets uncomfortable: are they actually any good, and did my last prompt edit make them better or worse? &quot;It looked fine when I tried it&quot; doesn&#39;t scale. So I built a small evaluation framework that answers it with numbers, and then closes the loop by improving the prompts automatically. Here&#39;s how it&#39;s put together. Deterministic first, LLM second The core principle: measure what you can measure deterministically, and only reach for an LLM judge where you must. Deterministic metrics are free, instant, and reproducible. A…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 39m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:11" data-ts="1781762067000">
+            <a class="item-link" href="https://dev.to/plasma_01/how-i-cut-my-ai-api-bill-by-40-without-changing-a-single-line-of-application-code-7dp" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">How I Cut My AI API Bill by 40% Without Changing a Single Line of Application Code</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Last month my AI API bill hit a number that made me close my laptop and go for a walk. I wasn&#39;t doing anything crazy — just running a mid-size AI SaaS product with a few thousand daily requests across GPT and Claude. But between the two providers, my monthly spend had crept up to around $800, and the billing dashboards from each provider told completely different stories. The thing is: I didn&#39;t need to rewrite my application. I didn&#39;t need to optimize prompts. I didn&#39;t need to switch models. All I did was change the base_url in my OpenAI client, and my bill dropped. Here&#39;s exactly what I did. The Problem: Two Providers, Two Bills, Zero Visibility My stack was pretty standard: GPT-5.5 for gen…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 42m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:12" data-ts="1781759428000">
             <a class="item-link" href="https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=xeiaso.net&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">I Hate Compilers</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 25 # Comments: 18</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 36 # Comments: 24</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 1h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12" data-ts="1781755506000">
+          <li class="item" style="--i:13" data-ts="1781755506000">
             <a class="item-link" href="https://store.steampowered.com/news/app/1675200/view/697641379212298072" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">SteamOS Linux 3.8 released as stable</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 57 # Comments: 2</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 64 # Comments: 3</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13" data-ts="1781753911000">
+          <li class="item" style="--i:14" data-ts="1781753911000">
             <a class="item-link" href="https://conf.nim-lang.org/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=conf.nim-lang.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Nim Conf 2026 (Online, Sat June 20)</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 20 # Comments: 2</span></span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 21 # Comments: 2</span></span>
                 <span class="item-meta">Hacker News (front page) · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14" data-ts="1781753694000">
+          <li class="item" style="--i:15" data-ts="1781753694000">
             <a class="item-link" href="https://www.bbc.com/news/articles/c3wyxvqdx1zo" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=bbc.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Apple boss Tim Cook says prices to rise due to memory chip costs</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://www.bbc.com/news/articles/c3wyxvqdx1zo Comments URL: https://news.ycombinator.com/item?id=48580466 Points: 17 # Comments: 1</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">Hacker News (front page) · 2h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://www.bbc.com/news/articles/c3wyxvqdx1zo Comments URL: https://news.ycombinator.com/item?id=48580466 Points: 28 # Comments: 12</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">Hacker News (front page) · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:15" data-ts="1781751860000">
+          <li class="item" style="--i:16" data-ts="1781751860000">
             <a class="item-link" href="https://blog.alexellis.io/local-ai-is-not-opus/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.alexellis.io&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Local Qwen isn&#39;t a worse Opus, it&#39;s a different tool</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 92 # Comments: 29</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 102 # Comments: 30</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16" data-ts="1781749921000">
+          <li class="item" style="--i:17" data-ts="1781749921000">
             <a class="item-link" href="https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=x86ecosystem.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">[x86] AI Compute Extensions (ACE) Specification</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 26 # Comments: 12</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">Hacker News (front page) · 3h ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:17" data-ts="1781747991000">
-            <a class="item-link" href="https://www.midjourney.com/medical/blogpost" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Midjourney Medical</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>https://www.midjourney.com/medical Video: https://x.com/midjourney/status/2067422898407837797 Comments URL: https://news.ycombinator.com/item?id=48579650 Points: 441 # Comments: 334</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 27 # Comments: 12</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 4h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -875,7 +933,7 @@
 
       <section class="category" data-cat="jobs" id="cat-jobs">
         <div class="category-head">
-          <h2><span class="cat-emoji">💼</span> Jobs &amp; Freelance</h2>
+          <h2><span class="cat-emoji">💼</span> Jobs &amp; Freelance </h2>
           <p class="blurb">Remote and freelance IT opportunities for the team.</p>
         </div>
         <ul class="items">
@@ -896,7 +954,7 @@
               <span class="item-body">
                 <span class="item-title">Junior Customer Success Representative</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Team: Customer Success | Reports to: CS Lead Location: Fully remote, globally distributed Level: Entry-level / early-career About Mission Inbox We are a B2B email infrastructure platform built for businesses that treat deliverability as a competitive advantage. More than 80 million emails leave our servers every month , and that number keeps climbing. We are early-stage but cash-flow positive and profitable . That means you get the energy and ownership of a startup without the survival anxiety that usually comes with it. Every hire moves the needle directly. There is nowhere to hide, and that is the point. Read This Part Carefully This is not an easy job, and we are not going to pretend othe…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">Remote OK · Dev · 18h ago</span>
+                <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -907,7 +965,7 @@
               <span class="item-body">
                 <span class="item-title">Business Development Representative</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>About Us At Bucket Listers, we&#39;re all about unleashing lifeâs full potential and having a blast along the way! Our goal is to encourage people to make lasting memories, forge new connections, and embark on new adventures through our platform of curated experiences. Our vibrant community of explorers relies on us to help them find the coolest events and experiences any day of the week. We&#39;re on a mission to make magic happen, and we&#39;re searching for enthusiastic individuals to join our incredible team. We&#39;re not just dreamers; we&#39;re seasoned explorers ourselves, and we can&#39;t wait to share our infectious positivity and limitless inspiration with the world. The Opportunity We are looking for …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
-                <span class="item-meta">Remote OK · Dev · 19h ago</span>
+                <span class="item-meta">Remote OK · Dev · 20h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -1083,7 +1141,7 @@
 
       <section class="category" data-cat="freelancer" id="cat-freelancer">
         <div class="category-head">
-          <h2><span class="cat-emoji">🧑‍💻</span> Freelancer.com</h2>
+          <h2><span class="cat-emoji">🧑‍💻</span> Freelancer.com <span class="live-badge" id="flLive"><span class="live-dot"></span> Live · refreshing every 60s</span></h2>
           <p class="blurb">Live active projects from Freelancer.com, plus the site&#39;s Terms &amp; Conditions — for the freelancers on the team.</p>
         </div>
         <ul class="items">
@@ -1098,200 +1156,200 @@
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1" data-ts="1781762917000">
-            <a class="item-link" href="https://www.freelancer.com/projects/print-design/Academic-Literature-Review-Magazine" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:1" data-ts="1781764572000">
+            <a class="item-link" href="https://www.freelancer.com/projects/fraud-detection/Fabrication-Fraud-Investigation" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Academic Literature Review Magazine Layout</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m preparing a study-oriented magazine issue built around a comprehensive literature review and I n</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 3m ago</span>
+                <span class="item-title">Fabrication Fraud Investigation</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a thorough investigation into potential financial fraud on fabrication projects in Scotland.</span></span>
+                <span class="item-meta"><span class="budget">💰 £36+ GBP</span>Freelancer.com · 0m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2" data-ts="1781762891000">
-            <a class="item-link" href="https://www.freelancer.com/projects/research/Verify-Chinese-Master-Degree" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:2" data-ts="1781764526000">
+            <a class="item-link" href="https://www.freelancer.com/projects/adobe-illustrator/Logo-Variations-Formats-Needed" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Verify Chinese Master’s Degree</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I have a single candidate whose Chinese-issued master’s diploma must be confirmed as authentic befor</span></span>
-                <span class="item-meta"><span class="budget">💰 $10–$60 USD</span>Freelancer.com · 3m ago</span>
+                <span class="item-title">Logo Variations &amp; Formats Needed</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I already have the master logo artwork and now need a complete set of alternative versions so it wor</span></span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 1m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3" data-ts="1781762872000">
-            <a class="item-link" href="https://www.freelancer.com/projects/content-marketing/Promote-India-Incorporation-Singaporeans" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:3" data-ts="1781764481000">
+            <a class="item-link" href="https://www.freelancer.com/projects/discord/Boost-Discord-Subscriber-Numbers" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Promote India Incorporation to Singaporeans</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I run a service that helps foreign entrepreneurs set up companies in India, and I need a cohesive di</span></span>
+                <span class="item-title">Boost Discord Subscriber Numbers</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>increase the number of subscribers for the discord account</span></span>
+                <span class="item-meta"><span class="budget">💰 €30–€250 EUR</span>Freelancer.com · 2m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:4" data-ts="1781764471000">
+            <a class="item-link" href="https://www.freelancer.com/projects/spring-boot/Experienced-Java-FullStack-Developer" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Experienced Java FullStack Developer Needed!</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Java FullStack Developer! Employment Type: Freelancing Freelancer Location: India Experience: 3+ Abo</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹400–₹750 INR</span>Freelancer.com · 2m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:5" data-ts="1781764437000">
+            <a class="item-link" href="https://www.freelancer.com/projects/financial-analysis/GST-Tax-Prep-Budget-Setup" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">GST Tax Prep &amp; Budget Setup</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need an experienced accountant who can take full ownership of my GST tax preparation while also bu</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 3m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:6" data-ts="1781764372000">
+            <a class="item-link" href="https://www.freelancer.com/projects/3d-cad/Arkana-interior-pocket" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Arkana interior pocket</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>## Looking for CAD designer for Renault Arkana interior accessories Hi, I’m looking for a CAD desig</span></span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 4m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:7" data-ts="1781764352000">
+            <a class="item-link" href="https://www.freelancer.com/projects/web-development/Complete-Website-App-Development" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Complete Website and App Development</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Hi Developers. This is Ramzan from Lahore Pakistan, i am Looking for a local web developer who can d</span></span>
                 <span class="item-meta"><span class="budget">💰 $250–$750 USD</span>Freelancer.com · 4m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4" data-ts="1781762661000">
-            <a class="item-link" href="https://www.freelancer.com/projects/cryptocurrency/Krypto-rsenbetreuer-Marktbeziehung" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:8" data-ts="1781764332000">
+            <a class="item-link" href="https://www.freelancer.com/projects/angular-js/MERN-App-Bug-Fixing" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Krypto-Börsenbetreuer / Marktbeziehung Manager</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Freelance Crypto Exchange Operator / Market Relations Manager (m/w/d) Über das Projekt Wir sind ein</span></span>
-                <span class="item-meta"><span class="budget">💰 $250–$750 USD</span>Freelancer.com · 7m ago</span>
+                <span class="item-title">MERN App Bug Fixing</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>My production MERN application needs a thorough round of bug-squashing. I am seeing performance slow</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 4m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:5" data-ts="1781762654000">
-            <a class="item-link" href="https://www.freelancer.com/projects/digital-marketing/Digital-Marketing-Expert-40522168" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:9" data-ts="1781764290000">
+            <a class="item-link" href="https://www.freelancer.com/projects/active-directory/Prem-Server-Setup-Lead" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Digital Marketing Expert</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m looking for a hands-on Digital Marketing person who can take full ownership of Cosmesi’s online</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 7m ago</span>
+                <span class="item-title">On-Prem Server Setup Lead</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m standing up a fresh on-premises environment and need a seasoned infrastructure lead to own the s</span></span>
+                <span class="item-meta"><span class="budget">💰 $15–$25 USD</span>Freelancer.com · 5m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6" data-ts="1781762648000">
-            <a class="item-link" href="https://www.freelancer.com/projects/web-development/Digital-Art-commerce-Website" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:10" data-ts="1781764256000">
+            <a class="item-link" href="https://www.freelancer.com/projects/laravel/Ready-Made-Facebook-Style-Platform" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Digital Art E-commerce Website</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m ready to launch an online store that sells downloadable art files and need a developer who can t</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 7m ago</span>
+                <span class="item-title">Ready-Made Facebook-Style Platform</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a complete, production-ready social networking application that already runs smoothly and off</span></span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 6m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7" data-ts="1781762578000">
-            <a class="item-link" href="https://www.freelancer.com/projects/internet-marketing/Sales-Expert-Wanted-for-Clean" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:11" data-ts="1781764224000">
+            <a class="item-link" href="https://www.freelancer.com/projects/automotive-engineering/Charger-Brand-Design" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Sales Expert Wanted for Clean Room Equipment -- 2</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Looking for a seasoned sales professional with a deep understanding of the pharmaceutical industry t</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 9m ago</span>
+                <span class="item-title">EV Charger Brand Design</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I&#39;m seeking a talented designer to create a compelling product design for my EV charger brand. This</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 6m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8" data-ts="1781762553000">
-            <a class="item-link" href="https://www.freelancer.com/projects/memoir-writing/Ghostwriter-Needed-for-Professional" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:12" data-ts="1781764217000">
+            <a class="item-link" href="https://www.freelancer.com/projects/motion-graphics/Year-Review-Fun-Montage" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Ghostwriter Needed for Professional Memoir</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a skilled ghostwriter to collaborate with me on enhancing my existing book by incorporating c</span></span>
-                <span class="item-meta"><span class="budget">💰 $750–$1500 AUD</span>Freelancer.com · 9m ago</span>
+                <span class="item-title">Year-in-Review Fun Montage</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’ve got roughly 50–200 photos and short clips on my phone that capture the best moments from the pa</span></span>
+                <span class="item-meta"><span class="budget">💰 $15–$25 AUD</span>Freelancer.com · 6m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:9" data-ts="1781762365000">
-            <a class="item-link" href="https://www.freelancer.com/projects/digital-marketing/Advanced-Digital-Marketing-Training-SEO" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:13" data-ts="1781764116000">
+            <a class="item-link" href="https://www.freelancer.com/projects/3d-logo/Detailed-Site-Plan-Visualization" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Advanced Digital Marketing Training &amp; SEO, Social Media Marketing, Google Ads &amp; Meta Ads Expert</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Digital Marketing Training | SEO, Social Media Marketing, Google Ads &amp; Meta Ads Expert I am a Digita</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹1250–₹2500 INR</span>Freelancer.com · 12m ago</span>
+                <span class="item-title">Detailed 3D Site Plan Visualization</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need to turn a set of 2-D layout drawings into photorealistic, top-view 3-D site plan renderings.</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 8m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:10" data-ts="1781762358000">
-            <a class="item-link" href="https://www.freelancer.com/projects/automation/Clay-com-tables-Workflow-Setup" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Clay.com tables &amp; Workflow Setup</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Looking for a Clay.com expert to help build and optimize our GTM outbound system. The ideal freelanc</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 12m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:11" data-ts="1781762338000">
-            <a class="item-link" href="https://www.freelancer.com/projects/graphic-design/Draft-for-Cherry-Blossom-Branch" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Draft by for Cherry Blossom Branch Illustrations - Y -- 2</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Draft of a book cover. The agreed price is €100. After receiving the draft, we will decide if the fr</span></span>
-                <span class="item-meta"><span class="budget">💰 €250–€750 EUR</span>Freelancer.com · 13m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:12" data-ts="1781762307000">
-            <a class="item-link" href="https://www.freelancer.com/projects/data-entry/CMS-Prescription-Drug-Data-Report-40522149" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:14" data-ts="1781764100000">
+            <a class="item-link" href="https://www.freelancer.com/projects/data-analysis/CMS-Prescription-Drug-Data-Report-40522194" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">CMS Prescription Drug Data Report</span>
                 <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a comprehensive report on prescription drug data for healthcare providers. The report should</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 13m ago</span>
+                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 8m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13" data-ts="1781762243000">
-            <a class="item-link" href="https://www.freelancer.com/projects/adobe-premiere-pro/Instagram-reel-Video-Editing-40522125" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:15" data-ts="1781764078000">
+            <a class="item-link" href="https://www.freelancer.com/projects/facebook-ads/Fix-Facebook-Lead-Form-Visibility" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Instagram reel Video Editing</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Creative and enthusiastic individual with a Gen Z mindset, strong interest in digital trends, conten</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹100–₹400 INR</span>Freelancer.com · 14m ago</span>
+                <span class="item-title">Fix Facebook Lead Form Visibility</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m running a Lead Generation Ad, yet the instant form never appears for users—the ad loads but the</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 8m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:14" data-ts="1781762188000">
-            <a class="item-link" href="https://www.freelancer.com/projects/branding/Retail-commercial-Development-Pitch-Deck" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:16" data-ts="1781764027000">
+            <a class="item-link" href="https://www.freelancer.com/projects/baking/Whole-Grain-Gluten-Free-Bread" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Retail and commercial Development Pitch Deck</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a polished investor pitch deck that tells the full story of my real estate development—specif</span></span>
-                <span class="item-meta"><span class="budget">💰 $250–$750 CAD</span>Freelancer.com · 15m ago</span>
+                <span class="item-title">Whole-Grain Gluten-Free Bread Development</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I am gearing up for an IFT presentation and need a standout loaf: 100 % whole-grain yet completely g</span></span>
+                <span class="item-meta"><span class="budget">💰 $15–$25 USD</span>Freelancer.com · 9m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:15" data-ts="1781762134000">
-            <a class="item-link" href="https://www.freelancer.com/projects/facebook-marketing/Fix-WhatsApp-Meta-Account-Linking" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:17" data-ts="1781764012000">
+            <a class="item-link" href="https://www.freelancer.com/projects/data-entry/Daily-QuickBooks-Bookkeeping-Support-40522211" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Fix WhatsApp-Meta Account Linking</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need an experienced Meta specialist to sort out a stubborn linking problem between my WhatsApp acc</span></span>
-                <span class="item-meta"><span class="budget">💰 $30–$50 USD</span>Freelancer.com · 16m ago</span>
+                <span class="item-title">Daily QuickBooks Bookkeeping Support</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I run a fast-moving service-based company and need a seasoned bookkeeper to keep my QuickBooks file</span></span>
+                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 10m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:16" data-ts="1781762104000">
-            <a class="item-link" href="https://www.freelancer.com/projects/video-streaming/Streaming-Platform-Testers" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:18" data-ts="1781763999000">
+            <a class="item-link" href="https://www.freelancer.com/projects/web-design/Professional-Portfolio-Website-40522210" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Streaming Platform QA Testers</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I run a newly launched video-on-demand platform and want real users from various parts of the world</span></span>
-                <span class="item-meta"><span class="budget">💰 $15–$25 USD</span>Freelancer.com · 16m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:17" data-ts="1781762007000">
-            <a class="item-link" href="https://www.freelancer.com/projects/video-editing/Fun-Sock-Creation" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Fun Sock Ad Creation</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I&#39;m looking for a creative video ad for a unique pair of socks designed to be worn with thongs. The</span></span>
-                <span class="item-meta"><span class="budget">💰 $250–$750 AUD</span>Freelancer.com · 18m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:18" data-ts="1781761959000">
-            <a class="item-link" href="https://www.freelancer.com/projects/adobe-illustrator/Event-Visual-Designer-for-MICE" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Event Visual Designer for MICE Management Company</span>
-                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>We are a MICE and corporate event management company looking for a reliable and creative event visua</span></span>
-                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 19m ago</span>
+                <span class="item-title">Professional Portfolio Website Development</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a clean, modern portfolio site that positions my work and credentials as professionally as po</span></span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 10m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -1302,7 +1360,7 @@
     </main>
 
     <footer class="site">
-      <p>🕒 Updated: <b>Thu, 18 Jun 2026 06:12:02 UTC</b></p>
+      <p>🕒 Updated: <b>Thu, 18 Jun 2026 06:36:57 UTC</b></p>
       <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions · Non-English headlines auto-translated to English.<br>
       Maintained by <a href="https://github.com/jack020619">jack020619</a> ·
       <a href="https://github.com/jack020619/IT-news-for-NSCT-team">Source on GitHub</a></p>
@@ -1456,6 +1514,50 @@
       window.addEventListener("scroll", onScroll, { passive: true });
       onScroll();
       toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+
+      // ---- Live Freelancer.com updates (every 60s) ----
+      (function () {
+        var ul = document.querySelector('#cat-freelancer ul.items');
+        var badge = document.getElementById('flLive');
+        if (!ul) return;
+        var API = 'https://www.freelancer.com/api/projects/0.1/projects/active/?limit=18&full_description=true&job_details=true&sort_field=time_updated';
+        function he(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+        function ago(ms){ if(!ms) return ''; var d=Math.max(0,Date.now()-ms),m=Math.floor(d/6e4); if(m<60) return m+'m ago'; var h=Math.floor(m/60); if(h<24) return h+'h ago'; return Math.floor(h/24)+'d ago'; }
+        function budget(p){ var c=p.currency||{},s=c.sign||'$',code=c.code||'',b=p.budget||{}; if(b.minimum!=null&&b.maximum!=null) return '💰 '+s+b.minimum+'–'+s+b.maximum+' '+code; if(b.minimum!=null) return '💰 '+s+b.minimum+'+ '+code; return ''; }
+        function row(p,i){
+          var link = p.seo_url ? 'https://www.freelancer.com/projects/'+p.seo_url : 'https://www.freelancer.com/';
+          var ts = (p.time_submitted||p.submitdate||0)*1000;
+          var sum = (p.preview_description||p.description||'').replace(/\s+/g,' ').trim().slice(0,700);
+          var bd = budget(p);
+          var meta = ['Freelancer.com', ago(ts)].filter(Boolean).join(' · ');
+          var btn = sum.length>130 ? '<button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle(\'expanded\');this.textContent=p.classList.contains(\'expanded\')?\'Less ▴\':\'More ▾\'">More ▾</button>' : '';
+          return '<li class="item" style="--i:'+i+'" data-ts="'+ts+'">'
+            + '<a class="item-link" href="'+he(link)+'" target="_blank" rel="noopener noreferrer">'
+            + '<span class="item-icon noimg"></span>'
+            + '<span class="item-body">'
+            + '<span class="item-title">'+he(p.title||'Untitled project')+'</span>'
+            + '<span class="item-point"><span class="point-text"><span class="point-label">Key point</span>'+(sum?he(sum):'New project on Freelancer.com.')+'</span>'+btn+'</span>'
+            + '<span class="item-meta">'+(bd?'<span class="budget">'+he(bd)+'</span>':'')+he(meta)+'</span>'
+            + '</span><span class="item-arrow" aria-hidden="true">↗</span></a></li>';
+        }
+        function refresh(){
+          fetch(API, { headers: { 'Accept': 'application/json' } })
+            .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+            .then(function(d){
+              var pr = (d && d.result && d.result.projects) || [];
+              pr = pr.filter(function(p){ return !p.deleted && !p.nonpublic; });
+              if (!pr.length) return;
+              var olds = ul.querySelectorAll('li.item:not(.pinned)');
+              for (var k=0;k<olds.length;k++) olds[k].parentNode.removeChild(olds[k]);
+              ul.insertAdjacentHTML('beforeend', pr.map(row).join(''));
+              if (badge) { badge.innerHTML = '<span class="live-dot"></span> Live · updated just now'; badge.classList.remove('fl-flash'); void badge.offsetWidth; badge.classList.add('fl-flash'); }
+              applyFilters();
+            })
+            .catch(function(){ if (badge) badge.innerHTML = '<span class="live-dot"></span> Live · retrying…'; });
+        }
+        setTimeout(refresh, 2500);
+        setInterval(refresh, 60000);
+      })();
     })();
   </script>
 </body>

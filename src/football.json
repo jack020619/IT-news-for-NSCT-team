@@ -1,0 +1,85 @@
+{
+  "categories": [
+    {
+      "id": "worldcup",
+      "title": "World Cup",
+      "emoji": "🏆",
+      "blurb": "Road to the World Cup — qualifiers, squads and tournament news.",
+      "feeds": [
+        { "name": "Guardian · World Cup", "url": "https://www.theguardian.com/football/world-cup-2026/rss" }
+      ]
+    },
+    {
+      "id": "olympic",
+      "title": "Olympic Football",
+      "emoji": "🥇",
+      "blurb": "Olympic Games football and the wider Olympic movement.",
+      "feeds": [
+        { "name": "Guardian · Olympics", "url": "https://www.theguardian.com/sport/olympic-games/rss" }
+      ]
+    },
+    {
+      "id": "europe",
+      "title": "Europe · Champions League",
+      "emoji": "🇪🇺",
+      "blurb": "UEFA Champions League and European football.",
+      "feeds": [
+        { "name": "Guardian · Champions League", "url": "https://www.theguardian.com/football/championsleague/rss" },
+        { "name": "BBC · European Football", "url": "https://feeds.bbci.co.uk/sport/football/european/rss.xml" }
+      ]
+    },
+    {
+      "id": "england",
+      "title": "England · Premier League",
+      "emoji": "🏴",
+      "blurb": "Premier League and English football.",
+      "feeds": [
+        { "name": "BBC · Premier League", "url": "https://feeds.bbci.co.uk/sport/football/premier-league/rss.xml" },
+        { "name": "Guardian · Premier League", "url": "https://www.theguardian.com/football/premierleague/rss" }
+      ]
+    },
+    {
+      "id": "italy",
+      "title": "Italy · Serie A",
+      "emoji": "🇮🇹",
+      "blurb": "Serie A and Italian football.",
+      "feeds": [
+        { "name": "Guardian · Serie A", "url": "https://www.theguardian.com/football/serieafootball/rss" }
+      ]
+    },
+    {
+      "id": "spain",
+      "title": "Spain · La Liga",
+      "emoji": "🇪🇸",
+      "blurb": "La Liga and Spanish football.",
+      "feeds": [
+        { "name": "Guardian · La Liga", "url": "https://www.theguardian.com/football/laligafootball/rss" }
+      ]
+    },
+    {
+      "id": "world",
+      "title": "Top Countries",
+      "emoji": "🌍",
+      "blurb": "Headlines from the world's top footballing nations.",
+      "feeds": [
+        { "name": "BBC · Football", "url": "https://feeds.bbci.co.uk/sport/football/rss.xml" },
+        { "name": "Guardian · Football", "url": "https://www.theguardian.com/football/rss" },
+        { "name": "ESPN · Soccer", "url": "https://www.espn.com/espn/rss/soccer/news" }
+      ]
+    }
+  ],
+  "footballers": [
+    { "name": "Lionel Messi",       "wiki": "Lionel Messi",                          "country": "Argentina",  "flag": "🇦🇷", "role": "Forward · Inter Miami" },
+    { "name": "Cristiano Ronaldo",  "wiki": "Cristiano Ronaldo",                     "country": "Portugal",   "flag": "🇵🇹", "role": "Forward · Al Nassr" },
+    { "name": "Kylian Mbappé",      "wiki": "Kylian Mbappé",                         "country": "France",     "flag": "🇫🇷", "role": "Forward · Real Madrid" },
+    { "name": "Erling Haaland",     "wiki": "Erling Haaland",                        "country": "Norway",     "flag": "🇳🇴", "role": "Striker · Manchester City" },
+    { "name": "Jude Bellingham",    "wiki": "Jude Bellingham",                       "country": "England",    "flag": "🏴", "role": "Midfielder · Real Madrid" },
+    { "name": "Vinícius Júnior",    "wiki": "Vinícius Júnior",                       "country": "Brazil",     "flag": "🇧🇷", "role": "Forward · Real Madrid" },
+    { "name": "Kevin De Bruyne",    "wiki": "Kevin De Bruyne",                       "country": "Belgium",    "flag": "🇧🇪", "role": "Midfielder · Manchester City" },
+    { "name": "Harry Kane",         "wiki": "Harry Kane",                            "country": "England",    "flag": "🏴", "role": "Striker · Bayern Munich" },
+    { "name": "Mohamed Salah",      "wiki": "Mohamed Salah",                         "country": "Egypt",      "flag": "🇪🇬", "role": "Forward · Liverpool" },
+    { "name": "Luka Modrić",        "wiki": "Luka Modrić",                           "country": "Croatia",    "flag": "🇭🇷", "role": "Midfielder · Real Madrid" },
+    { "name": "Rodri",              "wiki": "Rodri (footballer, born 1996)",         "country": "Spain",      "flag": "🇪🇸", "role": "Midfielder · Manchester City" },
+    { "name": "Pedri",              "wiki": "Pedri",                                 "country": "Spain",      "flag": "🇪🇸", "role": "Midfielder · Barcelona" }
+  ]
+}

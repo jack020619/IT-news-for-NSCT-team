@@ -31,6 +31,7 @@ const USER_AGENT =
 // All IDs are verified-working Unsplash CDN photos.
 // ---------------------------------------------------------------------------
 const BG_QUERY = "?auto=format&fit=crop&w=2070&q=80";
+// IT News page — one image pool per category.
 const CATEGORY_BG = {
   all: ["1451187580459-43490279c0fa", "1550751827-4bd374c3f58b", "1639322537228-f710d846310a", "1531297484001-80022131f5a1"],
   ai:  ["1633356122544-f134324a6cee", "1620712943543-bcc4688e7485", "1639322537228-f710d846310a", "1531297484001-80022131f5a1"],
@@ -38,6 +39,19 @@ const CATEGORY_BG = {
   dev: ["1526374965328-7f61d4dc18c5", "1558494949-ef010cbdcc31", "1591405351990-4726e331f141", "1518770660439-4636190af475"],
   jobs:["1504384308090-c894fdcc538d", "1488590528505-98d2b5aba04b", "1591405351990-4726e331f141", "1517694712202-14dd9538aa97"],
   freelancer: ["1488590528505-98d2b5aba04b", "1504384308090-c894fdcc538d", "1542831371-29b0f74f9713", "1591405351990-4726e331f141"],
+};
+// Football page — stadium / pitch / crowd imagery (graceful: falls back to the
+// animated gradient if any image fails to load).
+const FOOTBALL_BG = {
+  all:      ["1522778119026-d647f0596c20", "1431324155629-1a6deb1dec8d", "1574629810360-7efbbe195018", "1459865264687-595d652de67e"],
+  worldcup: ["1459865264687-595d652de67e", "1551958219-acbc608c6377", "1522778119026-d647f0596c20", "1574629810360-7efbbe195018"],
+  olympic:  ["1517466787929-bc90951d0974", "1431324155629-1a6deb1dec8d", "1461896836934-ffe607ba8211", "1459865264687-595d652de67e"],
+  europe:   ["1574629810360-7efbbe195018", "1508098682722-e99c43a406b2", "1431324155629-1a6deb1dec8d", "1522778119026-d647f0596c20"],
+  england:  ["1431324155629-1a6deb1dec8d", "1574629810360-7efbbe195018", "1577223625816-7546f13df25d", "1522778119026-d647f0596c20"],
+  italy:    ["1508098682722-e99c43a406b2", "1522778119026-d647f0596c20", "1574629810360-7efbbe195018", "1431324155629-1a6deb1dec8d"],
+  spain:    ["1543326727-cf6c39e8f84c", "1574629810360-7efbbe195018", "1522778119026-d647f0596c20", "1459865264687-595d652de67e"],
+  world:    ["1486286701208-1d58e9338013", "1522778119026-d647f0596c20", "1574629810360-7efbbe195018", "1431324155629-1a6deb1dec8d"],
+  players:  ["1551958219-acbc608c6377", "1459865264687-595d652de67e", "1522778119026-d647f0596c20", "1574629810360-7efbbe195018"],
 };
 function imgUrl(id) {
   return "https://images.unsplash.com/photo-" + id + BG_QUERY;
@@ -47,11 +61,11 @@ function dayOfYear(date) {
   const today = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
   return Math.floor((today - start) / 86400000);
 }
-function pickCategoryImages(date) {
+function pickCategoryImages(date, pools) {
   const d = dayOfYear(date);
   const out = {};
-  for (const key of Object.keys(CATEGORY_BG)) {
-    const pool = CATEGORY_BG[key];
+  for (const key of Object.keys(pools)) {
+    const pool = pools[key];
     out[key] = imgUrl(pool[d % pool.length]);
   }
   return out;
@@ -285,6 +299,40 @@ async function fetchFreelancer() {
 }
 
 // ---------------------------------------------------------------------------
+// Famous footballers — face photo + short bio from Wikipedia (no key needed).
+// Fully graceful: if Wikipedia is unreachable, we keep the player with no photo
+// (the card shows an initials avatar instead) so the build never breaks.
+// ---------------------------------------------------------------------------
+async function fetchFootballer(p) {
+  const fallbackLink =
+    "https://news.google.com/search?q=" + encodeURIComponent(p.name + " football");
+  const base = { name: p.name, country: p.country, flag: p.flag || "", role: p.role || "", img: "", newsLink: fallbackLink, wikiLink: "https://en.wikipedia.org/wiki/" + encodeURIComponent((p.wiki || p.name).replace(/ /g, "_")), bio: "" };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  try {
+    const url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(p.wiki || p.name);
+    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT, Accept: "application/json" }, signal: controller.signal, redirect: "follow" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const j = await res.json();
+    const img = (j.thumbnail && j.thumbnail.source) || (j.originalimage && j.originalimage.source) || "";
+    const extract = (j.extract || "").trim();
+    const firstSentence = extract ? (extract.split(/(?<=\.)\s/)[0] || extract).slice(0, 160) : "";
+    return { ...base, img, bio: firstSentence, wikiLink: (j.content_urls && j.content_urls.desktop && j.content_urls.desktop.page) || base.wikiLink };
+  } catch (err) {
+    console.warn(`  ✗ Footballer ${p.name}: ${err.message}`);
+    return base;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function fetchFootballers(list) {
+  const out = await Promise.all(list.map(fetchFootballer));
+  const withPhotos = out.filter((p) => p.img).length;
+  console.log(`  ✓ Footballers: ${out.length} players (${withPhotos} with photos)`);
+  return out;
+}
+
+// ---------------------------------------------------------------------------
 // Rendering helpers
 // ---------------------------------------------------------------------------
 function timeAgo(date, now) {
@@ -344,10 +392,13 @@ function renderItem(item, now, i) {
 function renderCategory(cat, items, now) {
   if (!items.length) return "";
   const cards = items.map((it, i) => renderItem(it, now, i)).join("");
+  const liveBadge = cat.live
+    ? `<span class="live-badge" id="flLive"><span class="live-dot"></span> Live · refreshing every 60s</span>`
+    : "";
   return `
       <section class="category" data-cat="${esc(cat.id)}" id="cat-${esc(cat.id)}">
         <div class="category-head">
-          <h2><span class="cat-emoji">${cat.emoji}</span> ${esc(cat.title)}</h2>
+          <h2><span class="cat-emoji">${cat.emoji}</span> ${esc(cat.title)} ${liveBadge}</h2>
           <p class="blurb">${esc(cat.blurb)}</p>
         </div>
         <ul class="items">${cards}
@@ -356,7 +407,113 @@ function renderCategory(cat, items, now) {
       </section>`;
 }
 
-function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bgImages }) {
+// A footballer's face-card. `img` may be empty → CSS shows an initials avatar.
+function renderPlayer(p) {
+  const initials = (p.name || "?")
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+  // Deterministic accent colour from the name (no randomness).
+  let h = 0;
+  for (const ch of p.name) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  const photo = p.img
+    ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.remove()">`
+    : "";
+  const bio = p.bio ? `<span class="pbio">${esc(p.bio)}</span>` : "";
+  return `
+          <div class="pcard">
+            <span class="pavatar" style="--h:${h}">${esc(initials)}${photo}</span>
+            <span class="pname">${esc(p.name)}</span>
+            <span class="pmeta">${p.flag ? esc(p.flag) + " " : ""}${esc(p.country)}${p.role ? " · " + esc(p.role) : ""}</span>
+            ${bio}
+            <span class="plinks">
+              <a href="${esc(p.newsLink)}" target="_blank" rel="noopener noreferrer">📰 Latest news</a>
+              <a href="${esc(p.wikiLink)}" target="_blank" rel="noopener noreferrer">ℹ️ Profile</a>
+            </span>
+          </div>`;
+}
+
+function renderPlayersSection(cat, players) {
+  if (!players || !players.length) return "";
+  const cards = players.map(renderPlayer).join("");
+  return `
+      <section class="category" data-cat="${esc(cat.id)}" id="cat-${esc(cat.id)}">
+        <div class="category-head">
+          <h2><span class="cat-emoji">${cat.emoji}</span> ${esc(cat.title)}</h2>
+          <p class="blurb">${esc(cat.blurb)}</p>
+        </div>
+        <div class="player-grid">${cards}
+        </div>
+      </section>`;
+}
+
+// Top navigation shared by both dashboards.
+function renderNav(active) {
+  const links = [
+    ["it", "index.html", "💻", "IT News"],
+    ["football", "football.html", "⚽", "Football"],
+  ];
+  return `<nav class="topnav">${links
+    .map(
+      ([id, href, ic, label]) =>
+        `<a class="navlink${id === active ? " active" : ""}" href="${href}"><span class="nico">${ic}</span> ${label}</a>`
+    )
+    .join("")}</nav>`;
+}
+
+// Client-side live refresh for the Freelancer.com section — runs in the browser
+// every 60s. The Freelancer API sends `Access-Control-Allow-Origin: *`, so this
+// cross-origin fetch works directly from GitHub Pages. Injected only on the IT
+// page. References applyFilters() from the surrounding IIFE scope.
+const FL_LIVE_JS = `
+      // ---- Live Freelancer.com updates (every 60s) ----
+      (function () {
+        var ul = document.querySelector('#cat-freelancer ul.items');
+        var badge = document.getElementById('flLive');
+        if (!ul) return;
+        var API = 'https://www.freelancer.com/api/projects/0.1/projects/active/?limit=18&full_description=true&job_details=true&sort_field=time_updated';
+        function he(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+        function ago(ms){ if(!ms) return ''; var d=Math.max(0,Date.now()-ms),m=Math.floor(d/6e4); if(m<60) return m+'m ago'; var h=Math.floor(m/60); if(h<24) return h+'h ago'; return Math.floor(h/24)+'d ago'; }
+        function budget(p){ var c=p.currency||{},s=c.sign||'$',code=c.code||'',b=p.budget||{}; if(b.minimum!=null&&b.maximum!=null) return '💰 '+s+b.minimum+'–'+s+b.maximum+' '+code; if(b.minimum!=null) return '💰 '+s+b.minimum+'+ '+code; return ''; }
+        function row(p,i){
+          var link = p.seo_url ? 'https://www.freelancer.com/projects/'+p.seo_url : 'https://www.freelancer.com/';
+          var ts = (p.time_submitted||p.submitdate||0)*1000;
+          var sum = (p.preview_description||p.description||'').replace(/\\s+/g,' ').trim().slice(0,700);
+          var bd = budget(p);
+          var meta = ['Freelancer.com', ago(ts)].filter(Boolean).join(' · ');
+          var btn = sum.length>130 ? '<button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle(\\'expanded\\');this.textContent=p.classList.contains(\\'expanded\\')?\\'Less ▴\\':\\'More ▾\\'">More ▾</button>' : '';
+          return '<li class="item" style="--i:'+i+'" data-ts="'+ts+'">'
+            + '<a class="item-link" href="'+he(link)+'" target="_blank" rel="noopener noreferrer">'
+            + '<span class="item-icon noimg"></span>'
+            + '<span class="item-body">'
+            + '<span class="item-title">'+he(p.title||'Untitled project')+'</span>'
+            + '<span class="item-point"><span class="point-text"><span class="point-label">Key point</span>'+(sum?he(sum):'New project on Freelancer.com.')+'</span>'+btn+'</span>'
+            + '<span class="item-meta">'+(bd?'<span class="budget">'+he(bd)+'</span>':'')+he(meta)+'</span>'
+            + '</span><span class="item-arrow" aria-hidden="true">↗</span></a></li>';
+        }
+        function refresh(){
+          fetch(API, { headers: { 'Accept': 'application/json' } })
+            .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+            .then(function(d){
+              var pr = (d && d.result && d.result.projects) || [];
+              pr = pr.filter(function(p){ return !p.deleted && !p.nonpublic; });
+              if (!pr.length) return;
+              var olds = ul.querySelectorAll('li.item:not(.pinned)');
+              for (var k=0;k<olds.length;k++) olds[k].parentNode.removeChild(olds[k]);
+              ul.insertAdjacentHTML('beforeend', pr.map(row).join(''));
+              if (badge) { badge.innerHTML = '<span class="live-dot"></span> Live · updated just now'; badge.classList.remove('fl-flash'); void badge.offsetWidth; badge.classList.add('fl-flash'); }
+              applyFilters();
+            })
+            .catch(function(){ if (badge) badge.innerHTML = '<span class="live-dot"></span> Live · retrying…'; });
+        }
+        setTimeout(refresh, 2500);
+        setInterval(refresh, 60000);
+      })();`;
+
+function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bgImages, docTitle, metaDesc, kicker, heroTitle, heroSub, navActive, bodyClass, liveFreelancer }) {
   const dateLabel = builtAt.toUTCString().replace("GMT", "UTC");
   const DEFAULT_VIEW = "list";
 
@@ -399,8 +556,8 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IT News for NSCT Team · Web &amp; AI Daily</title>
-  <meta name="description" content="Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Translated to English, auto-updated every day." />
+  <title>${esc(docTitle)}</title>
+  <meta name="description" content="${esc(metaDesc)}" />
   <style>
     :root {
       --bg: #07080d;
@@ -595,19 +752,77 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
     #toTop.show { opacity: 1; transform: none; pointer-events: auto; }
     #toTop:hover { border-color: var(--accent); box-shadow: 0 8px 22px rgba(99,102,241,.5); }
 
+    /* ---- Top navigation (IT ⇄ Football) ---- */
+    .topnav { display: flex; gap: 8px; justify-content: center; padding: 22px 20px 0; }
+    .navlink {
+      display: inline-flex; align-items: center; gap: 8px; color: var(--muted);
+      background: var(--glass); border: 1px solid var(--border); border-radius: 999px;
+      padding: 9px 18px; font-size: .9rem; font-weight: 600; backdrop-filter: blur(10px);
+      transition: all .18s ease;
+    }
+    .navlink .nico { font-size: 1.05rem; }
+    .navlink:hover { color: var(--text); border-color: var(--border-strong); transform: translateY(-1px); }
+    .navlink.active { color: #fff; background: var(--grad); border-color: transparent; box-shadow: 0 6px 18px rgba(99,102,241,.4); }
+
+    /* ---- Live badge (Freelancer.com) ---- */
+    .live-badge { display: inline-flex; align-items: center; gap: 6px; font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #7ee0b8; background: rgba(126,224,184,.10); border: 1px solid rgba(126,224,184,.32); padding: 2px 10px; border-radius: 999px; vertical-align: 3px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #41e08a; box-shadow: 0 0 0 0 rgba(65,224,138,.7); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(65,224,138,.6);} 70% { box-shadow: 0 0 0 8px rgba(65,224,138,0);} 100% { box-shadow: 0 0 0 0 rgba(65,224,138,0);} }
+    .fl-flash { animation: flFlash 1s ease; }
+    @keyframes flFlash { 0% { background: rgba(126,224,184,.18); } 100% { background: var(--glass); } }
+
+    /* ---- Famous footballers card grid ---- */
+    .player-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin-top: 18px; }
+    .pcard {
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 7px;
+      background: var(--glass); border: 1px solid var(--border); border-radius: 16px;
+      padding: 20px 16px; backdrop-filter: blur(10px); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .pcard:hover { transform: translateY(-4px); border-color: var(--border-strong); box-shadow: 0 16px 36px rgba(0,0,0,.45); }
+    .pavatar {
+      position: relative; width: 96px; height: 96px; border-radius: 50%; overflow: hidden;
+      display: grid; place-items: center; font-size: 1.7rem; font-weight: 800; color: #fff;
+      background: linear-gradient(140deg, hsl(var(--h),70%,45%), hsl(calc(var(--h) + 40),65%,38%));
+      border: 2px solid rgba(255,255,255,.18); box-shadow: 0 8px 22px rgba(0,0,0,.4);
+    }
+    .pavatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pname { font-weight: 700; font-size: 1.02rem; color: var(--text); }
+    .pmeta { font-size: .78rem; color: var(--accent-2); }
+    .pbio { font-size: .8rem; color: var(--muted); line-height: 1.4; }
+    .plinks { display: flex; gap: 12px; margin-top: 6px; flex-wrap: wrap; justify-content: center; }
+    .plinks a { font-size: .78rem; color: var(--accent); border: 1px solid var(--border); border-radius: 999px; padding: 3px 11px; transition: all .15s ease; }
+    .plinks a:hover { border-color: var(--accent); background: rgba(124,147,255,.12); }
+
+    /* ---- Football theme: green pitch gradient ---- */
+    body.football {
+      --accent: #56e08a; --accent-2: #c9f562;
+      --grad: linear-gradient(120deg, #16a34a, #22c55e 45%, #84cc16 90%);
+    }
+    body.football .bg-gradient {
+      background:
+        radial-gradient(45% 45% at 18% 20%, rgba(34,197,94,.42), transparent 60%),
+        radial-gradient(40% 40% at 82% 18%, rgba(132,204,22,.30), transparent 60%),
+        radial-gradient(55% 55% at 50% 90%, rgba(16,185,129,.36), transparent 60%),
+        #04100a;
+    }
+    body.football .blob.b1 { background: #16a34a; }
+    body.football .blob.b2 { background: #84cc16; }
+
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: .01ms !important; } .item { opacity: 1; transform: none; } }
   </style>
 </head>
-<body>
+<body class="${esc(bodyClass || "")}">
   <div id="progress"></div>
   <div class="bg-layer"><div class="bg-gradient"></div><div class="bgx" id="bgA"></div><div class="bgx" id="bgB"></div></div>
   <div class="bg-veil"></div>
   <span class="blob b1"></span><span class="blob b2"></span>
 
+  ${renderNav(navActive)}
+
   <header class="hero">
-    <span class="kicker">Web &amp; AI · Translated · Updated Daily</span>
-    <h1>IT News for NSCT Team</h1>
-    <p class="sub">A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Headlines from around the world, translated to English. Built for the freelancers and the job-seekers among us.</p>
+    <span class="kicker">${esc(kicker)}</span>
+    <h1>${esc(heroTitle)}</h1>
+    <p class="sub">${esc(heroSub)}</p>
     <div class="stats">
       <div class="stat"><b>${totalItems}</b><span>Stories</span></div>
       <div class="stat"><b>${sourceCount}</b><span>Sources</span></div>
@@ -790,6 +1005,7 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
       window.addEventListener("scroll", onScroll, { passive: true });
       onScroll();
       toTop.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+${liveFreelancer ? FL_LIVE_JS : ""}
     })();
   </script>
 </body>
@@ -798,18 +1014,31 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
 }
 
 // ---------------------------------------------------------------------------
-// Main
+// Build one dashboard (a configFile → an output HTML page).
 // ---------------------------------------------------------------------------
-async function main() {
+async function buildSite(opts) {
+  const { configFile, outFile, bgPools, filterPolicy, page } = opts;
   const now = Date.now();
   const builtAt = new Date(now);
-  const config = JSON.parse(await readFile(join(ROOT, "src", "feeds.json"), "utf8"));
+  const config = JSON.parse(await readFile(join(ROOT, "src", configFile), "utf8"));
 
   let totalItems = 0;
   let translatedTotal = 0;
   const sourceNames = new Set();
   const sectionHtml = [];
   const categoryMeta = [];
+
+  // Optional "Famous Footballers" section — rendered first (football page).
+  if (Array.isArray(config.footballers) && config.footballers.length) {
+    console.log(`\n[Famous Footballers]`);
+    const players = await fetchFootballers(config.footballers);
+    const pcat = { id: "players", title: "Famous Footballers", emoji: "⭐", blurb: "Top footballers — face, country and their latest news." };
+    const html = renderPlayersSection(pcat, players);
+    if (html) {
+      sectionHtml.push(html);
+      categoryMeta.push({ id: pcat.id, title: pcat.title, emoji: pcat.emoji, count: players.length });
+    }
+  }
 
   for (const cat of config.categories) {
     console.log(`\n[${cat.title}]`);
@@ -821,11 +1050,13 @@ async function main() {
       items = results.flat();
     }
 
-    // Drop any policy / politics / government stories.
-    const before = items.length;
-    items = items.filter((it) => !isPolicy(it));
-    const dropped = before - items.length;
-    if (dropped) console.log(`  ⛔ Filtered ${dropped} policy item(s)`);
+    // Drop any policy / politics / government stories (IT page only).
+    if (filterPolicy) {
+      const before = items.length;
+      items = items.filter((it) => !isPolicy(it));
+      const dropped = before - items.length;
+      if (dropped) console.log(`  ⛔ Filtered ${dropped} policy item(s)`);
+    }
 
     // Dedupe by link, then by title.
     const seen = new Set();
@@ -848,6 +1079,7 @@ async function main() {
 
     // Pin the Freelancer.com Terms & Conditions at the top of its section.
     if (cat.type === "freelancer") {
+      cat.live = true; // show the live badge + enable client-side refresh
       items.unshift({
         title: "Freelancer.com — Terms & Conditions (User Agreement)",
         link: "https://www.freelancer.com/about/terms",
@@ -874,17 +1106,59 @@ async function main() {
     }
   }
 
-  const page = renderPage({
+  const html = renderPage({
     sections: sectionHtml.join("\n"),
     categories: categoryMeta,
     builtAt,
     totalItems,
     sourceCount: sourceNames.size,
-    bgImages: pickCategoryImages(builtAt),
+    bgImages: pickCategoryImages(builtAt, bgPools),
+    ...page,
   });
 
-  await writeFile(join(ROOT, "index.html"), page, "utf8");
-  console.log(`\n✅ Wrote index.html — ${totalItems} stories from ${sourceNames.size} sources (${translatedTotal} translated).`);
+  await writeFile(join(ROOT, outFile), html, "utf8");
+  console.log(`\n✅ Wrote ${outFile} — ${totalItems} stories from ${sourceNames.size} sources (${translatedTotal} translated).`);
+}
+
+// ---------------------------------------------------------------------------
+// Main — build both dashboards (IT News + Football).
+// ---------------------------------------------------------------------------
+async function main() {
+  console.log("=== Building IT News dashboard ===");
+  await buildSite({
+    configFile: "feeds.json",
+    outFile: "index.html",
+    bgPools: CATEGORY_BG,
+    filterPolicy: true,
+    page: {
+      docTitle: "IT News for NSCT Team · Web & AI Daily",
+      metaDesc: "Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Translated to English, auto-updated every day.",
+      kicker: "Web & AI · Translated · Updated Daily",
+      heroTitle: "IT News for NSCT Team",
+      heroSub: "A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Headlines from around the world, translated to English. Built for the freelancers and the job-seekers among us.",
+      navActive: "it",
+      bodyClass: "",
+      liveFreelancer: true,
+    },
+  });
+
+  console.log("\n=== Building Football dashboard ===");
+  await buildSite({
+    configFile: "football.json",
+    outFile: "football.html",
+    bgPools: FOOTBALL_BG,
+    filterPolicy: false,
+    page: {
+      docTitle: "Football News for NSCT Team · World, Europe & Stars",
+      metaDesc: "Daily football news for the NSCT team — World Cup, Olympics, Champions League, Premier League, Serie A, La Liga, plus famous footballers and their latest news.",
+      kicker: "World Cup · Europe · Leagues · Stars",
+      heroTitle: "Football News for NSCT Team",
+      heroSub: "A daily football digest — World Cup, Olympics, the Champions League and the top European leagues, plus profiles of the game's biggest stars and the news about them.",
+      navActive: "football",
+      bodyClass: "football",
+      liveFreelancer: false,
+    },
+  });
 }
 
 main().catch((err) => {
