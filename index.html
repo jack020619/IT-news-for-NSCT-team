@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IT News for NSCT Team · Web &amp; AI Daily</title>
-  <meta name="description" content="Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Auto-updated every day." />
+  <meta name="description" content="Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Translated to English, auto-updated every day." />
   <style>
     :root {
       --bg: #07080d;
@@ -24,12 +24,11 @@
       margin: 0; color: var(--text);
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5; -webkit-font-smoothing: antialiased;
-      background: var(--bg);
-      min-height: 100vh;
+      background: var(--bg); min-height: 100vh;
     }
     a { color: var(--accent); text-decoration: none; }
 
-    /* ---- Layered background: animated gradient + daily IT image ---- */
+    /* ---- Layered background: animated gradient + crossfading category images ---- */
     .bg-layer { position: fixed; inset: 0; z-index: -3; overflow: hidden; }
     .bg-gradient {
       position: absolute; inset: -20%;
@@ -41,15 +40,14 @@
       filter: saturate(1.1);
       animation: drift 26s ease-in-out infinite alternate;
     }
-    .bg-image {
+    .bgx {
       position: absolute; inset: 0;
-      background-image: var(--bg-img);
       background-size: cover; background-position: center;
-      opacity: 0; transition: opacity 1.4s ease;
-      filter: brightness(.42) saturate(1.05);
-      transform: scale(1.05);
+      opacity: 0; transition: opacity 1.2s ease, transform 16s ease-out;
+      filter: brightness(.42) saturate(1.05); transform: scale(1.06);
+      will-change: opacity;
     }
-    body.bg-loaded .bg-image { opacity: .55; }
+    .bgx.show { opacity: .55; transform: scale(1.12); }
     .bg-veil {
       position: fixed; inset: 0; z-index: -2; pointer-events: none;
       background: linear-gradient(180deg, rgba(6,7,12,.35) 0%, rgba(6,7,12,.55) 45%, rgba(6,7,12,.86) 100%);
@@ -61,7 +59,6 @@
     @keyframes float1 { 0%,100%{ transform: translate(0,0);} 50%{ transform: translate(40px,30px);} }
     @keyframes float2 { 0%,100%{ transform: translate(0,0);} 50%{ transform: translate(-40px,-30px);} }
 
-    /* ---- Scroll progress bar ---- */
     #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 50; background: var(--grad); box-shadow: 0 0 12px rgba(124,147,255,.8); transition: width .1s linear; }
 
     .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px 80px; }
@@ -74,23 +71,19 @@
       background: var(--glass); backdrop-filter: blur(8px); margin-bottom: 20px;
     }
     .hero h1 {
-      font-size: clamp(2.1rem, 6vw, 3.7rem); line-height: 1.04; margin: 0 0 14px; letter-spacing: -.025em;
-      font-weight: 800;
+      font-size: clamp(2.1rem, 6vw, 3.7rem); line-height: 1.04; margin: 0 0 14px; letter-spacing: -.025em; font-weight: 800;
       background: linear-gradient(120deg, #fff 10%, #b9c4ff 40%, #7be6d6 70%, #fff 95%);
       background-size: 220% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
       animation: shine 8s linear infinite;
     }
     @keyframes shine { to { background-position: 220% center; } }
-    .hero .sub { color: var(--muted); max-width: 660px; margin: 0 auto; font-size: 1.02rem; }
+    .hero .sub { color: var(--muted); max-width: 680px; margin: 0 auto; font-size: 1.02rem; }
     .stats { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
-    .stat {
-      background: var(--glass); border: 1px solid var(--border); border-radius: 14px;
-      padding: 12px 18px; backdrop-filter: blur(10px); min-width: 96px;
-    }
+    .stat { background: var(--glass); border: 1px solid var(--border); border-radius: 14px; padding: 12px 18px; backdrop-filter: blur(10px); min-width: 96px; }
     .stat b { display: block; font-size: 1.35rem; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .stat span { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 
-    /* ---- Sticky toolbar: filters + view switcher ---- */
+    /* ---- Sticky toolbar ---- */
     .toolbar {
       position: sticky; top: 0; z-index: 30; margin-top: 26px;
       background: rgba(8,10,16,.62); backdrop-filter: blur(16px) saturate(1.2);
@@ -111,10 +104,7 @@
     .chip.active em { color: #fff; background: rgba(255,255,255,.22); }
 
     .views { display: flex; gap: 4px; background: var(--glass-2); border: 1px solid var(--border); border-radius: 12px; padding: 4px; }
-    .vbtn {
-      font: inherit; cursor: pointer; color: var(--muted); background: transparent; border: 0;
-      padding: 7px 11px; border-radius: 9px; display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; transition: all .15s ease;
-    }
+    .vbtn { font: inherit; cursor: pointer; color: var(--muted); background: transparent; border: 0; padding: 7px 11px; border-radius: 9px; display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; transition: all .15s ease; }
     .vbtn .vico { font-size: 1rem; line-height: 1; }
     .vbtn:hover { color: var(--text); background: rgba(255,255,255,.06); }
     .vbtn.active { color: #fff; background: rgba(124,147,255,.28); box-shadow: inset 0 0 0 1px rgba(124,147,255,.5); }
@@ -136,41 +126,42 @@
       transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
       position: relative; overflow: hidden;
     }
-    .item-link::before {
-      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--grad); opacity: 0; transition: opacity .18s ease;
-    }
+    .item-link::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grad); opacity: 0; transition: opacity .18s ease; }
     .item-link:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: 0 14px 34px rgba(0,0,0,.45); background: var(--glass-2); }
     .item-link:hover::before { opacity: 1; }
     .item-icon { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: rgba(255,255,255,.06); border: 1px solid var(--border); overflow: hidden; }
     .item-icon img { width: 22px; height: 22px; border-radius: 4px; }
     .item-icon.noimg::after { content: "🔗"; font-size: .9rem; }
-    .item-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+    .item-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
     .item-title { font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.35; }
     .item-link:hover .item-title { color: #cdd6ff; }
-    .item-summary { color: var(--muted); font-size: .87rem; }
+    .item-point { color: #c8d0e0; font-size: .87rem; line-height: 1.45; }
+    .point-label {
+      display: inline-block; font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--accent-2); border: 1px solid rgba(56,224,200,.35); background: rgba(56,224,200,.08);
+      padding: 1px 7px; border-radius: 999px; margin-right: 8px; vertical-align: 1px;
+    }
     .item-meta { color: #8b93a7; font-size: .76rem; letter-spacing: .01em; }
     .item-arrow { flex: 0 0 auto; color: var(--muted); font-size: 1rem; opacity: 0; transform: translate(-4px,2px); transition: all .18s ease; }
     .item-link:hover .item-arrow { opacity: 1; transform: none; color: var(--accent-2); }
 
     /* ===== VIEW MODES (Explorer-style) ===== */
-    /* TITLE: headings only, compact rows */
+    /* TITLE: pure headings */
     #content[data-view="title"] ul.items { display: flex; flex-direction: column; gap: 8px; }
     #content[data-view="title"] .item-icon,
-    #content[data-view="title"] .item-summary,
+    #content[data-view="title"] .item-point,
     #content[data-view="title"] .item-meta { display: none; }
     #content[data-view="title"] .item-link { padding: 11px 15px; align-items: center; }
     #content[data-view="title"] .item-title { font-weight: 500; font-size: .96rem; }
 
-    /* LIST: title + meta inline, with small icon */
-    #content[data-view="list"] ul.items { display: flex; flex-direction: column; gap: 8px; }
-    #content[data-view="list"] .item-summary { display: none; }
-    #content[data-view="list"] .item-link { padding: 11px 15px; align-items: center; }
+    /* LIST (default): heading + 1-line key point + meta */
+    #content[data-view="list"] ul.items { display: flex; flex-direction: column; gap: 9px; }
+    #content[data-view="list"] .item-point { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
-    /* DETAILS: title + summary + meta (full rows) */
-    #content[data-view="details"] ul.items { display: flex; flex-direction: column; gap: 11px; }
+    /* DETAILS: heading + full key point + meta */
+    #content[data-view="details"] ul.items { display: flex; flex-direction: column; gap: 12px; }
 
-    /* CARDS (medium icons): grid of glass cards */
+    /* CARDS: grid of glass cards (full key point) */
     #content[data-view="cards"] ul.items { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
     #content[data-view="cards"] .item-link { flex-direction: column; align-items: flex-start; gap: 12px; height: 100%; padding: 18px; }
     #content[data-view="cards"] .item-icon { width: 46px; height: 46px; border-radius: 12px; }
@@ -179,13 +170,9 @@
 
     .empty { color: var(--muted); padding: 60px 0; text-align: center; }
 
-    footer.site {
-      margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--border);
-      color: var(--muted); font-size: .82rem; text-align: center;
-    }
+    footer.site { margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; text-align: center; }
     footer.site a { color: var(--accent); }
 
-    /* Back to top */
     #toTop {
       position: fixed; bottom: 22px; right: 22px; z-index: 40;
       width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border-strong);
@@ -196,22 +183,19 @@
     #toTop.show { opacity: 1; transform: none; pointer-events: auto; }
     #toTop:hover { border-color: var(--accent); box-shadow: 0 8px 22px rgba(99,102,241,.5); }
 
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-      .item { opacity: 1; transform: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: .01ms !important; } .item { opacity: 1; transform: none; } }
   </style>
 </head>
-<body style="--bg-img: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&amp;fit=crop&amp;w=2070&amp;q=80')">
+<body>
   <div id="progress"></div>
-  <div class="bg-layer"><div class="bg-gradient"></div><div class="bg-image"></div></div>
+  <div class="bg-layer"><div class="bg-gradient"></div><div class="bgx" id="bgA"></div><div class="bgx" id="bgB"></div></div>
   <div class="bg-veil"></div>
   <span class="blob b1"></span><span class="blob b2"></span>
 
   <header class="hero">
-    <span class="kicker">Web &amp; AI · Updated Daily</span>
+    <span class="kicker">Web &amp; AI · Translated · Updated Daily</span>
     <h1>IT News for NSCT Team</h1>
-    <p class="sub">A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Built for the freelancers and the job-seekers among us.</p>
+    <p class="sub">A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Headlines from around the world, translated to English. Built for the freelancers and the job-seekers among us.</p>
     <div class="stats">
       <div class="stat"><b>72</b><span>Stories</span></div>
       <div class="stat"><b>8</b><span>Sources</span></div>
@@ -229,14 +213,14 @@
         <button class="chip" data-cat="jobs" type="button">💼 Jobs &amp; Freelance <em>18</em></button>
       </div>
       <div class="views" role="group" aria-label="View mode">
-        <button class="vbtn active" data-view="title" type="button" title="Title view"><span class="vico">≣</span><span class="vlabel">Title</span></button>
-        <button class="vbtn" data-view="list" type="button" title="List view"><span class="vico">☰</span><span class="vlabel">List</span></button>
+        <button class="vbtn" data-view="title" type="button" title="Title view"><span class="vico">≣</span><span class="vlabel">Title</span></button>
+        <button class="vbtn active" data-view="list" type="button" title="List view"><span class="vico">☰</span><span class="vlabel">List</span></button>
         <button class="vbtn" data-view="details" type="button" title="Details view"><span class="vico">▤</span><span class="vlabel">Details</span></button>
         <button class="vbtn" data-view="cards" type="button" title="Cards view"><span class="vico">▦</span><span class="vlabel">Cards</span></button>
       </div>
     </div>
 
-    <main id="content" data-view="title" data-cat="all">
+    <main id="content" data-view="list" data-cat="all">
 
       <section class="category" data-cat="ai" id="cat-ai">
         <div class="category-head">
@@ -249,7 +233,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Midjourney Medical goes from generating ‘cat images’ to full-body ultrasound scans</span>
-                <span class="item-summary">Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubb…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Sc…</span>
                 <span class="item-meta">The Verge · AI · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -260,8 +244,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI coding agents taught robots how to install GPUs and cut zip ties</span>
-                <span class="item-summary">Nvidia&#39;s self-improvement program for robots enlists teams of AI coding agents.</span>
-                <span class="item-meta">Ars Technica · AI · 9h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Nvidia&#39;s self-improvement program for robots enlists teams of AI coding agents.</span>
+                <span class="item-meta">Ars Technica · AI · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -271,8 +255,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic got hit by export rules nobody understands</span>
-                <span class="item-summary">Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US an…</span>
-                <span class="item-meta">The Verge · AI · 10h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees,…</span>
+                <span class="item-meta">The Verge · AI · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -282,7 +266,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">&quot;Dangerous&quot; AI models are coming no matter what</span>
-                <span class="item-summary">AI models with advanced hacking capabilities will soon be the norm.</span>
+                <span class="item-point"><span class="point-label">Key point</span>AI models with advanced hacking capabilities will soon be the norm.</span>
                 <span class="item-meta">Ars Technica · AI · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -293,7 +277,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Two-thirds of Americans think AI is advancing too quickly</span>
-                <span class="item-summary">According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatical…</span>
+                <span class="item-point"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when …</span>
                 <span class="item-meta">The Verge · AI · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -304,7 +288,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Can anyone look cool wearing Snap’s $2,000 glasses?</span>
-                <span class="item-summary">Yesterday, Snap debuted its new $2,195 Specs glasses. In an interview with CNBC, Snap CEO Evan Spiegel described the Specs as something the company had been working on for more than 12 years, an attempt to &quot;bring computi…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Yesterday, Snap debuted its new $2,195 Specs glasses. In an interview with CNBC, Snap CEO Evan Spiegel described the Specs as something the company had been working on for more than 12 years, an attempt to &quot;bring computing into the world&quot; a…</span>
                 <span class="item-meta">The Verge · AI · 13h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -315,7 +299,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Ten months later, the $100 Google Home Speaker is finally available for preorder</span>
-                <span class="item-summary">Google&#39;s new smart speaker is more about Gemini than audio quality.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Google&#39;s new smart speaker is more about Gemini than audio quality.</span>
                 <span class="item-meta">Ars Technica · AI · 13h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -326,7 +310,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.google&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">New research shows how AMIE, our medical AI, could help manage health conditions.</span>
-                <span class="item-summary">Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.</span>
                 <span class="item-meta">Google AI Blog · 14h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -337,8 +321,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI search grounded in Facebook posts? What could go wrong?</span>
-                <span class="item-summary">AI is pretty reliable at putting things on your calendar these days, but it hasn&#39;t quite cracked answering the related and all-important question of &quot;What should I do this weekend?&quot; Meta&#39;s new AI Mode in search could be …</span>
-                <span class="item-meta">The Verge · AI · 15h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>AI is pretty reliable at putting things on your calendar these days, but it hasn&#39;t quite cracked answering the related and all-important question of &quot;What should I do this weekend?&quot; Meta&#39;s new AI Mode in search could be a useful tool - if i…</span>
+                <span class="item-meta">The Verge · AI · 16h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -348,7 +332,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Google’s first smart speaker in six years arrives next week</span>
-                <span class="item-summary">Google&#39;s first new smart speaker in six years starts shipping on June 25th, narrowly missing its promised spring launch window. Preorders for the Google Home Speaker open today, June 17th. Nothing has changed hardware-wi…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Google&#39;s first new smart speaker in six years starts shipping on June 25th, narrowly missing its promised spring launch window. Preorders for the Google Home Speaker open today, June 17th. Nothing has changed hardware-wise in the nine month…</span>
                 <span class="item-meta">The Verge · AI · 16h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -359,7 +343,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">The next humanoid robot might not look human at all</span>
-                <span class="item-summary">The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, &quot;humanoid robots don&#39;t need to look human.&quot; That exp…</span>
+                <span class="item-point"><span class="point-label">Key point</span>The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, &quot;humanoid robots don&#39;t need to look human.&quot; That explains the look of En…</span>
                 <span class="item-meta">The Verge · AI · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -370,7 +354,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic &quot;pauses&quot; token-based billing for its Claude Agent SDK</span>
-                <span class="item-summary">Move originally planned for Monday would have heavily increased power users&#39; costs.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Move originally planned for Monday would have heavily increased power users&#39; costs.</span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -381,7 +365,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Apple 2027 rumors: AirPods with cameras for AI and the second folding iPhone</span>
-                <span class="item-summary">Now that we&#39;re clear of WWDC and all of the new AI-powered features coming to Apple&#39;s platforms, Bloomberg reporter Mark Gurman has more details about rumored new hardware, like the camera-equipped AirPods he&#39;d previousl…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Now that we&#39;re clear of WWDC and all of the new AI-powered features coming to Apple&#39;s platforms, Bloomberg reporter Mark Gurman has more details about rumored new hardware, like the camera-equipped AirPods he&#39;d previously written about. He …</span>
                 <span class="item-meta">The Verge · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -392,7 +376,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Qualcomm’s latest chip hints that more powerful smart glasses could be on the way</span>
-                <span class="item-summary">Smart glasses are still a nascent category, but chipmaker Qualcomm is hard at work upgrading the silicon to power the next wave of XR devices: the Snapdragon Reality Elite. Although Qualcomm is announcing the chip today …</span>
+                <span class="item-point"><span class="point-label">Key point</span>Smart glasses are still a nascent category, but chipmaker Qualcomm is hard at work upgrading the silicon to power the next wave of XR devices: the Snapdragon Reality Elite. Although Qualcomm is announcing the chip today at Augmented World E…</span>
                 <span class="item-meta">The Verge · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -403,7 +387,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">SpaceX to acquire AI coding platform Cursor for $60 billion</span>
-                <span class="item-summary">Separately, neither could compete. Now they hope they can.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Separately, neither could compete. Now they hope they can.</span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -414,7 +398,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Leaked financial docs show OpenAI is losing billions of dollars a year</span>
-                <span class="item-summary">Audited accounting shows growing revenues being dwarfed by R&amp;#038;D, other expenses.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Audited accounting shows growing revenues being dwarfed by R&amp;#038;D, other expenses.</span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -425,7 +409,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Critical Copilot vulnerability allowed hackers to steal 2FA code from users</span>
-                <span class="item-summary">SearchLeak exploit shows why the industry&#39;s approach to LLM security fails over and over.</span>
+                <span class="item-point"><span class="point-label">Key point</span>SearchLeak exploit shows why the industry&#39;s approach to LLM security fails over and over.</span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -436,7 +420,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Chipmaker Nvidia seeks to raise over $25B in first bond deal since 2021</span>
-                <span class="item-summary">Debt sale set to test investor appetite for further exposure to AI sector amid a deluge of borrowing.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Debt sale set to test investor appetite for further exposure to AI sector amid a deluge of borrowing.</span>
                 <span class="item-meta">Ars Technica · AI · 2d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -456,7 +440,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Midjourney Medical goes from generating ‘cat images’ to full-body ultrasound scans</span>
-                <span class="item-summary">Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubb…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Sc…</span>
                 <span class="item-meta">The Verge · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -467,8 +451,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">How to turn off AI in your Google Docs</span>
-                <span class="item-summary">Here&#39;s what you need to do to get those pesky &quot;write with Gemini&quot; pop-ups to go away.</span>
-                <span class="item-meta">TechCrunch · 3h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Here&#39;s what you need to do to get those pesky &quot;write with Gemini&quot; pop-ups to go away.</span>
+                <span class="item-meta">TechCrunch · 4h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -478,8 +462,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI is hurting Apple in more ways than one: it may force iPhone price increases</span>
-                <span class="item-summary">CEO Tim Cook said in a recent interview that the situation is &quot;unsustainable.&quot;</span>
-                <span class="item-meta">TechCrunch · 5h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>CEO Tim Cook said in a recent interview that the situation is &quot;unsustainable.&quot;</span>
+                <span class="item-meta">TechCrunch · 6h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -489,7 +473,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Tim Cook says RAM expenses are &amp;#8216;unsustainable&amp;#8217; and Apple is going to raise prices</span>
-                <span class="item-summary">Apple is planning to raise prices in response to the ongoing memory shortage. In an interview with The Wall Street Journal, Apple CEO Tim Cook says &quot;price increases are unavoidable:&quot; We&#39;re doing our best to mitigate the …</span>
+                <span class="item-point"><span class="point-label">Key point</span>Apple is planning to raise prices in response to the ongoing memory shortage. In an interview with The Wall Street Journal, Apple CEO Tim Cook says &quot;price increases are unavoidable:&quot; We&#39;re doing our best to mitigate the huge increases that …</span>
                 <span class="item-meta">The Verge · 7h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -500,8 +484,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Chi-Hua Chien saw Facebook coming — now he says the real AI winners won&amp;#8217;t be selling AI</span>
-                <span class="item-summary">Chi-Hua Chien has spent more than two decades as a venture capitalist, but he thinks like a cultural anthropologist.</span>
-                <span class="item-meta">TechCrunch · 7h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Chi-Hua Chien has spent more than two decades as a venture capitalist, but he thinks like a cultural anthropologist.</span>
+                <span class="item-meta">TechCrunch · 8h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -511,7 +495,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">VSCO launches Studio Pro mobile photo editing app and plans $500 per year subscription</span>
-                <span class="item-summary">VSCO is taking on Adobe with a new Studio Pro editing app rolling out today on iOS and coming to macOS later this year, as Bloomberg reports. At launch, the app offers tools for batch editing, style matching from a refer…</span>
+                <span class="item-point"><span class="point-label">Key point</span>VSCO is taking on Adobe with a new Studio Pro editing app rolling out today on iOS and coming to macOS later this year, as Bloomberg reports. At launch, the app offers tools for batch editing, style matching from a reference image, and shar…</span>
                 <span class="item-meta">The Verge · 8h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -522,8 +506,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Roelof Botha joins SpaceX&amp;#8217;s board of directors</span>
-                <span class="item-summary">The former Sequoia Capital leader is filling an &quot;existing vacancy&quot; on SpaceX&#39;s board, days after the company went public in the largest IPO ever.</span>
-                <span class="item-meta">TechCrunch · 8h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>The former Sequoia Capital leader is filling an &quot;existing vacancy&quot; on SpaceX&#39;s board, days after the company went public in the largest IPO ever.</span>
+                <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -533,8 +517,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">After unveiling ridiculously expensive AR glasses, Snap&amp;#8217;s stock takes a dive</span>
-                <span class="item-summary">Snap&#39;s long-awaited smart glasses debut hasn&#39;t exactly done wonders for the company&#39;s stock.</span>
-                <span class="item-meta">TechCrunch · 8h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Snap&#39;s long-awaited smart glasses debut hasn&#39;t exactly done wonders for the company&#39;s stock.</span>
+                <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -544,7 +528,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">NEA’s Tiffany Luck says enterprises are still figuring out their AI ROI</span>
-                <span class="item-summary">Tokenmaxxing&amp;#160;was&amp;#160;the hottest trend in Silicon Valley earlier this year, with CEOs encouraging employees to push AI usage as far&amp;#160;as it would go.&amp;#160;Then the bill came due. Uber&amp;#160;reportedly blew&amp;#160;t…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Tokenmaxxing&amp;#160;was&amp;#160;the hottest trend in Silicon Valley earlier this year, with CEOs encouraging employees to push AI usage as far&amp;#160;as it would go.&amp;#160;Then the bill came due. Uber&amp;#160;reportedly blew&amp;#160;through its annual AI…</span>
                 <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -555,7 +539,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Epic wants to let you bring your Fortnite skins to other games</span>
-                <span class="item-summary">Epic Games has been touting the potential of an interoperable metaverse for years, though that vision hasn&#39;t yet become a reality. But with Unreal Engine 6, the next major version of its game development engine, Epic pla…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Epic Games has been touting the potential of an interoperable metaverse for years, though that vision hasn&#39;t yet become a reality. But with Unreal Engine 6, the next major version of its game development engine, Epic plans to take a big ste…</span>
                 <span class="item-meta">The Verge · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -566,7 +550,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">World leaders want American AI. They just don&amp;#8217;t want America to be able to turn it off.</span>
-                <span class="item-summary">French President Macron and Indian PM Modi raised alarms at the G7 summit that the U.S. could cut off access to American AI overnight — a fear the Anthropic blackout just made real.</span>
+                <span class="item-point"><span class="point-label">Key point</span>French President Macron and Indian PM Modi raised alarms at the G7 summit that the U.S. could cut off access to American AI overnight — a fear the Anthropic blackout just made real.</span>
                 <span class="item-meta">TechCrunch · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -577,8 +561,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic becomes first AI startup to join the Frontier carbon removal coalition</span>
-                <span class="item-summary">Anthropic has joined the Frontier coalition, which received another $915M in pledges to fund carbon removal projects.</span>
-                <span class="item-meta">TechCrunch · 10h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Anthropic has joined the Frontier coalition, which received another $915M in pledges to fund carbon removal projects.</span>
+                <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -588,8 +572,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic got hit by export rules nobody understands</span>
-                <span class="item-summary">Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US an…</span>
-                <span class="item-meta">The Verge · 10h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees,…</span>
+                <span class="item-meta">The Verge · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -599,7 +583,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Cybercriminals allegedly hacked tens of thousands of Fortinet firewalls used by major companies all over the world</span>
-                <span class="item-summary">An alleged Russian-speaking group of cybercriminals is reportedly compromising and targeting several major companies that use Fortinet Firewalls and VPNs through previously known passwords.</span>
+                <span class="item-point"><span class="point-label">Key point</span>An alleged Russian-speaking group of cybercriminals is reportedly compromising and targeting several major companies that use Fortinet Firewalls and VPNs through previously known passwords.</span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -610,7 +594,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Social media’s next evolution: user-controlled algorithms</span>
-                <span class="item-summary">Social media feeds are becoming more customizable as platforms like Threads, Instagram, and TikTok introduce tools that let users directly influence the algorithms powering their recommendations.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Social media feeds are becoming more customizable as platforms like Threads, Instagram, and TikTok introduce tools that let users directly influence the algorithms powering their recommendations.</span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -621,7 +605,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">World model maker Odyssey nabs $1.45B valuation backed by Amazon and other big names</span>
-                <span class="item-summary">World models are the next big thing in AI beyond LLMs and, with this round, Odyssey has cemented itself as one of the startups to watch.</span>
+                <span class="item-point"><span class="point-label">Key point</span>World models are the next big thing in AI beyond LLMs and, with this round, Odyssey has cemented itself as one of the startups to watch.</span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -632,7 +616,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Mastodon looks to newsletters to help revive the open social web</span>
-                <span class="item-summary">Mastodon’s newly launched newsletter feature lets anyone subscribe to creators by email, even without a Mastodon account.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Mastodon’s newly launched newsletter feature lets anyone subscribe to creators by email, even without a Mastodon account.</span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -643,7 +627,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Two-thirds of Americans think AI is advancing too quickly</span>
-                <span class="item-summary">According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatical…</span>
+                <span class="item-point"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when …</span>
                 <span class="item-meta">The Verge · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -659,198 +643,198 @@
         </div>
         <ul class="items">
           <li class="item" style="--i:0">
-            <a class="item-link" href="https://dev.to/rockybalboan19/show-hn-gneiss-gnn-powered-cli-that-detects-architectural-decay-in-java-repos-117g" target="_blank" rel="noopener noreferrer">
+            <a class="item-link" href="https://dev.to/devshefali/24-modern-css-tricks-every-frontend-developer-should-know-10l8" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Show HN: GNEISS – GNN-powered CLI that detects architectural decay in Java repos</span>
-                <span class="item-summary">Curious if others are dealing with this: as more AI-generated code gets merged, the high-level structure of codebases seems to be quietly getting worse. Not syntax stuff, linters catch that fine. More like modules slowly…</span>
-                <span class="item-meta">DEV Community · 7m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:1">
-            <a class="item-link" href="https://dev.to/aaronphilip2003/the-free-cron-scheduler-hiding-in-every-github-repo-you-own-2h0c" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">The Free Cron Scheduler Hiding in Every GitHub Repo You Own</span>
-                <span class="item-summary">I used it to build a zero-cost &quot;dead man&#39;s switch&quot; that catches silent failures before I do. Quick context before anything else: I packaged this exact recipe, plus six more like it, into a small cookbook — The GitHub Act…</span>
-                <span class="item-meta">DEV Community · 11m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:2">
-            <a class="item-link" href="https://dev.to/devaonbreaches/stealer-logs-in-xposedornot-4an3" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Stealer logs in XposedOrNot</span>
-                <span class="item-summary">I&#39;ve been running XposedOrNot for years now. The pitch has always been simple: type in an email, find out if it&#39;s turned up in a data breach. Free, no signup, open source. Millions of lookups later, it still does exactly…</span>
+                <span class="item-title">24 Modern CSS Tricks Every Frontend Developer Should Know</span>
+                <span class="item-point"><span class="point-label">Key point</span>CSS has evolved a lot in the last few years. Many things that once needed JavaScript, extra libraries, or messy hacks can now be done with just a few lines of CSS. In this post, I&#39;ll share 24 modern CSS tricks that can help you build cleane…</span>
                 <span class="item-meta">DEV Community · 13m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3">
-            <a class="item-link" href="https://dev.to/codexlancers/flutter-file-uploads-made-easy-working-with-multipart-apis-3pgi" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:1">
+            <a class="item-link" href="https://dev.to/zep1997/it-was-never-about-ai-it-has-always-been-about-narrative-control-hj2" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Flutter File Uploads Made Easy: Working with Multipart APIs</span>
-                <span class="item-summary">File uploads are one of the most common requirements in real-world Flutter applications-whether it&#39;s uploading profile images, documents, or media files. At our company , we&#39;ve implemented file upload systems across mult…</span>
-                <span class="item-meta">DEV Community · 20m ago</span>
+                <span class="item-title">It was never about AI. It has always been about narrative control.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Hello. My name is Keniel, and I want to start with how I got here, because it explains everything that comes after it. A few years ago I started learning about AI. Not in a classroom, just on my own, the way most people first touch it. I op…</span>
+                <span class="item-meta">DEV Community · 18m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:2">
+            <a class="item-link" href="https://dev.to/rockybalboan19/show-hn-gneiss-gnn-powered-cli-that-detects-architectural-decay-in-java-repos-117g" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">GNEISS – GNN-powered CLI that detects architectural decay in Java repos</span>
+                <span class="item-point"><span class="point-label">Key point</span>Curious if others are dealing with this: as more AI-generated code gets merged, the high-level structure of codebases seems to be quietly getting worse. Not syntax stuff, linters catch that fine. More like modules slowly getting tangled wit…</span>
+                <span class="item-meta">DEV Community · 24m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:3">
+            <a class="item-link" href="https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=xeiaso.net&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">I Hate Compilers</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 5 # Comments: 0</span>
+                <span class="item-meta">Hacker News (front page) · 27m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:4">
-            <a class="item-link" href="https://dev.to/anika_jha_33ae1d9afc69178/long-day-tiny-vampire-4je6" target="_blank" rel="noopener noreferrer">
+            <a class="item-link" href="https://dev.to/aaronphilip2003/the-free-cron-scheduler-hiding-in-every-github-repo-you-own-2h0c" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Long Day, Tiny Vampire</span>
-                <span class="item-summary">This is a submission for the June Solstice Game Jam One day. One coffin. One very tired vampire. Link for gameplay ( long-day-tiny-vampire ) What I Built The longest day of the year. The worst day to be a vampire. 🦇☀️⚰️…</span>
-                <span class="item-meta">DEV Community · 21m ago</span>
+                <span class="item-title">The Free Cron Scheduler Hiding in Every GitHub Repo You Own</span>
+                <span class="item-point"><span class="point-label">Key point</span>I used it to build a zero-cost &quot;dead man&#39;s switch&quot; that catches silent failures before I do. Quick context before anything else: I packaged this exact recipe, plus six more like it, into a small cookbook — The GitHub Actions Cookbook ($10, …</span>
+                <span class="item-meta">DEV Community · 29m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:5">
-            <a class="item-link" href="https://dev.to/refernext/api-testing-in-the-ai-era-a-practical-workflow-that-actually-holds-up-5970" target="_blank" rel="noopener noreferrer">
+            <a class="item-link" href="https://dev.to/devaonbreaches/stealer-logs-in-xposedornot-4an3" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">API Testing in the AI Era: A Practical Workflow That Actually Holds Up</span>
-                <span class="item-summary">API Testing in the AI Era: A Practical Workflow That Actually Holds Up API testing hasn&#39;t fundamentally changed in the last few years. What has changed is how much of the grunt work can be handed off — and how much new g…</span>
-                <span class="item-meta">DEV Community · 26m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:6">
-            <a class="item-link" href="https://dev.to/michaelangello/solstice-the-sun-remembers-an-open-world-puzzle-journey-through-junes-celebrations-20jd" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">☀️ SOLSTICE: The Sun Remembers — An Open-World Puzzle Journey Through June&#39;s Celebrations</span>
-                <span class="item-summary">This is a submission for the June Solstice Game Jam What I Built ☀️ I built SOLSTICE: The Sun Remembers — a 3D open-world exploration game wrapped around a series of puzzles, built with Three.js. You don&#39;t play as a huma…</span>
-                <span class="item-meta">DEV Community · 26m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:7">
-            <a class="item-link" href="https://dev.to/piyaklabs/routing-around-google-maps-in-korea-naver-kakao-deep-links-weird-coordinates-and-ios-clipboard-25mf" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Routing around Google Maps in Korea: Naver &amp; Kakao deep links, weird coordinates, and iOS clipboard</span>
-                <span class="item-summary">If you&#39;ve traveled to Korea, you&#39;ve hit this wall: Google Maps can&#39;t give you walking or transit directions here. Map-data export is restricted, so locals use Naver Map or KakaoMap instead. The usual workaround for visit…</span>
+                <span class="item-title">Stealer logs in XposedOrNot</span>
+                <span class="item-point"><span class="point-label">Key point</span>I&#39;ve been running XposedOrNot for years now. The pitch has always been simple: type in an email, find out if it&#39;s turned up in a data breach. Free, no signup, open source. Millions of lookups later, it still does exactly that. But I&#39;ve had …</span>
                 <span class="item-meta">DEV Community · 30m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8">
-            <a class="item-link" href="https://dev.to/ankit_meena_57c07342b6bc5/pychase-ast-powered-duplicate-code-detection-for-python-3408" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:6">
+            <a class="item-link" href="https://dev.to/codexlancers/flutter-file-uploads-made-easy-working-with-multipart-apis-3pgi" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">PyChase: AST-Powered Duplicate Code Detection for Python</span>
-                <span class="item-summary">The Problem: Hidden Code Duplication Every codebase accumulates copy-paste clones. They start innocently — &quot;I&#39;ll just duplicate this function and tweak it&quot; — but over months they compound into a maintenance tax. When a b…</span>
-                <span class="item-meta">DEV Community · 31m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:9">
-            <a class="item-link" href="https://dev.to/prabashanadev/is-your-scalable-backend-a-ticking-time-bomb-6o7" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Is Your &#39;Scalable&#39; Backend a Ticking Time Bomb?</span>
-                <span class="item-summary">Is Your &#39;Scalable&#39; Backend a Ticking Time Bomb? Architecting for True Resilience Introduction In the quest for modern applications, the siren call of cloud-native scale, serverless functions, and globally distributed dat…</span>
-                <span class="item-meta">DEV Community · 36m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:10">
-            <a class="item-link" href="https://dev.to/vivekdraxlr/embedding-live-charts-in-your-app-without-a-full-bi-tool-2hfh" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Embedding Live Charts in Your App Without a Full BI Tool</span>
-                <span class="item-summary">Your users want charts. They want to see their revenue over time, their top customers by order value, their support ticket trends — all inside your app, not exported to a spreadsheet. So you open up the docs for some ent…</span>
-                <span class="item-meta">DEV Community · 36m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:11">
-            <a class="item-link" href="https://dev.to/appz_b0659e1ca24e36738948/3-patterns-that-make-n8n-workflows-actually-production-ready-and-why-most-tutorials-skip-them-1896" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">3 patterns that make n8n workflows actually production-ready (and why most tutorials skip them)</span>
-                <span class="item-summary">I recently finished building 33 industry-specific n8n automation packs -- one per business vertical (HR, Marketing, Finance, Healthcare, Real Estate, Legal, and so on). Each pack has 10 importable JSON workflows. Buildin…</span>
+                <span class="item-title">Flutter File Uploads Made Easy: Working with Multipart APIs</span>
+                <span class="item-point"><span class="point-label">Key point</span>File uploads are one of the most common requirements in real-world Flutter applications-whether it&#39;s uploading profile images, documents, or media files. At our company , we&#39;ve implemented file upload systems across multiple production apps…</span>
                 <span class="item-meta">DEV Community · 37m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12">
-            <a class="item-link" href="https://store.steampowered.com/news/app/1675200/view/697641379212298072" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+          <li class="item" style="--i:7">
+            <a class="item-link" href="https://dev.to/anika_jha_33ae1d9afc69178/long-day-tiny-vampire-4je6" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">SteamOS Linux 3.8 released as stable</span>
-                <span class="item-summary">Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 16 # Comments: 1</span>
-                <span class="item-meta">Hacker News (front page) · 1h ago</span>
+                <span class="item-title">Long Day, Tiny Vampire</span>
+                <span class="item-point"><span class="point-label">Key point</span>This is a submission for the June Solstice Game Jam One day. One coffin. One very tired vampire. Link for gameplay ( long-day-tiny-vampire ) What I Built The longest day of the year. The worst day to be a vampire. 🦇☀️⚰️ Long Day, Tiny Vamp…</span>
+                <span class="item-meta">DEV Community · 38m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:8">
+            <a class="item-link" href="https://dev.to/refernext/api-testing-in-the-ai-era-a-practical-workflow-that-actually-holds-up-5970" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">API Testing in the AI Era: A Practical Workflow That Actually Holds Up</span>
+                <span class="item-point"><span class="point-label">Key point</span>API Testing in the AI Era: A Practical Workflow That Actually Holds Up API testing hasn&#39;t fundamentally changed in the last few years. What has changed is how much of the grunt work can be handed off — and how much new grunt work AI-generat…</span>
+                <span class="item-meta">DEV Community · 43m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:9">
+            <a class="item-link" href="https://dev.to/michaelangello/solstice-the-sun-remembers-an-open-world-puzzle-journey-through-junes-celebrations-20jd" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">☀️ SOLSTICE: The Sun Remembers — An Open-World Puzzle Journey Through June&#39;s Celebrations</span>
+                <span class="item-point"><span class="point-label">Key point</span>This is a submission for the June Solstice Game Jam What I Built ☀️ I built SOLSTICE: The Sun Remembers — a 3D open-world exploration game wrapped around a series of puzzles, built with Three.js. You don&#39;t play as a human. You play as Sol ,…</span>
+                <span class="item-meta">DEV Community · 43m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:10">
+            <a class="item-link" href="https://dev.to/piyaklabs/routing-around-google-maps-in-korea-naver-kakao-deep-links-weird-coordinates-and-ios-clipboard-25mf" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Routing around Google Maps in Korea: Naver &amp; Kakao deep links, weird coordinates, and iOS clipboard</span>
+                <span class="item-point"><span class="point-label">Key point</span>If you&#39;ve traveled to Korea, you&#39;ve hit this wall: Google Maps can&#39;t give you walking or transit directions here. Map-data export is restricted, so locals use Naver Map or KakaoMap instead. The usual workaround for visitors is painful — cop…</span>
+                <span class="item-meta">DEV Community · 47m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:11">
+            <a class="item-link" href="https://dev.to/ankit_meena_57c07342b6bc5/pychase-ast-powered-duplicate-code-detection-for-python-3408" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">PyChase: AST-Powered Duplicate Code Detection for Python</span>
+                <span class="item-point"><span class="point-label">Key point</span>The Problem: Hidden Code Duplication Every codebase accumulates copy-paste clones. They start innocently — &quot;I&#39;ll just duplicate this function and tweak it&quot; — but over months they compound into a maintenance tax. When a bug is fixed in one c…</span>
+                <span class="item-meta">DEV Community · 48m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:12">
+            <a class="item-link" href="https://dev.to/prabashanadev/is-your-scalable-backend-a-ticking-time-bomb-6o7" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Is Your &#39;Scalable&#39; Backend a Ticking Time Bomb?</span>
+                <span class="item-point"><span class="point-label">Key point</span>Is Your &#39;Scalable&#39; Backend a Ticking Time Bomb? Architecting for True Resilience Introduction In the quest for modern applications, the siren call of cloud-native scale, serverless functions, and globally distributed databases is incredibly…</span>
+                <span class="item-meta">DEV Community · 53m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:13">
-            <a class="item-link" href="https://conf.nim-lang.org/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=conf.nim-lang.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+            <a class="item-link" href="https://store.steampowered.com/news/app/1675200/view/697641379212298072" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Nim Conf 2026 (Online, Sat June 20)</span>
-                <span class="item-summary">Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 5 # Comments: 1</span>
+                <span class="item-title">SteamOS Linux 3.8 released as stable</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 22 # Comments: 1</span>
                 <span class="item-meta">Hacker News (front page) · 1h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:14">
-            <a class="item-link" href="https://blog.alexellis.io/local-ai-is-not-opus/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.alexellis.io&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+            <a class="item-link" href="https://conf.nim-lang.org/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=conf.nim-lang.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Local Qwen isn&#39;t a worse Opus, it&#39;s a different tool</span>
-                <span class="item-summary">Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 41 # Comments: 11</span>
-                <span class="item-meta">Hacker News (front page) · 2h ago</span>
+                <span class="item-title">Nim Conf 2026 (Online, Sat June 20)</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 8 # Comments: 1</span>
+                <span class="item-meta">Hacker News (front page) · 1h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:15">
-            <a class="item-link" href="https://opencomputer.dev/blog/scaling-one-vm-to-million-sandboxes/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=opencomputer.dev&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+            <a class="item-link" href="https://blog.alexellis.io/local-ai-is-not-opus/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.alexellis.io&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Scaling opencomputer from 1 VM to 1 million sandboxes</span>
-                <span class="item-summary">Article URL: https://opencomputer.dev/blog/scaling-one-vm-to-million-sandboxes/ Comments URL: https://news.ycombinator.com/item?id=48579915 Points: 7 # Comments: 0</span>
+                <span class="item-title">Local Qwen isn&#39;t a worse Opus, it&#39;s a different tool</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 53 # Comments: 16</span>
                 <span class="item-meta">Hacker News (front page) · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:16">
-            <a class="item-link" href="https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=x86ecosystem.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+            <a class="item-link" href="https://opencomputer.dev/blog/scaling-one-vm-to-million-sandboxes/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=opencomputer.dev&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">[x86] AI Compute Extensions (ACE) Specification</span>
-                <span class="item-summary">Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 22 # Comments: 10</span>
-                <span class="item-meta">Hacker News (front page) · 2h ago</span>
+                <span class="item-title">Scaling opencomputer from 1 VM to 1 million sandboxes</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://opencomputer.dev/blog/scaling-one-vm-to-million-sandboxes/ Comments URL: https://news.ycombinator.com/item?id=48579915 Points: 10 # Comments: 0</span>
+                <span class="item-meta">Hacker News (front page) · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
           <li class="item" style="--i:17">
-            <a class="item-link" href="https://www.midjourney.com/medical/blogpost" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+            <a class="item-link" href="https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=x86ecosystem.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Midjourney Medical</span>
-                <span class="item-summary">https://www.midjourney.com/medical Video: https://x.com/midjourney/status/2067422898407837797 Comments URL: https://news.ycombinator.com/item?id=48579650 Points: 349 # Comments: 281</span>
+                <span class="item-title">[x86] AI Compute Extensions (ACE) Specification</span>
+                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 22 # Comments: 11</span>
                 <span class="item-meta">Hacker News (front page) · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -870,7 +854,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Junior Customer Success Representative</span>
-                <span class="item-summary">Team: Customer Success | Reports to: CS Lead Location: Fully remote, globally distributed Level: Entry-level / early-career About Mission Inbox We are a B2B email infrastructure platform built for businesses that treat d…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Team: Customer Success | Reports to: CS Lead Location: Fully remote, globally distributed Level: Entry-level / early-career About Mission Inbox We are a B2B email infrastructure platform built for businesses that treat deliverability as a c…</span>
                 <span class="item-meta">Remote OK · Dev · 18h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -881,8 +865,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Business Development Representative</span>
-                <span class="item-summary">About Us At Bucket Listers, we&#39;re all about unleashing lifeâs full potential and having a blast along the way! Our goal is to encourage people to make lasting memories, forge new connections, and embark on new adventur…</span>
-                <span class="item-meta">Remote OK · Dev · 18h ago</span>
+                <span class="item-point"><span class="point-label">Key point</span>About Us At Bucket Listers, we&#39;re all about unleashing lifeâs full potential and having a blast along the way! Our goal is to encourage people to make lasting memories, forge new connections, and embark on new adventures through our platf…</span>
+                <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -892,7 +876,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Content &amp; Social Media Executive</span>
-                <span class="item-summary">Posted 1:36:36 PM. Job Title: Content &amp; Social Media ExecutiveLocation: Remote (UK)Employment Type:â¦See this and similar jobs on LinkedIn.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Posted 1:36:36 PM. Job Title: Content &amp; Social Media ExecutiveLocation: Remote (UK)Employment Type:â¦See this and similar jobs on LinkedIn.</span>
                 <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -903,7 +887,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Creative Copywriter</span>
-                <span class="item-summary">Creative (Copy) â Comedy AdvertisingContract | Remote | Approx. 2-3 days per weekMost B2B marketingâ¦See this and similar jobs on LinkedIn.</span>
+                <span class="item-point"><span class="point-label">Key point</span>Creative (Copy) â Comedy AdvertisingContract | Remote | Approx. 2-3 days per weekMost B2B marketingâ¦See this and similar jobs on LinkedIn.</span>
                 <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -914,7 +898,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Pharmacovigilance Associate Position</span>
-                <span class="item-summary">Puma Biotechnology Inc. does not accept unsolicited resumes or candidates from outside staffing agencies or recruiters. We are seeking a Pharmacovigilance Associate with 1â2 years of pharmacovigilance experience and ex…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Puma Biotechnology Inc. does not accept unsolicited resumes or candidates from outside staffing agencies or recruiters. We are seeking a Pharmacovigilance Associate with 1â2 years of pharmacovigilance experience and expert proficiency in …</span>
                 <span class="item-meta">Remote OK · Dev · 21h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -925,7 +909,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Lead Software Engineer Ads</span>
-                <span class="item-summary">Company Overview: Jane Technologies is an MIT-founded eCommerce company in the cannabis industry experiencing rapid growth. We believe in cannabis&#39;s ability to bring well-being, health, and love to the world, and our mis…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Company Overview: Jane Technologies is an MIT-founded eCommerce company in the cannabis industry experiencing rapid growth. We believe in cannabis&#39;s ability to bring well-being, health, and love to the world, and our mission is to bring con…</span>
                 <span class="item-meta">Remote OK · Dev · 23h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -936,7 +920,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Capital Planning Analyst</span>
-                <span class="item-summary">PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or …</span>
+                <span class="item-point"><span class="point-label">Key point</span>PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or Green Card holders r…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -947,7 +931,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Program Manager</span>
-                <span class="item-summary">PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or …</span>
+                <span class="item-point"><span class="point-label">Key point</span>PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or Green Card holders r…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -958,7 +942,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Customer Support Agent</span>
-                <span class="item-summary">Are you looking for a new challenge in a dynamic, fast-growing environment? Do you want to contribute to a company with the ambitious goal of enabling 1 billion business travellers to plan and re-plan their trips by auto…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Are you looking for a new challenge in a dynamic, fast-growing environment? Do you want to contribute to a company with the ambitious goal of enabling 1 billion business travellers to plan and re-plan their trips by automating travel manage…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -969,7 +953,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Director of Commercial Operations</span>
-                <span class="item-summary">Location: UK, Spain or Portugal Role: Director of Commercial Operations Reporting to: CEO, Curaleaf International Employment Type: Full Time POSITION SUMMARY: Curaleaf International is one of Europe&#39;s largest vertically …</span>
+                <span class="item-point"><span class="point-label">Key point</span>Location: UK, Spain or Portugal Role: Director of Commercial Operations Reporting to: CEO, Curaleaf International Employment Type: Full Time POSITION SUMMARY: Curaleaf International is one of Europe&#39;s largest vertically integrated medical c…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -980,7 +964,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Medical Writer</span>
-                <span class="item-summary">Overview / About Us Lumanity is dedicated to improving health outcomes by accelerating and optimizing access to life-changing medicines. As a global strategic partner that brings together strategy, evidence, engagement, …</span>
+                <span class="item-point"><span class="point-label">Key point</span>Overview / About Us Lumanity is dedicated to improving health outcomes by accelerating and optimizing access to life-changing medicines. As a global strategic partner that brings together strategy, evidence, engagement, and technology, we w…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -991,7 +975,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Front End Developer Fresher</span>
-                <span class="item-summary">Frontend Developer About the Role We are looking for a creative and detail-oriented Frontend Developer to join our team. The ideal candidate will be responsible for building responsive, visually appealing, and user-frien…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Frontend Developer About the Role We are looking for a creative and detail-oriented Frontend Developer to join our team. The ideal candidate will be responsible for building responsive, visually appealing, and user-friendly web applications…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1002,7 +986,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Customer Support Representative</span>
-                <span class="item-summary">At Dario, Every Day is a New Opportunity to Make a Difference. We are on a mission to make better health easy. Every day our employees contribute to this mission and help hundreds of thousands of people around the globe …</span>
+                <span class="item-point"><span class="point-label">Key point</span>At Dario, Every Day is a New Opportunity to Make a Difference. We are on a mission to make better health easy. Every day our employees contribute to this mission and help hundreds of thousands of people around the globe improve their health…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1013,7 +997,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">24 HR Review VA Virtual Receptionist</span>
-                <span class="item-summary">Important: Selected applicants will receive a response within 24 hours. Due to the volume of applications, we may move forward with other candidates if we do not receive a timely response. We are currently hiring for a l…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Important: Selected applicants will receive a response within 24 hours. Due to the volume of applications, we may move forward with other candidates if we do not receive a timely response. We are currently hiring for a long-term Remote Rece…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1024,7 +1008,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Product Designer Design Systems</span>
-                <span class="item-summary">PENN Entertainment, Inc. is North Americaâs leading provider of integrated entertainment, sports content, and casino gaming experiences. From casinos and racetracks to online gaming, sports betting and entertainment co…</span>
+                <span class="item-point"><span class="point-label">Key point</span>PENN Entertainment, Inc. is North Americaâs leading provider of integrated entertainment, sports content, and casino gaming experiences. From casinos and racetracks to online gaming, sports betting and entertainment content, we deliver th…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1035,7 +1019,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Analyst Customer Success Measurement US</span>
-                <span class="item-summary">Who We Are Cint is a pioneer in research technology (ResTech). Our customers use the Cint platform to post questions and get answers from real people to build business strategies, confidently publish research, accurately…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Who We Are Cint is a pioneer in research technology (ResTech). Our customers use the Cint platform to post questions and get answers from real people to build business strategies, confidently publish research, accurately measure the impact …</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1046,7 +1030,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Back End Developer</span>
-                <span class="item-summary">Location: Remote (Must work during Eastern timezone business hours) About Wisk.ai Wisk.ai is an industry-leading platform that helps hospitality businesses streamline their beverage and food operations through intelligen…</span>
+                <span class="item-point"><span class="point-label">Key point</span>Location: Remote (Must work during Eastern timezone business hours) About Wisk.ai Wisk.ai is an industry-leading platform that helps hospitality businesses streamline their beverage and food operations through intelligent inventory manageme…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1057,7 +1041,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Technical Support Specialist</span>
-                <span class="item-summary">INNERGY is transforming the woodworking industry with purpose built, cloud based ERP software designed exclusively for custom manufacturers. Our platform helps businesses operate smarter, faster, and more efficiently whi…</span>
+                <span class="item-point"><span class="point-label">Key point</span>INNERGY is transforming the woodworking industry with purpose built, cloud based ERP software designed exclusively for custom manufacturers. Our platform helps businesses operate smarter, faster, and more efficiently while seamlessly connec…</span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1068,8 +1052,8 @@
     </main>
 
     <footer class="site">
-      <p>🕒 Updated: <b>Thu, 18 Jun 2026 05:20:29 UTC</b></p>
-      <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions.<br>
+      <p>🕒 Updated: <b>Thu, 18 Jun 2026 05:37:49 UTC</b></p>
+      <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions · Non-English headlines auto-translated to English.<br>
       Maintained by <a href="https://github.com/jack020619">jack020619</a> ·
       <a href="https://github.com/jack020619/IT-news-for-NSCT-team">Source on GitHub</a></p>
       <p>Headlines link to their original publishers. All rights belong to the respective sources.</p>
@@ -1079,14 +1063,28 @@
   <button id="toTop" type="button" title="Back to top" aria-label="Back to top">↑</button>
 
   <script>
+    window.__BG__ = {"all":"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2070&q=80","ai":"https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=2070&q=80","web":"https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=2070&q=80","dev":"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=2070&q=80","jobs":"https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=2070&q=80"};
     (function () {
       var content = document.getElementById("content");
+      var BG = window.__BG__ || {};
 
-      // Preload the daily background image, then fade it in.
-      var img = new Image();
-      var bg = getComputedStyle(document.body).getPropertyValue("--bg-img");
-      var m = bg.match(/url\((['"]?)(.*?)\1\)/);
-      if (m && m[2]) { img.onload = function () { document.body.classList.add("bg-loaded"); }; img.src = m[2]; }
+      // ---- Crossfading background (two layers) ----
+      var layers = [document.getElementById("bgA"), document.getElementById("bgB")];
+      var active = 0, curUrl = "";
+      function setBackground(url) {
+        if (!url || url === curUrl) return;
+        curUrl = url;
+        var next = layers[active ^ 1];
+        var pre = new Image();
+        pre.onload = function () {
+          next.style.backgroundImage = "url('" + url + "')";
+          next.classList.add("show");
+          layers[active].classList.remove("show");
+          active = active ^ 1;
+        };
+        pre.src = url;
+      }
+      setBackground(BG.all);
 
       // Restore saved preferences.
       try {
@@ -1100,16 +1098,12 @@
       function setView(v) {
         content.setAttribute("data-view", v);
         var btns = document.querySelectorAll(".vbtn");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].classList.toggle("active", btns[i].getAttribute("data-view") === v);
-        }
+        for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("active", btns[i].getAttribute("data-view") === v);
         try { localStorage.setItem("nsct-view", v); } catch (e) {}
         revealAll();
       }
       var vbtns = document.querySelectorAll(".vbtn");
-      for (var i = 0; i < vbtns.length; i++) {
-        vbtns[i].addEventListener("click", function () { setView(this.getAttribute("data-view")); });
-      }
+      for (var i = 0; i < vbtns.length; i++) vbtns[i].addEventListener("click", function () { setView(this.getAttribute("data-view")); });
 
       // ---- Category filter (no scrolling through everything) ----
       function setCat(c) {
@@ -1120,17 +1114,14 @@
           cats[j].style.display = show ? "" : "none";
         }
         var chips = document.querySelectorAll(".chip");
-        for (var k = 0; k < chips.length; k++) {
-          chips[k].classList.toggle("active", chips[k].getAttribute("data-cat") === c);
-        }
+        for (var k = 0; k < chips.length; k++) chips[k].classList.toggle("active", chips[k].getAttribute("data-cat") === c);
         try { localStorage.setItem("nsct-cat", c); } catch (e) {}
+        setBackground(BG[c] || BG.all);
         window.scrollTo({ top: 0, behavior: "smooth" });
         revealAll();
       }
       var chips = document.querySelectorAll(".chip");
-      for (var k = 0; k < chips.length; k++) {
-        chips[k].addEventListener("click", function () { setCat(this.getAttribute("data-cat")); });
-      }
+      for (var k = 0; k < chips.length; k++) chips[k].addEventListener("click", function () { setCat(this.getAttribute("data-cat")); });
 
       // ---- Scroll-reveal animation ----
       var io = null;
@@ -1143,13 +1134,28 @@
         var items = document.querySelectorAll(".item");
         for (var n = 0; n < items.length; n++) {
           var it = items[n];
-          var visible = it.offsetParent !== null;
-          if (!visible) continue;
-          if (io) { it.classList.remove("in"); io.observe(it); }
-          else { it.classList.add("in"); }
+          if (it.offsetParent === null) continue;
+          if (io) { it.classList.remove("in"); io.observe(it); } else { it.classList.add("in"); }
         }
       }
       revealAll();
+
+      // ---- Background follows the category in view while scrolling ----
+      var ratios = {};
+      if ("IntersectionObserver" in window) {
+        var bgObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            var id = en.target.getAttribute("data-cat");
+            ratios[id] = en.isIntersecting ? en.intersectionRatio : 0;
+          });
+          var best = null, bestR = 0;
+          for (var key in ratios) { if (ratios[key] > bestR) { bestR = ratios[key]; best = key; } }
+          if (best && BG[best]) setBackground(BG[best]);
+          else if (!best) setBackground(BG.all);
+        }, { threshold: [0, 0.2, 0.4, 0.6], rootMargin: "-12% 0px -45% 0px" });
+        var sections = document.querySelectorAll(".category");
+        for (var s = 0; s < sections.length; s++) bgObs.observe(sections[s]);
+      }
 
       // ---- Scroll progress + back-to-top ----
       var prog = document.getElementById("progress");

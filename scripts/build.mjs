@@ -1,11 +1,12 @@
 // Build script for "IT News for NSCT Team".
 // Fetches RSS/Atom feeds (zero dependencies — uses Node's built-in fetch),
-// parses them, and renders a modern, interactive static index.html.
+// translates non-English headlines/summaries to English, and renders a modern,
+// interactive static index.html.
 //
 // Usage: node scripts/build.mjs
 //
-// Designed to be resilient: a feed that fails (timeout, 4xx/5xx, bad XML)
-// is skipped with a warning, never crashing the whole build.
+// Designed to be resilient: a feed that fails (timeout, 4xx/5xx, bad XML) — or a
+// translation that fails — is skipped/kept-as-is, never crashing the whole build.
 
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -16,38 +17,40 @@ const ROOT = join(__dirname, "..");
 
 const MAX_ITEMS_PER_CATEGORY = 18;
 const FETCH_TIMEOUT_MS = 15000;
+const TRANSLATE_TIMEOUT_MS = 10000;
 const USER_AGENT =
   "Mozilla/5.0 (compatible; NSCT-IT-News-Bot/1.0; +https://github.com/jack020619/IT-news-for-NSCT-team)";
 
-// Daily-rotating, IT-related background images (Unsplash direct CDN URLs).
-// One is picked per day (by day-of-year), so each daily rebuild gets a new look.
-// An animated gradient sits behind it, so the page still looks great if an
-// image ever fails to load.
+// ---------------------------------------------------------------------------
+// Daily-rotating, IT-related background images — one POOL PER CATEGORY.
+// Each category shows its own themed image; a new one is picked per day
+// (by day-of-year). The page crossfades between them as you scroll.
+// All IDs are verified-working Unsplash CDN photos.
+// ---------------------------------------------------------------------------
 const BG_QUERY = "?auto=format&fit=crop&w=2070&q=80";
-const BG_IMAGES = [
-  "https://images.unsplash.com/photo-1518770660439-4636190af475", // circuit board macro
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa", // blue network earth
-  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5", // matrix code
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97", // code on monitor
-  "https://images.unsplash.com/photo-1550751827-4bd374c3f58b",    // red server abstract
-  "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b", // laptop code
-  "https://images.unsplash.com/photo-1531297484001-80022131f5a1", // purple tech gradient
-  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d", // dark workspace
-  "https://images.unsplash.com/photo-1633356122544-f134324a6cee", // AI blue abstract
-  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485", // AI neural net
-  "https://images.unsplash.com/photo-1639322537228-f710d846310a", // digital data
-  "https://images.unsplash.com/photo-1558494949-ef010cbdcc31",    // server room
-  "https://images.unsplash.com/photo-1591405351990-4726e331f141", // dev keyboard
-  "https://images.unsplash.com/photo-1542831371-29b0f74f9713",    // colorful code
-];
-
+const CATEGORY_BG = {
+  all: ["1451187580459-43490279c0fa", "1550751827-4bd374c3f58b", "1639322537228-f710d846310a", "1531297484001-80022131f5a1"],
+  ai:  ["1633356122544-f134324a6cee", "1620712943543-bcc4688e7485", "1639322537228-f710d846310a", "1531297484001-80022131f5a1"],
+  web: ["1517694712202-14dd9538aa97", "1542831371-29b0f74f9713", "1518770660439-4636190af475", "1531297484001-80022131f5a1"],
+  dev: ["1526374965328-7f61d4dc18c5", "1558494949-ef010cbdcc31", "1591405351990-4726e331f141", "1518770660439-4636190af475"],
+  jobs:["1504384308090-c894fdcc538d", "1488590528505-98d2b5aba04b", "1591405351990-4726e331f141", "1517694712202-14dd9538aa97"],
+};
+function imgUrl(id) {
+  return "https://images.unsplash.com/photo-" + id + BG_QUERY;
+}
 function dayOfYear(date) {
   const start = Date.UTC(date.getUTCFullYear(), 0, 0);
   const today = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
   return Math.floor((today - start) / 86400000);
 }
-function pickDailyImage(date) {
-  return BG_IMAGES[dayOfYear(date) % BG_IMAGES.length] + BG_QUERY;
+function pickCategoryImages(date) {
+  const d = dayOfYear(date);
+  const out = {};
+  for (const key of Object.keys(CATEGORY_BG)) {
+    const pool = CATEGORY_BG[key];
+    out[key] = imgUrl(pool[d % pool.length]);
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -102,6 +105,57 @@ function esc(str = "") {
 }
 
 // ---------------------------------------------------------------------------
+// Translation — auto-detect non-English (non-Latin script) text and translate
+// to English via the free Google endpoint. English text is left untouched.
+// ---------------------------------------------------------------------------
+const _trCache = new Map();
+function needsTranslation(text) {
+  if (!text) return false;
+  const letters = text.match(/[\p{L}]/gu) || [];
+  if (!letters.length) return false;
+  let nonLatin = 0;
+  for (const ch of letters) {
+    // Beyond Latin Extended-B (U+024F) → CJK, Hangul, Cyrillic, Arabic, Thai, etc.
+    if (ch.codePointAt(0) > 0x024f) nonLatin++;
+  }
+  return nonLatin / letters.length > 0.15;
+}
+async function translateText(text) {
+  if (!text || !needsTranslation(text)) return text;
+  if (_trCache.has(text)) return _trCache.get(text);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TRANSLATE_TIMEOUT_MS);
+  try {
+    const url =
+      "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=" +
+      encodeURIComponent(text);
+    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT }, signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const out = (data[0] || []).map((seg) => seg[0]).join("");
+    const result = out || text;
+    _trCache.set(text, result);
+    return result;
+  } catch {
+    return text; // graceful: keep original if translation fails
+  } finally {
+    clearTimeout(timer);
+  }
+}
+async function translateItems(items) {
+  let count = 0;
+  await Promise.all(
+    items.map(async (it) => {
+      const before = it.title;
+      it.title = await translateText(it.title);
+      it.summary = await translateText(it.summary);
+      if (it.title !== before) count++;
+    })
+  );
+  return count;
+}
+
+// ---------------------------------------------------------------------------
 // Minimal RSS + Atom parser
 // ---------------------------------------------------------------------------
 function tag(block, name) {
@@ -149,7 +203,7 @@ function parseFeed(xml, sourceName) {
       link: link.trim(),
       source: sourceName,
       date: date && !isNaN(date) ? date : null,
-      summary: stripTags(descRaw).slice(0, 220),
+      summary: stripTags(descRaw).slice(0, 240),
     });
   }
   return items;
@@ -207,9 +261,9 @@ function renderItem(item, now, i) {
   const host = hostOf(item.link);
   const favicon = host ? `https://www.google.com/s2/favicons?domain=${esc(host)}&sz=64` : "";
   const meta = [esc(item.source), ago].filter(Boolean).join(" · ");
-  const summary = item.summary
-    ? esc(item.summary) + (item.summary.length >= 220 ? "…" : "")
-    : "";
+  const point = item.summary
+    ? esc(item.summary) + (item.summary.length >= 240 ? "…" : "")
+    : "No summary available for this story.";
   const icon = favicon
     ? `<img src="${favicon}" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')">`
     : "";
@@ -219,7 +273,7 @@ function renderItem(item, now, i) {
               <span class="item-icon">${icon}</span>
               <span class="item-body">
                 <span class="item-title">${esc(item.title)}</span>
-                <span class="item-summary">${summary}</span>
+                <span class="item-point"><span class="point-label">Key point</span>${point}</span>
                 <span class="item-meta">${meta}</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -241,8 +295,9 @@ function renderCategory(cat, items, now) {
       </section>`;
 }
 
-function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bgImage }) {
+function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bgImages }) {
   const dateLabel = builtAt.toUTCString().replace("GMT", "UTC");
+  const DEFAULT_VIEW = "list";
 
   const filterButtons = [
     `<button class="chip active" data-cat="all" type="button">📚 All <em>${totalItems}</em></button>`,
@@ -259,8 +314,8 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
     ["cards", "▦", "Cards"],
   ]
     .map(
-      ([v, ic, label], idx) =>
-        `<button class="vbtn${idx === 0 ? " active" : ""}" data-view="${v}" type="button" title="${label} view"><span class="vico">${ic}</span><span class="vlabel">${label}</span></button>`
+      ([v, ic, label]) =>
+        `<button class="vbtn${v === DEFAULT_VIEW ? " active" : ""}" data-view="${v}" type="button" title="${label} view"><span class="vico">${ic}</span><span class="vlabel">${label}</span></button>`
     )
     .join("\n        ");
 
@@ -270,7 +325,7 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IT News for NSCT Team · Web &amp; AI Daily</title>
-  <meta name="description" content="Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Auto-updated every day." />
+  <meta name="description" content="Daily IT news for the NSCT team — web development, AI, developer community and remote/freelance jobs. Translated to English, auto-updated every day." />
   <style>
     :root {
       --bg: #07080d;
@@ -290,12 +345,11 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       margin: 0; color: var(--text);
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5; -webkit-font-smoothing: antialiased;
-      background: var(--bg);
-      min-height: 100vh;
+      background: var(--bg); min-height: 100vh;
     }
     a { color: var(--accent); text-decoration: none; }
 
-    /* ---- Layered background: animated gradient + daily IT image ---- */
+    /* ---- Layered background: animated gradient + crossfading category images ---- */
     .bg-layer { position: fixed; inset: 0; z-index: -3; overflow: hidden; }
     .bg-gradient {
       position: absolute; inset: -20%;
@@ -307,15 +361,14 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       filter: saturate(1.1);
       animation: drift 26s ease-in-out infinite alternate;
     }
-    .bg-image {
+    .bgx {
       position: absolute; inset: 0;
-      background-image: var(--bg-img);
       background-size: cover; background-position: center;
-      opacity: 0; transition: opacity 1.4s ease;
-      filter: brightness(.42) saturate(1.05);
-      transform: scale(1.05);
+      opacity: 0; transition: opacity 1.2s ease, transform 16s ease-out;
+      filter: brightness(.42) saturate(1.05); transform: scale(1.06);
+      will-change: opacity;
     }
-    body.bg-loaded .bg-image { opacity: .55; }
+    .bgx.show { opacity: .55; transform: scale(1.12); }
     .bg-veil {
       position: fixed; inset: 0; z-index: -2; pointer-events: none;
       background: linear-gradient(180deg, rgba(6,7,12,.35) 0%, rgba(6,7,12,.55) 45%, rgba(6,7,12,.86) 100%);
@@ -327,7 +380,6 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
     @keyframes float1 { 0%,100%{ transform: translate(0,0);} 50%{ transform: translate(40px,30px);} }
     @keyframes float2 { 0%,100%{ transform: translate(0,0);} 50%{ transform: translate(-40px,-30px);} }
 
-    /* ---- Scroll progress bar ---- */
     #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 50; background: var(--grad); box-shadow: 0 0 12px rgba(124,147,255,.8); transition: width .1s linear; }
 
     .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px 80px; }
@@ -340,23 +392,19 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       background: var(--glass); backdrop-filter: blur(8px); margin-bottom: 20px;
     }
     .hero h1 {
-      font-size: clamp(2.1rem, 6vw, 3.7rem); line-height: 1.04; margin: 0 0 14px; letter-spacing: -.025em;
-      font-weight: 800;
+      font-size: clamp(2.1rem, 6vw, 3.7rem); line-height: 1.04; margin: 0 0 14px; letter-spacing: -.025em; font-weight: 800;
       background: linear-gradient(120deg, #fff 10%, #b9c4ff 40%, #7be6d6 70%, #fff 95%);
       background-size: 220% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
       animation: shine 8s linear infinite;
     }
     @keyframes shine { to { background-position: 220% center; } }
-    .hero .sub { color: var(--muted); max-width: 660px; margin: 0 auto; font-size: 1.02rem; }
+    .hero .sub { color: var(--muted); max-width: 680px; margin: 0 auto; font-size: 1.02rem; }
     .stats { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
-    .stat {
-      background: var(--glass); border: 1px solid var(--border); border-radius: 14px;
-      padding: 12px 18px; backdrop-filter: blur(10px); min-width: 96px;
-    }
+    .stat { background: var(--glass); border: 1px solid var(--border); border-radius: 14px; padding: 12px 18px; backdrop-filter: blur(10px); min-width: 96px; }
     .stat b { display: block; font-size: 1.35rem; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .stat span { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
 
-    /* ---- Sticky toolbar: filters + view switcher ---- */
+    /* ---- Sticky toolbar ---- */
     .toolbar {
       position: sticky; top: 0; z-index: 30; margin-top: 26px;
       background: rgba(8,10,16,.62); backdrop-filter: blur(16px) saturate(1.2);
@@ -377,10 +425,7 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
     .chip.active em { color: #fff; background: rgba(255,255,255,.22); }
 
     .views { display: flex; gap: 4px; background: var(--glass-2); border: 1px solid var(--border); border-radius: 12px; padding: 4px; }
-    .vbtn {
-      font: inherit; cursor: pointer; color: var(--muted); background: transparent; border: 0;
-      padding: 7px 11px; border-radius: 9px; display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; transition: all .15s ease;
-    }
+    .vbtn { font: inherit; cursor: pointer; color: var(--muted); background: transparent; border: 0; padding: 7px 11px; border-radius: 9px; display: inline-flex; align-items: center; gap: 7px; font-size: .82rem; transition: all .15s ease; }
     .vbtn .vico { font-size: 1rem; line-height: 1; }
     .vbtn:hover { color: var(--text); background: rgba(255,255,255,.06); }
     .vbtn.active { color: #fff; background: rgba(124,147,255,.28); box-shadow: inset 0 0 0 1px rgba(124,147,255,.5); }
@@ -402,41 +447,42 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
       position: relative; overflow: hidden;
     }
-    .item-link::before {
-      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-      background: var(--grad); opacity: 0; transition: opacity .18s ease;
-    }
+    .item-link::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grad); opacity: 0; transition: opacity .18s ease; }
     .item-link:hover { transform: translateY(-3px); border-color: var(--border-strong); box-shadow: 0 14px 34px rgba(0,0,0,.45); background: var(--glass-2); }
     .item-link:hover::before { opacity: 1; }
     .item-icon { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: rgba(255,255,255,.06); border: 1px solid var(--border); overflow: hidden; }
     .item-icon img { width: 22px; height: 22px; border-radius: 4px; }
     .item-icon.noimg::after { content: "🔗"; font-size: .9rem; }
-    .item-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+    .item-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
     .item-title { font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.35; }
     .item-link:hover .item-title { color: #cdd6ff; }
-    .item-summary { color: var(--muted); font-size: .87rem; }
+    .item-point { color: #c8d0e0; font-size: .87rem; line-height: 1.45; }
+    .point-label {
+      display: inline-block; font-size: .62rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--accent-2); border: 1px solid rgba(56,224,200,.35); background: rgba(56,224,200,.08);
+      padding: 1px 7px; border-radius: 999px; margin-right: 8px; vertical-align: 1px;
+    }
     .item-meta { color: #8b93a7; font-size: .76rem; letter-spacing: .01em; }
     .item-arrow { flex: 0 0 auto; color: var(--muted); font-size: 1rem; opacity: 0; transform: translate(-4px,2px); transition: all .18s ease; }
     .item-link:hover .item-arrow { opacity: 1; transform: none; color: var(--accent-2); }
 
     /* ===== VIEW MODES (Explorer-style) ===== */
-    /* TITLE: headings only, compact rows */
+    /* TITLE: pure headings */
     #content[data-view="title"] ul.items { display: flex; flex-direction: column; gap: 8px; }
     #content[data-view="title"] .item-icon,
-    #content[data-view="title"] .item-summary,
+    #content[data-view="title"] .item-point,
     #content[data-view="title"] .item-meta { display: none; }
     #content[data-view="title"] .item-link { padding: 11px 15px; align-items: center; }
     #content[data-view="title"] .item-title { font-weight: 500; font-size: .96rem; }
 
-    /* LIST: title + meta inline, with small icon */
-    #content[data-view="list"] ul.items { display: flex; flex-direction: column; gap: 8px; }
-    #content[data-view="list"] .item-summary { display: none; }
-    #content[data-view="list"] .item-link { padding: 11px 15px; align-items: center; }
+    /* LIST (default): heading + 1-line key point + meta */
+    #content[data-view="list"] ul.items { display: flex; flex-direction: column; gap: 9px; }
+    #content[data-view="list"] .item-point { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 
-    /* DETAILS: title + summary + meta (full rows) */
-    #content[data-view="details"] ul.items { display: flex; flex-direction: column; gap: 11px; }
+    /* DETAILS: heading + full key point + meta */
+    #content[data-view="details"] ul.items { display: flex; flex-direction: column; gap: 12px; }
 
-    /* CARDS (medium icons): grid of glass cards */
+    /* CARDS: grid of glass cards (full key point) */
     #content[data-view="cards"] ul.items { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
     #content[data-view="cards"] .item-link { flex-direction: column; align-items: flex-start; gap: 12px; height: 100%; padding: 18px; }
     #content[data-view="cards"] .item-icon { width: 46px; height: 46px; border-radius: 12px; }
@@ -445,13 +491,9 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
 
     .empty { color: var(--muted); padding: 60px 0; text-align: center; }
 
-    footer.site {
-      margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--border);
-      color: var(--muted); font-size: .82rem; text-align: center;
-    }
+    footer.site { margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; text-align: center; }
     footer.site a { color: var(--accent); }
 
-    /* Back to top */
     #toTop {
       position: fixed; bottom: 22px; right: 22px; z-index: 40;
       width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border-strong);
@@ -462,22 +504,19 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
     #toTop.show { opacity: 1; transform: none; pointer-events: auto; }
     #toTop:hover { border-color: var(--accent); box-shadow: 0 8px 22px rgba(99,102,241,.5); }
 
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-      .item { opacity: 1; transform: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: .01ms !important; } .item { opacity: 1; transform: none; } }
   </style>
 </head>
-<body style="--bg-img: url('${esc(bgImage)}')">
+<body>
   <div id="progress"></div>
-  <div class="bg-layer"><div class="bg-gradient"></div><div class="bg-image"></div></div>
+  <div class="bg-layer"><div class="bg-gradient"></div><div class="bgx" id="bgA"></div><div class="bgx" id="bgB"></div></div>
   <div class="bg-veil"></div>
   <span class="blob b1"></span><span class="blob b2"></span>
 
   <header class="hero">
-    <span class="kicker">Web &amp; AI · Updated Daily</span>
+    <span class="kicker">Web &amp; AI · Translated · Updated Daily</span>
     <h1>IT News for NSCT Team</h1>
-    <p class="sub">A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Built for the freelancers and the job-seekers among us.</p>
+    <p class="sub">A daily, no-noise digest for our team — web development, AI, developer trends and remote/freelance work. Headlines from around the world, translated to English. Built for the freelancers and the job-seekers among us.</p>
     <div class="stats">
       <div class="stat"><b>${totalItems}</b><span>Stories</span></div>
       <div class="stat"><b>${sourceCount}</b><span>Sources</span></div>
@@ -495,13 +534,13 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
       </div>
     </div>
 
-    <main id="content" data-view="title" data-cat="all">
+    <main id="content" data-view="${DEFAULT_VIEW}" data-cat="all">
 ${sections || '<p class="empty">No stories could be fetched this run. Please check back after the next daily update.</p>'}
     </main>
 
     <footer class="site">
       <p>🕒 Updated: <b>${esc(dateLabel)}</b></p>
-      <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions.<br>
+      <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions · Non-English headlines auto-translated to English.<br>
       Maintained by <a href="https://github.com/jack020619">jack020619</a> ·
       <a href="https://github.com/jack020619/IT-news-for-NSCT-team">Source on GitHub</a></p>
       <p>Headlines link to their original publishers. All rights belong to the respective sources.</p>
@@ -511,14 +550,28 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
   <button id="toTop" type="button" title="Back to top" aria-label="Back to top">↑</button>
 
   <script>
+    window.__BG__ = ${JSON.stringify(bgImages)};
     (function () {
       var content = document.getElementById("content");
+      var BG = window.__BG__ || {};
 
-      // Preload the daily background image, then fade it in.
-      var img = new Image();
-      var bg = getComputedStyle(document.body).getPropertyValue("--bg-img");
-      var m = bg.match(/url\\((['"]?)(.*?)\\1\\)/);
-      if (m && m[2]) { img.onload = function () { document.body.classList.add("bg-loaded"); }; img.src = m[2]; }
+      // ---- Crossfading background (two layers) ----
+      var layers = [document.getElementById("bgA"), document.getElementById("bgB")];
+      var active = 0, curUrl = "";
+      function setBackground(url) {
+        if (!url || url === curUrl) return;
+        curUrl = url;
+        var next = layers[active ^ 1];
+        var pre = new Image();
+        pre.onload = function () {
+          next.style.backgroundImage = "url('" + url + "')";
+          next.classList.add("show");
+          layers[active].classList.remove("show");
+          active = active ^ 1;
+        };
+        pre.src = url;
+      }
+      setBackground(BG.all);
 
       // Restore saved preferences.
       try {
@@ -532,16 +585,12 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
       function setView(v) {
         content.setAttribute("data-view", v);
         var btns = document.querySelectorAll(".vbtn");
-        for (var i = 0; i < btns.length; i++) {
-          btns[i].classList.toggle("active", btns[i].getAttribute("data-view") === v);
-        }
+        for (var i = 0; i < btns.length; i++) btns[i].classList.toggle("active", btns[i].getAttribute("data-view") === v);
         try { localStorage.setItem("nsct-view", v); } catch (e) {}
         revealAll();
       }
       var vbtns = document.querySelectorAll(".vbtn");
-      for (var i = 0; i < vbtns.length; i++) {
-        vbtns[i].addEventListener("click", function () { setView(this.getAttribute("data-view")); });
-      }
+      for (var i = 0; i < vbtns.length; i++) vbtns[i].addEventListener("click", function () { setView(this.getAttribute("data-view")); });
 
       // ---- Category filter (no scrolling through everything) ----
       function setCat(c) {
@@ -552,17 +601,14 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
           cats[j].style.display = show ? "" : "none";
         }
         var chips = document.querySelectorAll(".chip");
-        for (var k = 0; k < chips.length; k++) {
-          chips[k].classList.toggle("active", chips[k].getAttribute("data-cat") === c);
-        }
+        for (var k = 0; k < chips.length; k++) chips[k].classList.toggle("active", chips[k].getAttribute("data-cat") === c);
         try { localStorage.setItem("nsct-cat", c); } catch (e) {}
+        setBackground(BG[c] || BG.all);
         window.scrollTo({ top: 0, behavior: "smooth" });
         revealAll();
       }
       var chips = document.querySelectorAll(".chip");
-      for (var k = 0; k < chips.length; k++) {
-        chips[k].addEventListener("click", function () { setCat(this.getAttribute("data-cat")); });
-      }
+      for (var k = 0; k < chips.length; k++) chips[k].addEventListener("click", function () { setCat(this.getAttribute("data-cat")); });
 
       // ---- Scroll-reveal animation ----
       var io = null;
@@ -575,13 +621,28 @@ ${sections || '<p class="empty">No stories could be fetched this run. Please che
         var items = document.querySelectorAll(".item");
         for (var n = 0; n < items.length; n++) {
           var it = items[n];
-          var visible = it.offsetParent !== null;
-          if (!visible) continue;
-          if (io) { it.classList.remove("in"); io.observe(it); }
-          else { it.classList.add("in"); }
+          if (it.offsetParent === null) continue;
+          if (io) { it.classList.remove("in"); io.observe(it); } else { it.classList.add("in"); }
         }
       }
       revealAll();
+
+      // ---- Background follows the category in view while scrolling ----
+      var ratios = {};
+      if ("IntersectionObserver" in window) {
+        var bgObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            var id = en.target.getAttribute("data-cat");
+            ratios[id] = en.isIntersecting ? en.intersectionRatio : 0;
+          });
+          var best = null, bestR = 0;
+          for (var key in ratios) { if (ratios[key] > bestR) { bestR = ratios[key]; best = key; } }
+          if (best && BG[best]) setBackground(BG[best]);
+          else if (!best) setBackground(BG.all);
+        }, { threshold: [0, 0.2, 0.4, 0.6], rootMargin: "-12% 0px -45% 0px" });
+        var sections = document.querySelectorAll(".category");
+        for (var s = 0; s < sections.length; s++) bgObs.observe(sections[s]);
+      }
 
       // ---- Scroll progress + back-to-top ----
       var prog = document.getElementById("progress");
@@ -612,6 +673,7 @@ async function main() {
   const config = JSON.parse(await readFile(join(ROOT, "src", "feeds.json"), "utf8"));
 
   let totalItems = 0;
+  let translatedTotal = 0;
   const sourceNames = new Set();
   const sectionHtml = [];
   const categoryMeta = [];
@@ -645,6 +707,12 @@ async function main() {
     });
 
     items = items.slice(0, MAX_ITEMS_PER_CATEGORY);
+
+    // Translate any non-English headlines/summaries to English.
+    const translated = await translateItems(items);
+    if (translated) console.log(`  🌐 Translated ${translated} non-English item(s) to English`);
+    translatedTotal += translated;
+
     items.forEach((it) => sourceNames.add(it.source));
     totalItems += items.length;
 
@@ -661,12 +729,11 @@ async function main() {
     builtAt,
     totalItems,
     sourceCount: sourceNames.size,
-    bgImage: pickDailyImage(builtAt),
+    bgImages: pickCategoryImages(builtAt),
   });
 
   await writeFile(join(ROOT, "index.html"), page, "utf8");
-  console.log(`\n✅ Wrote index.html — ${totalItems} stories from ${sourceNames.size} sources.`);
-  console.log(`🖼  Background of the day: ${pickDailyImage(builtAt).split("?")[0]}`);
+  console.log(`\n✅ Wrote index.html — ${totalItems} stories from ${sourceNames.size} sources (${translatedTotal} translated).`);
 }
 
 main().catch((err) => {
