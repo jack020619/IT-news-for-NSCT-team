@@ -324,7 +324,7 @@ function renderItem(item, now, i) {
               <span class="item-icon">${icon}</span>
               <span class="item-body">
                 <span class="item-title">${esc(item.title)}</span>
-                <span class="item-point"><span class="point-label">Key point</span>${pinBadge}${point}</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>${pinBadge}${point}</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">${budgetChip}${meta}</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -552,7 +552,14 @@ function renderPage({ sections, categories, builtAt, totalItems, sourceCount, bg
 
     /* LIST (default): heading + 1-line key point + meta */
     #content[data-view="list"] ul.items { display: flex; flex-direction: column; gap: 9px; }
-    #content[data-view="list"] .item-point { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    #content[data-view="list"] .point-text { -webkit-line-clamp: 1; }
+
+    /* Key point: expandable text block */
+    .item-point { display: flex; flex-direction: column; gap: 3px; }
+    .point-text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .item-point.expanded .point-text { display: block !important; overflow: visible !important; }
+    .expand-btn { align-self: flex-start; font: inherit; font-size: .72rem; color: var(--accent-2); background: rgba(56,224,200,.07); border: 1px solid rgba(56,224,200,.28); border-radius: 999px; padding: 1px 10px; cursor: pointer; transition: background .15s, border-color .15s; margin-top: 1px; }
+    .expand-btn:hover { background: rgba(56,224,200,.16); border-color: rgba(56,224,200,.55); color: #fff; }
 
     /* DETAILS: heading + full key point + meta */
     #content[data-view="details"] ul.items { display: flex; flex-direction: column; gap: 12px; }

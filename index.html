@@ -165,7 +165,14 @@
 
     /* LIST (default): heading + 1-line key point + meta */
     #content[data-view="list"] ul.items { display: flex; flex-direction: column; gap: 9px; }
-    #content[data-view="list"] .item-point { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    #content[data-view="list"] .point-text { -webkit-line-clamp: 1; }
+
+    /* Key point: expandable text block */
+    .item-point { display: flex; flex-direction: column; gap: 3px; }
+    .point-text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .item-point.expanded .point-text { display: block !important; overflow: visible !important; }
+    .expand-btn { align-self: flex-start; font: inherit; font-size: .72rem; color: var(--accent-2); background: rgba(56,224,200,.07); border: 1px solid rgba(56,224,200,.28); border-radius: 999px; padding: 1px 10px; cursor: pointer; transition: background .15s, border-color .15s; margin-top: 1px; }
+    .expand-btn:hover { background: rgba(56,224,200,.16); border-color: rgba(56,224,200,.55); color: #fff; }
 
     /* DETAILS: heading + full key point + meta */
     #content[data-view="details"] ul.items { display: flex; flex-direction: column; gap: 12px; }
@@ -252,8 +259,8 @@
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Midjourney Medical goes from generating ‘cat images’ to full-body ultrasound scans</span>
-                <span class="item-point"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Sc…</span>
+                <span class="item-title">Midjourney goes from generating cat images to full-body ultrasound scans</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Sc…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -264,7 +271,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI coding agents taught robots how to install GPUs and cut zip ties</span>
-                <span class="item-point"><span class="point-label">Key point</span>Nvidia&#39;s self-improvement program for robots enlists teams of AI coding agents.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Nvidia&#39;s self-improvement program for robots enlists teams of AI coding agents.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -275,7 +282,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic got hit by export rules nobody understands</span>
-                <span class="item-point"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees,…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees,…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -286,7 +293,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">&quot;Dangerous&quot; AI models are coming no matter what</span>
-                <span class="item-point"><span class="point-label">Key point</span>AI models with advanced hacking capabilities will soon be the norm.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>AI models with advanced hacking capabilities will soon be the norm.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -297,7 +304,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Two-thirds of Americans think AI is advancing too quickly</span>
-                <span class="item-point"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when …</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -308,7 +315,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Can anyone look cool wearing Snap’s $2,000 glasses?</span>
-                <span class="item-point"><span class="point-label">Key point</span>Yesterday, Snap debuted its new $2,195 Specs glasses. In an interview with CNBC, Snap CEO Evan Spiegel described the Specs as something the company had been working on for more than 12 years, an attempt to &quot;bring computing into the world&quot; a…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Yesterday, Snap debuted its new $2,195 Specs glasses. In an interview with CNBC, Snap CEO Evan Spiegel described the Specs as something the company had been working on for more than 12 years, an attempt to &quot;bring computing into the world&quot; a…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 13h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -319,8 +326,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Ten months later, the $100 Google Home Speaker is finally available for preorder</span>
-                <span class="item-point"><span class="point-label">Key point</span>Google&#39;s new smart speaker is more about Gemini than audio quality.</span>
-                <span class="item-meta">Ars Technica · AI · 13h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Google&#39;s new smart speaker is more about Gemini than audio quality.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">Ars Technica · AI · 14h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -330,8 +337,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.google&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">New research shows how AMIE, our medical AI, could help manage health conditions.</span>
-                <span class="item-point"><span class="point-label">Key point</span>Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.</span>
-                <span class="item-meta">Google AI Blog · 14h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Research in “Nature” shows our conversational AI system matches primary care physicians in complex disease management.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">Google AI Blog · 15h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -341,7 +348,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI search grounded in Facebook posts? What could go wrong?</span>
-                <span class="item-point"><span class="point-label">Key point</span>AI is pretty reliable at putting things on your calendar these days, but it hasn&#39;t quite cracked answering the related and all-important question of &quot;What should I do this weekend?&quot; Meta&#39;s new AI Mode in search could be a useful tool - if i…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>AI is pretty reliable at putting things on your calendar these days, but it hasn&#39;t quite cracked answering the related and all-important question of &quot;What should I do this weekend?&quot; Meta&#39;s new AI Mode in search could be a useful tool - if i…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 16h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -352,8 +359,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Google’s first smart speaker in six years arrives next week</span>
-                <span class="item-point"><span class="point-label">Key point</span>Google&#39;s first new smart speaker in six years starts shipping on June 25th, narrowly missing its promised spring launch window. Preorders for the Google Home Speaker open today, June 17th. Nothing has changed hardware-wise in the nine month…</span>
-                <span class="item-meta">The Verge · AI · 16h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Google&#39;s first new smart speaker in six years starts shipping on June 25th, narrowly missing its promised spring launch window. Preorders for the Google Home Speaker open today, June 17th. Nothing has changed hardware-wise in the nine month…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">The Verge · AI · 17h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -363,7 +370,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">The next humanoid robot might not look human at all</span>
-                <span class="item-point"><span class="point-label">Key point</span>The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, &quot;humanoid robots don&#39;t need to look human.&quot; That explains the look of En…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>The next humanoid robot might not have a head. It might not have legs. It might even sit on a wheeled base and fold down like a deck chair. But, as Genesis AI puts it, &quot;humanoid robots don&#39;t need to look human.&quot; That explains the look of En…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 20h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -374,7 +381,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic &quot;pauses&quot; token-based billing for its Claude Agent SDK</span>
-                <span class="item-point"><span class="point-label">Key point</span>Move originally planned for Monday would have heavily increased power users&#39; costs.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Move originally planned for Monday would have heavily increased power users&#39; costs.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -385,7 +392,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Apple 2027 rumors: AirPods with cameras for AI and the second folding iPhone</span>
-                <span class="item-point"><span class="point-label">Key point</span>Now that we&#39;re clear of WWDC and all of the new AI-powered features coming to Apple&#39;s platforms, Bloomberg reporter Mark Gurman has more details about rumored new hardware, like the camera-equipped AirPods he&#39;d previously written about. He …</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Now that we&#39;re clear of WWDC and all of the new AI-powered features coming to Apple&#39;s platforms, Bloomberg reporter Mark Gurman has more details about rumored new hardware, like the camera-equipped AirPods he&#39;d previously written about. He …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -396,7 +403,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Qualcomm’s latest chip hints that more powerful smart glasses could be on the way</span>
-                <span class="item-point"><span class="point-label">Key point</span>Smart glasses are still a nascent category, but chipmaker Qualcomm is hard at work upgrading the silicon to power the next wave of XR devices: the Snapdragon Reality Elite. Although Qualcomm is announcing the chip today at Augmented World E…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Smart glasses are still a nascent category, but chipmaker Qualcomm is hard at work upgrading the silicon to power the next wave of XR devices: the Snapdragon Reality Elite. Although Qualcomm is announcing the chip today at Augmented World E…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -407,7 +414,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">SpaceX to acquire AI coding platform Cursor for $60 billion</span>
-                <span class="item-point"><span class="point-label">Key point</span>Separately, neither could compete. Now they hope they can.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Separately, neither could compete. Now they hope they can.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -418,7 +425,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Leaked financial docs show OpenAI is losing billions of dollars a year</span>
-                <span class="item-point"><span class="point-label">Key point</span>Audited accounting shows growing revenues being dwarfed by R&amp;#038;D, other expenses.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Audited accounting shows growing revenues being dwarfed by R&amp;#038;D, other expenses.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -429,7 +436,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Critical Copilot vulnerability allowed hackers to steal 2FA code from users</span>
-                <span class="item-point"><span class="point-label">Key point</span>SearchLeak exploit shows why the industry&#39;s approach to LLM security fails over and over.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>SearchLeak exploit shows why the industry&#39;s approach to LLM security fails over and over.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -440,7 +447,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Chipmaker Nvidia seeks to raise over $25B in first bond deal since 2021</span>
-                <span class="item-point"><span class="point-label">Key point</span>Debt sale set to test investor appetite for further exposure to AI sector amid a deluge of borrowing.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Debt sale set to test investor appetite for further exposure to AI sector amid a deluge of borrowing.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Ars Technica · AI · 2d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -460,8 +467,8 @@
             <a class="item-link" href="https://www.theverge.com/ai-artificial-intelligence/952011/midjourney-medical-ai-ultrasound-scan" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Midjourney Medical goes from generating ‘cat images’ to full-body ultrasound scans</span>
-                <span class="item-point"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Sc…</span>
+                <span class="item-title">Midjourney goes from generating cat images to full-body ultrasound scans</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Midjourney CEO David Holz just showed off the company&#39;s first hardware product and plans to build a San Francisco spa, which he admitted is a bit different from the &quot;cat pictures&quot; produced by its AI image generator. Dubbed The Midjourney Sc…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -472,7 +479,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">How to turn off AI in your Google Docs</span>
-                <span class="item-point"><span class="point-label">Key point</span>Here&#39;s what you need to do to get those pesky &quot;write with Gemini&quot; pop-ups to go away.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Here&#39;s what you need to do to get those pesky &quot;write with Gemini&quot; pop-ups to go away.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 4h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -483,7 +490,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">AI is hurting Apple in more ways than one: it may force iPhone price increases</span>
-                <span class="item-point"><span class="point-label">Key point</span>CEO Tim Cook said in a recent interview that the situation is &quot;unsustainable.&quot;</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>CEO Tim Cook said in a recent interview that the situation is &quot;unsustainable.&quot;</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 6h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -494,7 +501,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Tim Cook says RAM expenses are &amp;#8216;unsustainable&amp;#8217; and Apple is going to raise prices</span>
-                <span class="item-point"><span class="point-label">Key point</span>Apple is planning to raise prices in response to the ongoing memory shortage. In an interview with The Wall Street Journal, Apple CEO Tim Cook says &quot;price increases are unavoidable:&quot; We&#39;re doing our best to mitigate the huge increases that …</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Apple is planning to raise prices in response to the ongoing memory shortage. In an interview with The Wall Street Journal, Apple CEO Tim Cook says &quot;price increases are unavoidable:&quot; We&#39;re doing our best to mitigate the huge increases that …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · 8h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -505,7 +512,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Chi-Hua Chien saw Facebook coming — now he says the real AI winners won&amp;#8217;t be selling AI</span>
-                <span class="item-point"><span class="point-label">Key point</span>Chi-Hua Chien has spent more than two decades as a venture capitalist, but he thinks like a cultural anthropologist.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Chi-Hua Chien has spent more than two decades as a venture capitalist, but he thinks like a cultural anthropologist.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 8h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -516,7 +523,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">VSCO launches Studio Pro mobile photo editing app and plans $500 per year subscription</span>
-                <span class="item-point"><span class="point-label">Key point</span>VSCO is taking on Adobe with a new Studio Pro editing app rolling out today on iOS and coming to macOS later this year, as Bloomberg reports. At launch, the app offers tools for batch editing, style matching from a reference image, and shar…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>VSCO is taking on Adobe with a new Studio Pro editing app rolling out today on iOS and coming to macOS later this year, as Bloomberg reports. At launch, the app offers tools for batch editing, style matching from a reference image, and shar…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -527,7 +534,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Roelof Botha joins SpaceX&amp;#8217;s board of directors</span>
-                <span class="item-point"><span class="point-label">Key point</span>The former Sequoia Capital leader is filling an &quot;existing vacancy&quot; on SpaceX&#39;s board, days after the company went public in the largest IPO ever.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>The former Sequoia Capital leader is filling an &quot;existing vacancy&quot; on SpaceX&#39;s board, days after the company went public in the largest IPO ever.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -538,7 +545,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">After unveiling ridiculously expensive AR glasses, Snap&amp;#8217;s stock takes a dive</span>
-                <span class="item-point"><span class="point-label">Key point</span>Snap&#39;s long-awaited smart glasses debut hasn&#39;t exactly done wonders for the company&#39;s stock.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Snap&#39;s long-awaited smart glasses debut hasn&#39;t exactly done wonders for the company&#39;s stock.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -549,7 +556,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">NEA’s Tiffany Luck says enterprises are still figuring out their AI ROI</span>
-                <span class="item-point"><span class="point-label">Key point</span>Tokenmaxxing&amp;#160;was&amp;#160;the hottest trend in Silicon Valley earlier this year, with CEOs encouraging employees to push AI usage as far&amp;#160;as it would go.&amp;#160;Then the bill came due. Uber&amp;#160;reportedly blew&amp;#160;through its annual AI…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Tokenmaxxing&amp;#160;was&amp;#160;the hottest trend in Silicon Valley earlier this year, with CEOs encouraging employees to push AI usage as far&amp;#160;as it would go.&amp;#160;Then the bill came due. Uber&amp;#160;reportedly blew&amp;#160;through its annual AI…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 9h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -560,7 +567,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Epic wants to let you bring your Fortnite skins to other games</span>
-                <span class="item-point"><span class="point-label">Key point</span>Epic Games has been touting the potential of an interoperable metaverse for years, though that vision hasn&#39;t yet become a reality. But with Unreal Engine 6, the next major version of its game development engine, Epic plans to take a big ste…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Epic Games has been touting the potential of an interoperable metaverse for years, though that vision hasn&#39;t yet become a reality. But with Unreal Engine 6, the next major version of its game development engine, Epic plans to take a big ste…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · 10h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -571,8 +578,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">World leaders want American AI. They just don&amp;#8217;t want America to be able to turn it off.</span>
-                <span class="item-point"><span class="point-label">Key point</span>French President Macron and Indian PM Modi raised alarms at the G7 summit that the U.S. could cut off access to American AI overnight — a fear the Anthropic blackout just made real.</span>
-                <span class="item-meta">TechCrunch · 10h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>French President Macron and Indian PM Modi raised alarms at the G7 summit that the U.S. could cut off access to American AI overnight — a fear the Anthropic blackout just made real.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -582,7 +589,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic becomes first AI startup to join the Frontier carbon removal coalition</span>
-                <span class="item-point"><span class="point-label">Key point</span>Anthropic has joined the Frontier coalition, which received another $915M in pledges to fund carbon removal projects.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Anthropic has joined the Frontier coalition, which received another $915M in pledges to fund carbon removal projects.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -593,7 +600,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Anthropic got hit by export rules nobody understands</span>
-                <span class="item-point"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees,…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Anthropic has spent much of this week fighting to get its newest AI models back online after the Trump administration abruptly ordered the company to cut access for all foreign nationals, including users inside the US and its own employees,…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -604,7 +611,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Cybercriminals allegedly hacked tens of thousands of Fortinet firewalls used by major companies all over the world</span>
-                <span class="item-point"><span class="point-label">Key point</span>An alleged Russian-speaking group of cybercriminals is reportedly compromising and targeting several major companies that use Fortinet Firewalls and VPNs through previously known passwords.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>An alleged Russian-speaking group of cybercriminals is reportedly compromising and targeting several major companies that use Fortinet Firewalls and VPNs through previously known passwords.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -615,7 +622,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Social media’s next evolution: user-controlled algorithms</span>
-                <span class="item-point"><span class="point-label">Key point</span>Social media feeds are becoming more customizable as platforms like Threads, Instagram, and TikTok introduce tools that let users directly influence the algorithms powering their recommendations.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Social media feeds are becoming more customizable as platforms like Threads, Instagram, and TikTok introduce tools that let users directly influence the algorithms powering their recommendations.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 11h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -626,7 +633,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">World model maker Odyssey nabs $1.45B valuation backed by Amazon and other big names</span>
-                <span class="item-point"><span class="point-label">Key point</span>World models are the next big thing in AI beyond LLMs and, with this round, Odyssey has cemented itself as one of the startups to watch.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>World models are the next big thing in AI beyond LLMs and, with this round, Odyssey has cemented itself as one of the startups to watch.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -637,7 +644,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=techcrunch.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Mastodon looks to newsletters to help revive the open social web</span>
-                <span class="item-point"><span class="point-label">Key point</span>Mastodon’s newly launched newsletter feature lets anyone subscribe to creators by email, even without a Mastodon account.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Mastodon’s newly launched newsletter feature lets anyone subscribe to creators by email, even without a Mastodon account.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">TechCrunch · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -648,7 +655,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=theverge.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Two-thirds of Americans think AI is advancing too quickly</span>
-                <span class="item-point"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when …</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>According to the latest Pew Research poll, 49 percent of Americans report using chatbots at least occasionally, but 63 percent think the tech is advancing too quickly. Overall, use of AI chatbots has increased dramatically since 2024, when …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">The Verge · 12h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -664,123 +671,123 @@
           <p class="blurb">Trending from Hacker News and the dev.to community.</p>
         </div>
         <ul class="items">
-          <li class="item" style="--i:0" data-ts="1781761848000">
-            <a class="item-link" href="https://dev.to/james_oconnor_dev/i-put-6-llm-guardrail-tools-inline-and-measured-what-they-cost-me-here-is-the-latency-vs-recall-433g" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:0" data-ts="1781762067000">
+            <a class="item-link" href="https://dev.to/plasma_01/how-i-cut-my-ai-api-bill-by-40-without-changing-a-single-line-of-application-code-7dp" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">I put 6 LLM guardrail tools inline and measured what they cost me. Here is the latency-vs-recall tradeoff.</span>
-                <span class="item-point"><span class="point-label">Key point</span>An input guardrail runs on every request. Too slow and you rip it out; fast but blind and you get owned. That tradeoff, not the feature list, is the whole decision. TL;DR: I ran six guardrail and prompt-injection tools inline on a productio…</span>
-                <span class="item-meta">DEV Community · 3m ago</span>
+                <span class="item-title">How I Cut My AI API Bill by 40% Without Changing a Single Line of Application Code</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Last month my AI API bill hit a number that made me close my laptop and go for a walk. I wasn&#39;t doing anything crazy — just running a mid-size AI SaaS product with a few thousand daily requests across GPT and Claude. But between the two pro…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 8m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1" data-ts="1781761641000">
-            <a class="item-link" href="https://dev.to/hendrixxcnc/push-vs-pull-memory-a-better-way-to-think-about-ai-agent-memory-3lnp" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:1" data-ts="1781762055000">
+            <a class="item-link" href="https://dev.to/aviasoletechnologies/ai-automation-gives-you-different-answers-than-your-old-software-heres-why-that-matters-2i4o" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Push vs Pull Memory: A Better Way to Think About AI Agent Memory</span>
-                <span class="item-point"><span class="point-label">Key point</span>Push vs Pull Memory: A Better Way to Think About AI Agent Memory Pull memory is a store you query. Push memory is a loop your agent runs: it reads what it knows before acting, does the work, and writes back what changed, and the substrate r…</span>
-                <span class="item-meta">DEV Community · 7m ago</span>
+                <span class="item-title">AI Automation Gives You Different Answers Than Your Old Software - Here&#39;s Why That Matters</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>A logistics manager at a mid-size distributor spent three weeks trying to understand why their accounts payable process had become inconsistent. Their ERP - in place for eight years - approved a vendor invoice in under two seconds. Their ne…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 8m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2" data-ts="1781761638000">
-            <a class="item-link" href="https://dev.to/dalirnet/no-name-no-bio-no-rest-meet-githubs-busiest-account-45g8" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:2" data-ts="1781761985000">
+            <a class="item-link" href="https://dev.to/abda_net/new-dba-founder-joining-e0" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">No Name, No Bio, No Face: Meet GitHub&#39;s Busiest Account</span>
-                <span class="item-point"><span class="point-label">Key point</span>You&#39;ve seen this account. You just never looked at it. Open any repo — yours, a library you depend on, some project you starred two years ago. Scroll the commits, or the closed pull requests, and there it is again. The same little black-and…</span>
-                <span class="item-meta">DEV Community · 7m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:3" data-ts="1781761475000">
-            <a class="item-link" href="https://dev.to/disann/vibe-coding-101-catatan-seorang-developer-yang-capek-nulis-kode-manual-1e4l" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Vibe Coding 101: Notes from a Developer Who Got Tired of Writing Code by Hand</span>
-                <span class="item-point"><span class="point-label">Key point</span>Vibe Coding 101: A Practical Developer&#39;s Guide (2026) My personal notes and a guide for anyone who wants to start vibe coding properly — not just typing prompts and hoping the AI figures it out. Table of Contents What is Vibe Coding? 1. Cho…</span>
+                <span class="item-title">New DBA &amp; Founder joining</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>19 Years as a DBA → Building a Product. Hello, DEV Community! I spent nearly two decades managing databases before deciding to build the tool I always wished existed. Here&#39;s my story and what I&#39;ll be writing about. Hey DEV Community 👋 My n…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">DEV Community · 9m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:4" data-ts="1781761242000">
-            <a class="item-link" href="https://dev.to/sahiravoice/whats-your-free-pick-today-11f7" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:3" data-ts="1781761943000">
+            <a class="item-link" href="https://dev.to/calvin_369/how-mechanic-became-my-go-to-shopify-automation-tool-385f" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">What&#39;s Your Free Pick Today?</span>
-                <span class="item-point"><span class="point-label">Key point</span>Food poll 🍽️ If you could get 1 free plate today, what would you pick? A) Biryani B) Burger + Fries C) chines D) Pizza Drop your choice below 👇</span>
-                <span class="item-meta">DEV Community · 13m ago</span>
+                <span class="item-title">How Mechanic Became My Go-To Shopify Automation Tool</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>As someone who works with Shopify stores, I&#39;m always looking for ways to reduce repetitive work and automate processes that would otherwise require manual effort or custom app development. Over the years, I&#39;ve tried different automation too…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 10m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:5" data-ts="1781761061000">
-            <a class="item-link" href="https://dev.to/tauseedzaman/10-things-i-wish-i-knew-before-building-a-social-network-4cii" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:4" data-ts="1781761848000">
+            <a class="item-link" href="https://dev.to/james_oconnor_dev/i-put-6-llm-guardrail-tools-inline-and-measured-what-they-cost-me-here-is-the-latency-vs-recall-433g" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">10 Things I Wish I Knew Before Building a Social Network</span>
-                <span class="item-point"><span class="point-label">Key point</span>Building a social network sounded simple when it was just an idea. Create user profiles. Build a feed. Add communities. Launch. How hard could it be? As it turns out, very hard—but not for the reasons I expected. Like many developers, I ass…</span>
-                <span class="item-meta">DEV Community · 16m ago</span>
+                <span class="item-title">I put 6 LLM guardrail tools inline and measured what they cost me. Here is the latency-vs-recall tradeoff.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>An input guardrail runs on every request. Too slow and you rip it out; fast but blind and you get owned. That tradeoff, not the feature list, is the whole decision. TL;DR: I ran six guardrail and prompt-injection tools inline on a productio…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 12m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:6" data-ts="1781760985000">
-            <a class="item-link" href="https://dev.to/shashank_ms_6a35baa4be138/integrating-llm-with-other-machine-learning-models-c0o" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:5" data-ts="1781761641000">
+            <a class="item-link" href="https://dev.to/hendrixxcnc/push-vs-pull-memory-a-better-way-to-think-about-ai-agent-memory-3lnp" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Integrating LLM with Other Machine Learning Models</span>
-                <span class="item-point"><span class="point-label">Key point</span>We are building a support ticket intelligence pipeline that classifies incoming requests and drafts contextual replies by combining Oxlo.ai embeddings, a local random forest classifier, and an LLM. It helps support teams cut response time b…</span>
+                <span class="item-title">Push vs Pull Memory: A Better Way to Think About AI Agent Memory</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Push vs Pull Memory: A Better Way to Think About AI Agent Memory Pull memory is a store you query. Push memory is a loop your agent runs: it reads what it knows before acting, does the work, and writes back what changed, and the substrate r…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 15m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:6" data-ts="1781761638000">
+            <a class="item-link" href="https://dev.to/dalirnet/no-name-no-bio-no-rest-meet-githubs-busiest-account-45g8" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">No Name, No Bio, No Face: Meet GitHub&#39;s Busiest Account</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>You&#39;ve seen this account. You just never looked at it. Open any repo — yours, a library you depend on, some project you starred two years ago. Scroll the commits, or the closed pull requests, and there it is again. The same little black-and…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 15m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:7" data-ts="1781761475000">
+            <a class="item-link" href="https://dev.to/disann/vibe-coding-101-catatan-seorang-developer-yang-capek-nulis-kode-manual-1e4l" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Vibe Coding 101: Notes from a Developer Who Got Tired of Writing Code by Hand</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Vibe Coding 101: A Practical Developer&#39;s Guide (2026) My personal notes and a guide for anyone who wants to start vibe coding properly — not just typing prompts and hoping the AI figures it out. Table of Contents What is Vibe Coding? 1. Cho…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">DEV Community · 18m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:7" data-ts="1781760895000">
-            <a class="item-link" href="https://dev.to/moksh/nodejs-vs-bun-vs-deno-2-in-2026-which-javascript-runtime-should-you-actually-use-260e" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:8" data-ts="1781761242000">
+            <a class="item-link" href="https://dev.to/sahiravoice/whats-your-free-pick-today-11f7" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Node.js vs Bun vs Deno 2 in 2026: Which JavaScript Runtime Should You Actually Use?</span>
-                <span class="item-point"><span class="point-label">Key point</span>In 2026, the JavaScript runtime landscape looks very different from just two years ago. Trigger.dev switched to Bun and reported a 5x throughput improvement on identical hardware. Anthropic acquired Bun and uses it in Claude Code&#39;s CLI. Den…</span>
-                <span class="item-meta">DEV Community · 19m ago</span>
+                <span class="item-title">What&#39;s Your Free Pick Today?</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Food poll 🍽️ If you could get 1 free plate today, what would you pick? A) Biryani B) Burger + Fries C) chines D) Pizza Drop your choice below 👇</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 22m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:8" data-ts="1781760893000">
-            <a class="item-link" href="https://dev.to/pponali/i-built-a-claude-code-skill-that-discovers-which-automations-to-build-by-mining-my-own-work-8lp" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:9" data-ts="1781761061000">
+            <a class="item-link" href="https://dev.to/tauseedzaman/10-things-i-wish-i-knew-before-building-a-social-network-4cii" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">I built a Claude Code skill that discovers which automations to build — by mining my own work</span>
-                <span class="item-point"><span class="point-label">Key point</span>Most automation projects build an automation. This one builds a system that discovers which automations to build — by mining your own recent work — and then packages the high-confidence ones into reusable tools. It&#39;s a self-improving skill …</span>
-                <span class="item-meta">DEV Community · 19m ago</span>
+                <span class="item-title">10 Things I Wish I Knew Before Building a Social Network</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Building a social network sounded simple when it was just an idea. Create user profiles. Build a feed. Add communities. Launch. How hard could it be? As it turns out, very hard—but not for the reasons I expected. Like many developers, I ass…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 25m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:9" data-ts="1781760254000">
-            <a class="item-link" href="https://dev.to/devshefali/24-modern-css-tricks-every-frontend-developer-should-know-10l8" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:10" data-ts="1781760985000">
+            <a class="item-link" href="https://dev.to/shashank_ms_6a35baa4be138/integrating-llm-with-other-machine-learning-models-c0o" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">24 Modern CSS Tricks Every Frontend Developer Should Know</span>
-                <span class="item-point"><span class="point-label">Key point</span>CSS has evolved a lot in the last few years. Many things that once needed JavaScript, extra libraries, or messy hacks can now be done with just a few lines of CSS. In this post, I&#39;ll share 24 modern CSS tricks that can help you build cleane…</span>
-                <span class="item-meta">DEV Community · 30m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:10" data-ts="1781759959000">
-            <a class="item-link" href="https://dev.to/zep1997/it-was-never-about-ai-it-has-always-been-about-narrative-control-hj2" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=dev.to&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">It was never about AI. It has always been about narrative control.</span>
-                <span class="item-point"><span class="point-label">Key point</span>Hello. My name is Keniel, and I want to start with how I got here, because it explains everything that comes after it. A few years ago I started learning about AI. Not in a classroom, just on my own, the way most people first touch it. I op…</span>
-                <span class="item-meta">DEV Community · 35m ago</span>
+                <span class="item-title">Integrating LLM with Other Machine Learning Models</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>We are building a support ticket intelligence pipeline that classifies incoming requests and drafts contextual replies by combining Oxlo.ai embeddings, a local random forest classifier, and an LLM. It helps support teams cut response time b…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">DEV Community · 26m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -790,8 +797,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=xeiaso.net&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">I Hate Compilers</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 21 # Comments: 6</span>
-                <span class="item-meta">Hacker News (front page) · 44m ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://xeiaso.net/notes/2026/anubis-wasm-vendor-binary/ Comments URL: https://news.ycombinator.com/item?id=48581070 Points: 21 # Comments: 6</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">Hacker News (front page) · 52m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -801,7 +808,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">SteamOS Linux 3.8 released as stable</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 43 # Comments: 1</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://store.steampowered.com/news/app/1675200/view/697641379212298072 Comments URL: https://news.ycombinator.com/item?id=48580686 Points: 43 # Comments: 1</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 1h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -812,7 +819,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=conf.nim-lang.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Nim Conf 2026 (Online, Sat June 20)</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 16 # Comments: 2</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://conf.nim-lang.org/ Comments URL: https://news.ycombinator.com/item?id=48580504 Points: 16 # Comments: 2</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -823,7 +830,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=blog.alexellis.io&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Local Qwen isn&#39;t a worse Opus, it&#39;s a different tool</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 76 # Comments: 28</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://blog.alexellis.io/local-ai-is-not-opus/ Comments URL: https://news.ycombinator.com/item?id=48580209 Points: 76 # Comments: 28</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 2h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -834,7 +841,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=x86ecosystem.org&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">[x86] AI Compute Extensions (ACE) Specification</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 26 # Comments: 12</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://x86ecosystem.org/resource/ai-compute-extensions-ace-specification/ Comments URL: https://news.ycombinator.com/item?id=48579913 Points: 26 # Comments: 12</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 3h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -845,8 +852,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Midjourney Medical</span>
-                <span class="item-point"><span class="point-label">Key point</span>https://www.midjourney.com/medical Video: https://x.com/midjourney/status/2067422898407837797 Comments URL: https://news.ycombinator.com/item?id=48579650 Points: 420 # Comments: 325</span>
-                <span class="item-meta">Hacker News (front page) · 3h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>https://www.midjourney.com/medical Video: https://x.com/midjourney/status/2067422898407837797 Comments URL: https://news.ycombinator.com/item?id=48579650 Points: 420 # Comments: 325</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">Hacker News (front page) · 4h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -856,7 +863,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=horg.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Taxonomy of the Occlupanida (parasitoids on bread bag tags)</span>
-                <span class="item-point"><span class="point-label">Key point</span>Article URL: https://www.horg.com/horg/?page_id=921 Comments URL: https://news.ycombinator.com/item?id=48578388 Points: 116 # Comments: 23</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Article URL: https://www.horg.com/horg/?page_id=921 Comments URL: https://news.ycombinator.com/item?id=48578388 Points: 116 # Comments: 23</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Hacker News (front page) · 6h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -877,7 +884,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Junior Customer Success Representative</span>
-                <span class="item-point"><span class="point-label">Key point</span>Team: Customer Success | Reports to: CS Lead Location: Fully remote, globally distributed Level: Entry-level / early-career About Mission Inbox We are a B2B email infrastructure platform built for businesses that treat deliverability as a c…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Team: Customer Success | Reports to: CS Lead Location: Fully remote, globally distributed Level: Entry-level / early-career About Mission Inbox We are a B2B email infrastructure platform built for businesses that treat deliverability as a c…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 18h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -888,7 +895,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Business Development Representative</span>
-                <span class="item-point"><span class="point-label">Key point</span>About Us At Bucket Listers, we&#39;re all about unleashing lifeâs full potential and having a blast along the way! Our goal is to encourage people to make lasting memories, forge new connections, and embark on new adventures through our platf…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>About Us At Bucket Listers, we&#39;re all about unleashing lifeâs full potential and having a blast along the way! Our goal is to encourage people to make lasting memories, forge new connections, and embark on new adventures through our platf…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -899,7 +906,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Content &amp; Social Media Executive</span>
-                <span class="item-point"><span class="point-label">Key point</span>Posted 1:36:36 PM. Job Title: Content &amp; Social Media ExecutiveLocation: Remote (UK)Employment Type:â¦See this and similar jobs on LinkedIn.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Posted 1:36:36 PM. Job Title: Content &amp; Social Media ExecutiveLocation: Remote (UK)Employment Type:â¦See this and similar jobs on LinkedIn.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -910,7 +917,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Creative Copywriter</span>
-                <span class="item-point"><span class="point-label">Key point</span>Creative (Copy) â Comedy AdvertisingContract | Remote | Approx. 2-3 days per weekMost B2B marketingâ¦See this and similar jobs on LinkedIn.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Creative (Copy) â Comedy AdvertisingContract | Remote | Approx. 2-3 days per weekMost B2B marketingâ¦See this and similar jobs on LinkedIn.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 19h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -921,7 +928,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Pharmacovigilance Associate Position</span>
-                <span class="item-point"><span class="point-label">Key point</span>Puma Biotechnology Inc. does not accept unsolicited resumes or candidates from outside staffing agencies or recruiters. We are seeking a Pharmacovigilance Associate with 1â2 years of pharmacovigilance experience and expert proficiency in …</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Puma Biotechnology Inc. does not accept unsolicited resumes or candidates from outside staffing agencies or recruiters. We are seeking a Pharmacovigilance Associate with 1â2 years of pharmacovigilance experience and expert proficiency in …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 21h ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -932,8 +939,8 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Lead Software Engineer Ads</span>
-                <span class="item-point"><span class="point-label">Key point</span>Company Overview: Jane Technologies is an MIT-founded eCommerce company in the cannabis industry experiencing rapid growth. We believe in cannabis&#39;s ability to bring well-being, health, and love to the world, and our mission is to bring con…</span>
-                <span class="item-meta">Remote OK · Dev · 23h ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Company Overview: Jane Technologies is an MIT-founded eCommerce company in the cannabis industry experiencing rapid growth. We believe in cannabis&#39;s ability to bring well-being, health, and love to the world, and our mission is to bring con…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -943,7 +950,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Capital Planning Analyst</span>
-                <span class="item-point"><span class="point-label">Key point</span>PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or Green Card holders r…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or Green Card holders r…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -954,7 +961,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Program Manager</span>
-                <span class="item-point"><span class="point-label">Key point</span>PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or Green Card holders r…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>PBG delivers mission-focused solutions that eliminate inefficiency and power transformation for federal agencies requiring agility, security, and impact. Location: Remote Citizenship: Candidates must be U.S. Citizens or Green Card holders r…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -965,7 +972,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Customer Support Agent</span>
-                <span class="item-point"><span class="point-label">Key point</span>Are you looking for a new challenge in a dynamic, fast-growing environment? Do you want to contribute to a company with the ambitious goal of enabling 1 billion business travellers to plan and re-plan their trips by automating travel manage…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Are you looking for a new challenge in a dynamic, fast-growing environment? Do you want to contribute to a company with the ambitious goal of enabling 1 billion business travellers to plan and re-plan their trips by automating travel manage…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -976,7 +983,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Director of Commercial Operations</span>
-                <span class="item-point"><span class="point-label">Key point</span>Location: UK, Spain or Portugal Role: Director of Commercial Operations Reporting to: CEO, Curaleaf International Employment Type: Full Time POSITION SUMMARY: Curaleaf International is one of Europe&#39;s largest vertically integrated medical c…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Location: UK, Spain or Portugal Role: Director of Commercial Operations Reporting to: CEO, Curaleaf International Employment Type: Full Time POSITION SUMMARY: Curaleaf International is one of Europe&#39;s largest vertically integrated medical c…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -987,7 +994,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Medical Writer</span>
-                <span class="item-point"><span class="point-label">Key point</span>Overview / About Us Lumanity is dedicated to improving health outcomes by accelerating and optimizing access to life-changing medicines. As a global strategic partner that brings together strategy, evidence, engagement, and technology, we w…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Overview / About Us Lumanity is dedicated to improving health outcomes by accelerating and optimizing access to life-changing medicines. As a global strategic partner that brings together strategy, evidence, engagement, and technology, we w…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -998,7 +1005,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Front End Developer Fresher</span>
-                <span class="item-point"><span class="point-label">Key point</span>Frontend Developer About the Role We are looking for a creative and detail-oriented Frontend Developer to join our team. The ideal candidate will be responsible for building responsive, visually appealing, and user-friendly web applications…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Frontend Developer About the Role We are looking for a creative and detail-oriented Frontend Developer to join our team. The ideal candidate will be responsible for building responsive, visually appealing, and user-friendly web applications…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1009,7 +1016,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Customer Support Representative</span>
-                <span class="item-point"><span class="point-label">Key point</span>At Dario, Every Day is a New Opportunity to Make a Difference. We are on a mission to make better health easy. Every day our employees contribute to this mission and help hundreds of thousands of people around the globe improve their health…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>At Dario, Every Day is a New Opportunity to Make a Difference. We are on a mission to make better health easy. Every day our employees contribute to this mission and help hundreds of thousands of people around the globe improve their health…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1020,7 +1027,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">24 HR Review VA Virtual Receptionist</span>
-                <span class="item-point"><span class="point-label">Key point</span>Important: Selected applicants will receive a response within 24 hours. Due to the volume of applications, we may move forward with other candidates if we do not receive a timely response. We are currently hiring for a long-term Remote Rece…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Important: Selected applicants will receive a response within 24 hours. Due to the volume of applications, we may move forward with other candidates if we do not receive a timely response. We are currently hiring for a long-term Remote Rece…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1031,7 +1038,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Product Designer Design Systems</span>
-                <span class="item-point"><span class="point-label">Key point</span>PENN Entertainment, Inc. is North Americaâs leading provider of integrated entertainment, sports content, and casino gaming experiences. From casinos and racetracks to online gaming, sports betting and entertainment content, we deliver th…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>PENN Entertainment, Inc. is North Americaâs leading provider of integrated entertainment, sports content, and casino gaming experiences. From casinos and racetracks to online gaming, sports betting and entertainment content, we deliver th…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1042,7 +1049,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Analyst Customer Success Measurement US</span>
-                <span class="item-point"><span class="point-label">Key point</span>Who We Are Cint is a pioneer in research technology (ResTech). Our customers use the Cint platform to post questions and get answers from real people to build business strategies, confidently publish research, accurately measure the impact …</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Who We Are Cint is a pioneer in research technology (ResTech). Our customers use the Cint platform to post questions and get answers from real people to build business strategies, confidently publish research, accurately measure the impact …</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1053,7 +1060,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Back End Developer</span>
-                <span class="item-point"><span class="point-label">Key point</span>Location: Remote (Must work during Eastern timezone business hours) About Wisk.ai Wisk.ai is an industry-leading platform that helps hospitality businesses streamline their beverage and food operations through intelligent inventory manageme…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Location: Remote (Must work during Eastern timezone business hours) About Wisk.ai Wisk.ai is an industry-leading platform that helps hospitality businesses streamline their beverage and food operations through intelligent inventory manageme…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1064,7 +1071,7 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=remoteok.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Technical Support Specialist</span>
-                <span class="item-point"><span class="point-label">Key point</span>INNERGY is transforming the woodworking industry with purpose built, cloud based ERP software designed exclusively for custom manufacturers. Our platform helps businesses operate smarter, faster, and more efficiently while seamlessly connec…</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>INNERGY is transforming the woodworking industry with purpose built, cloud based ERP software designed exclusively for custom manufacturers. Our platform helps businesses operate smarter, faster, and more efficiently while seamlessly connec…</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Remote OK · Dev · 1d ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
@@ -1085,206 +1092,206 @@
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Freelancer.com — Terms &amp; Conditions (User Agreement)</span>
-                <span class="item-point"><span class="point-label">Key point</span><span class="point-label" style="color:#ffd27d;border-color:rgba(255,210,125,.4);background:rgba(255,210,125,.1)">📌 Pinned</span>Read the official Freelancer.com User Agreement — fees, payments, milestones, disputes and account policies — before bidding on or posting any project.</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span><span class="point-label" style="color:#ffd27d;border-color:rgba(255,210,125,.4);background:rgba(255,210,125,.1)">📌 Pinned</span>Read the official Freelancer.com User Agreement — fees, payments, milestones, disputes and account policies — before bidding on or posting any project.</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta">Freelancer.com</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:1" data-ts="1781762007000">
+          <li class="item" style="--i:1" data-ts="1781762553000">
+            <a class="item-link" href="https://www.freelancer.com/projects/memoir-writing/Ghostwriter-Needed-for-Professional" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Ghostwriter Needed for Professional Memoir</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a skilled ghostwriter to collaborate with me on enhancing my existing book by incorporating c</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $750–$1500 AUD</span>Freelancer.com · 0m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:2" data-ts="1781762402000">
+            <a class="item-link" href="https://www.freelancer.com/projects/proofreading/Romantic-Comedy-Short-Story-40522154" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Romantic Comedy Short Story</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m looking for a talented writer to craft an original love story in short-story form, written squar</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 2m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:3" data-ts="1781762365000">
+            <a class="item-link" href="https://www.freelancer.com/projects/digital-marketing/Advanced-Digital-Marketing-Training-SEO" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Advanced Digital Marketing Training &amp; SEO, Social Media Marketing, Google Ads &amp; Meta Ads Expert</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Digital Marketing Training | SEO, Social Media Marketing, Google Ads &amp; Meta Ads Expert I am a Digita</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹1250–₹2500 INR</span>Freelancer.com · 3m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:4" data-ts="1781762358000">
+            <a class="item-link" href="https://www.freelancer.com/projects/automation/Clay-com-tables-Workflow-Setup" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Clay.com tables &amp; Workflow Setup</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Looking for a Clay.com expert to help build and optimize our GTM outbound system. The ideal freelanc</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 3m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:5" data-ts="1781762338000">
+            <a class="item-link" href="https://www.freelancer.com/projects/graphic-design/Draft-for-Cherry-Blossom-Branch" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Draft by for Cherry Blossom Branch Illustrations - Y -- 2</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Draft of a book cover. The agreed price is €100. After receiving the draft, we will decide if the fr</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 €250–€750 EUR</span>Freelancer.com · 3m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:6" data-ts="1781762307000">
+            <a class="item-link" href="https://www.freelancer.com/projects/data-entry/CMS-Prescription-Drug-Data-Report-40522149" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">CMS Prescription Drug Data Report</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a comprehensive report on prescription drug data for healthcare providers. The report should</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 4m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:7" data-ts="1781762301000">
+            <a class="item-link" href="https://www.freelancer.com/projects/marketing/Marketing-Copywriter-Needed-40522130" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">U.S. Marketing Copywriter Needed</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I’m expanding my remote team and need one more U.S.–based copywriter who can craft clear, persuasive</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $750–$1500 USD</span>Freelancer.com · 4m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:8" data-ts="1781762243000">
+            <a class="item-link" href="https://www.freelancer.com/projects/adobe-premiere-pro/Instagram-reel-Video-Editing-40522125" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Instagram reel Video Editing</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Creative and enthusiastic individual with a Gen Z mindset, strong interest in digital trends, conten</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹100–₹400 INR</span>Freelancer.com · 5m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:9" data-ts="1781762188000">
+            <a class="item-link" href="https://www.freelancer.com/projects/branding/Retail-commercial-Development-Pitch-Deck" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Retail and commercial Development Pitch Deck</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a polished investor pitch deck that tells the full story of my real estate development—specif</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $250–$750 CAD</span>Freelancer.com · 6m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:10" data-ts="1781762134000">
+            <a class="item-link" href="https://www.freelancer.com/projects/facebook-marketing/Fix-WhatsApp-Meta-Account-Linking" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Fix WhatsApp-Meta Account Linking</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need an experienced Meta specialist to sort out a stubborn linking problem between my WhatsApp acc</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $30–$50 USD</span>Freelancer.com · 7m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:11" data-ts="1781762104000">
+            <a class="item-link" href="https://www.freelancer.com/projects/video-streaming/Streaming-Platform-Testers" target="_blank" rel="noopener noreferrer">
+              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
+              <span class="item-body">
+                <span class="item-title">Streaming Platform QA Testers</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I run a newly launched video-on-demand platform and want real users from various parts of the world</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $15–$25 USD</span>Freelancer.com · 7m ago</span>
+              </span>
+              <span class="item-arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li class="item" style="--i:12" data-ts="1781762007000">
             <a class="item-link" href="https://www.freelancer.com/projects/video-editing/Fun-Sock-Creation" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Fun Sock Ad Creation</span>
-                <span class="item-point"><span class="point-label">Key point</span>I&#39;m looking for a creative video ad for a unique pair of socks designed to be worn with thongs. The</span>
-                <span class="item-meta"><span class="budget">💰 $250–$750 AUD</span>Freelancer.com · 1m ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I&#39;m looking for a creative video ad for a unique pair of socks designed to be worn with thongs. The</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $250–$750 AUD</span>Freelancer.com · 9m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:2" data-ts="1781761959000">
+          <li class="item" style="--i:13" data-ts="1781761959000">
             <a class="item-link" href="https://www.freelancer.com/projects/adobe-illustrator/Event-Visual-Designer-for-MICE" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Event Visual Designer for MICE Management Company</span>
-                <span class="item-point"><span class="point-label">Key point</span>We are a MICE and corporate event management company looking for a reliable and creative event visua</span>
-                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 1m ago</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>We are a MICE and corporate event management company looking for a reliable and creative event visua</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹12500–₹37500 INR</span>Freelancer.com · 10m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:3" data-ts="1781761952000">
+          <li class="item" style="--i:14" data-ts="1781761952000">
             <a class="item-link" href="https://www.freelancer.com/projects/content-creation/Konten-Facebook-Menarik-Harian-40522116" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
                 <span class="item-title">Konten Facebook Menarik Harian</span>
-                <span class="item-point"><span class="point-label">Key point</span>Saya ingin feed Facebook saya hidup, konsisten, dan relevan dengan audiens. Fokus utamanya adalah pe</span>
-                <span class="item-meta"><span class="budget">💰 $250–$750 USD</span>Freelancer.com · 1m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:4" data-ts="1781761814000">
-            <a class="item-link" href="https://www.freelancer.com/projects/social-media-marketing/Impulsar-Ventas-Afiliadas-Meta" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Impulsar Ventas Afiliadas en Meta</span>
-                <span class="item-point"><span class="point-label">Key point</span>Creo videos y tutoriales para Instagram y Facebook con el fin de promocionar mis productos de market</span>
-                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 4m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:5" data-ts="1781761740000">
-            <a class="item-link" href="https://www.freelancer.com/projects/unity/Historical-First-Person-Adventure-Design" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Historical First-Person Adventure Design</span>
-                <span class="item-point"><span class="point-label">Key point</span>I want to build an expansive open-world adventure set in a carefully researched historical era. The</span>
-                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 5m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:6" data-ts="1781761704000">
-            <a class="item-link" href="https://www.freelancer.com/projects/data-analysis/CMS-Prescription-Drug-Data-Report-40522104" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">CMS Prescription Drug Data Report</span>
-                <span class="item-point"><span class="point-label">Key point</span>I need a comprehensive report on prescription drug data for healthcare providers. The report should</span>
-                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 6m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:7" data-ts="1781761692000">
-            <a class="item-link" href="https://www.freelancer.com/projects/postgresql/Experienced-Full-Stack-Developer-Needed-40522133" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Experienced Full-Stack Developer Needed</span>
-                <span class="item-point"><span class="point-label">Key point</span>Looking for a full-stack developer. Must be strong with: React Node.js / Express PostgreSQL Webflo</span>
-                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 6m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:8" data-ts="1781761682000">
-            <a class="item-link" href="https://www.freelancer.com/projects/seo-writing/Meesho-JioMart-Product-Reviews" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Meesho &amp; JioMart Product Reviews</span>
-                <span class="item-point"><span class="point-label">Key point</span>I need a series of product-review articles that spotlight both Meesho and Jio Mart items. In total,</span>
-                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 6m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:9" data-ts="1781761470000">
-            <a class="item-link" href="https://www.freelancer.com/projects/proofreading/Rewrite-Republish-Three-Non-Fiction" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Rewrite &amp; Republish Three Non-Fiction Books</span>
-                <span class="item-point"><span class="point-label">Key point</span>I have three non-fiction titles that are already in print but in serious need of a fresh, engaging r</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Saya ingin feed Facebook saya hidup, konsisten, dan relevan dengan audiens. Fokus utamanya adalah pe</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
                 <span class="item-meta"><span class="budget">💰 $250–$750 USD</span>Freelancer.com · 10m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:10" data-ts="1781761403000">
-            <a class="item-link" href="https://www.freelancer.com/projects/print-design/Print-Ready-Sticker-Design-Production" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:15" data-ts="1781761814000">
+            <a class="item-link" href="https://www.freelancer.com/projects/social-media-marketing/Impulsar-Ventas-Afiliadas-Meta" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Print-Ready Sticker Design &amp; Production</span>
-                <span class="item-point"><span class="point-label">Key point</span>ticker Design &amp; Production Requirements We are looking for a freelancer to create print-ready stick</span>
-                <span class="item-meta"><span class="budget">💰 $10–$30 USD</span>Freelancer.com · 11m ago</span>
+                <span class="item-title">Impulsar Ventas Afiliadas en Meta</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Creo videos y tutoriales para Instagram y Facebook con el fin de promocionar mis productos de market</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 12m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:11" data-ts="1781761307000">
-            <a class="item-link" href="https://www.freelancer.com/projects/web-design/Sleek-Business-Portfolio-Website" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:16" data-ts="1781761740000">
+            <a class="item-link" href="https://www.freelancer.com/projects/unity/Historical-First-Person-Adventure-Design" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Sleek Business Portfolio Website</span>
-                <span class="item-point"><span class="point-label">Key point</span>I’m ready to launch a modern, responsive website that presents my company’s work as an eye-catching</span>
-                <span class="item-meta"><span class="budget">💰 $750–$1500 USD</span>Freelancer.com · 12m ago</span>
+                <span class="item-title">Historical First-Person Adventure Design</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I want to build an expansive open-world adventure set in a carefully researched historical era. The</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 13m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:12" data-ts="1781761291000">
-            <a class="item-link" href="https://www.freelancer.com/projects/branding/Multilingual-Brand-Logo-Design" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:17" data-ts="1781761704000">
+            <a class="item-link" href="https://www.freelancer.com/projects/data-analysis/CMS-Prescription-Drug-Data-Report-40522104" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Multilingual Brand Logo Design -- 2</span>
-                <span class="item-point"><span class="point-label">Key point</span>I’m laying the visual foundation for a new brand and need a standout logo that works seamlessly in E</span>
-                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 12m ago</span>
+                <span class="item-title">CMS Prescription Drug Data Report</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>I need a comprehensive report on prescription drug data for healthcare providers. The report should</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 ₹750–₹1250 INR</span>Freelancer.com · 14m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
           </li>
-          <li class="item" style="--i:13" data-ts="1781761278000">
-            <a class="item-link" href="https://www.freelancer.com/projects/advertising/Penjualan" target="_blank" rel="noopener noreferrer">
+          <li class="item" style="--i:18" data-ts="1781761692000">
+            <a class="item-link" href="https://www.freelancer.com/projects/postgresql/Experienced-Full-Stack-Developer-Needed-40522133" target="_blank" rel="noopener noreferrer">
               <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
               <span class="item-body">
-                <span class="item-title">Penjualan</span>
-                <span class="item-point"><span class="point-label">Key point</span>Selengkapnya: Apa jenis layanan yang Anda butuhkan? Jasa pemasaran Apa tujuan utama Anda menggunaka</span>
-                <span class="item-meta"><span class="budget">💰 $2–$8 USD</span>Freelancer.com · 13m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:14" data-ts="1781761264000">
-            <a class="item-link" href="https://www.freelancer.com/projects/research/editing-video" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">editing video</span>
-                <span class="item-point"><span class="point-label">Key point</span>Saya membutuhkan seorang penulis konten berbahasa Indonesia yang dapat menyiapkan panduan perjalanan</span>
-                <span class="item-meta"><span class="budget">💰 $750–$1500 USD</span>Freelancer.com · 13m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:15" data-ts="1781761170000">
-            <a class="item-link" href="https://www.freelancer.com/projects/report-writing/Employment-History-Background-40522117" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Employment History Background Verification</span>
-                <span class="item-point"><span class="point-label">Key point</span>I need a reliable partner to run employment-history background checks on a candidate who is about to</span>
-                <span class="item-meta"><span class="budget">💰 $10–$60 USD</span>Freelancer.com · 15m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:16" data-ts="1781761091000">
-            <a class="item-link" href="https://www.freelancer.com/projects/web-development/Comprehensive-WordPress-Site-Corrections" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Comprehensive WordPress Site Corrections</span>
-                <span class="item-point"><span class="point-label">Key point</span>My WordPress site works, but it doesn’t yet look, read, or behave the way I need it to. I’m after a</span>
-                <span class="item-meta"><span class="budget">💰 ₹600–₹1500 INR</span>Freelancer.com · 16m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:17" data-ts="1781761043000">
-            <a class="item-link" href="https://www.freelancer.com/projects/bitrix/Bitrix-Module-Integration-Fix" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Bitrix Module Integration Fix</span>
-                <span class="item-point"><span class="point-label">Key point</span>I have a custom-built module running inside Bitrix that should talk seamlessly to the CRM, yet the c</span>
-                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 17m ago</span>
-              </span>
-              <span class="item-arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li class="item" style="--i:18" data-ts="1781761032000">
-            <a class="item-link" href="https://www.freelancer.com/projects/packaging-design/Elegant-Gourmet-Popcorn-Packaging-Design" target="_blank" rel="noopener noreferrer">
-              <span class="item-icon"><img src="https://www.google.com/s2/favicons?domain=freelancer.com&sz=64" alt="" loading="lazy" width="36" height="36" onerror="this.style.display='none';this.parentNode.classList.add('noimg')"></span>
-              <span class="item-body">
-                <span class="item-title">Maize &amp; Popcorn Packaging Design</span>
-                <span class="item-point"><span class="point-label">Key point</span>I am seeking a talented designer to create packaging for our brand , targeting high street markets a</span>
-                <span class="item-meta"><span class="budget">💰 ₹1500–₹12500 INR</span>Freelancer.com · 17m ago</span>
+                <span class="item-title">Experienced Full-Stack Developer Needed</span>
+                <span class="item-point"><span class="point-text"><span class="point-label">Key point</span>Looking for a full-stack developer. Must be strong with: React Node.js / Express PostgreSQL Webflo</span><button class="expand-btn" type="button" onclick="event.preventDefault();event.stopPropagation();var p=this.parentNode;p.classList.toggle('expanded');this.textContent=p.classList.contains('expanded')?'Less ▴':'More ▾'">More ▾</button></span>
+                <span class="item-meta"><span class="budget">💰 $30–$250 USD</span>Freelancer.com · 14m ago</span>
               </span>
               <span class="item-arrow" aria-hidden="true">↗</span>
             </a>
@@ -1295,7 +1302,7 @@
     </main>
 
     <footer class="site">
-      <p>🕒 Updated: <b>Thu, 18 Jun 2026 05:54:30 UTC</b></p>
+      <p>🕒 Updated: <b>Thu, 18 Jun 2026 06:02:52 UTC</b></p>
       <p>Built automatically for the <b>NSCT team</b> · Refreshed daily via GitHub Actions · Non-English headlines auto-translated to English.<br>
       Maintained by <a href="https://github.com/jack020619">jack020619</a> ·
       <a href="https://github.com/jack020619/IT-news-for-NSCT-team">Source on GitHub</a></p>
